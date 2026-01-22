@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Camiones</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Listado de Camiones</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Patente</th>
+            <th>Tipo</th>
+            <th>Rol</th>
+            <th>Activo</th>
+            <th>Estado</th>
+            <th>Mantención</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for camion in camiones %}
+        <tr>
+            <td>
+                <a href="{% url 'camion_detail' camion.id_camion %}">
+                    {{ camion.patente }}
+                </a>
+            </td>
+            <td>{{ camion.tipo_camion }}</td>
+            <td>{{ camion.rol_operativo }}</td>
+            <td>
+                {% if camion.activo %}
+                    Sí
+                {% else %}
+                    No
+                {% endif %}
+            </td>
+            <td>
+                {% if camion.estado_actual %}
+                    {{ camion.estado_actual.estado_operativo }}
+                {% else %}
+                    SIN ESTADO
+                {% endif %}
+            </td>
+            <td id="mantencion-{{ camion.id_camion }}">
+                Cargando...
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    {% for camion in camiones %}
+        fetch("/api/camion/{{ camion.id_camion }}/")
+            .then(response => response.json())
+            .then(data => {
+                const cell = document.getElementById("mantencion-{{ camion.id_camion }}");
+
+                if (!cell) return;
+
+                if (data.km_restantes === null) {
+                    cell.innerHTML = "<span style='color:gray'>SIN DATOS</span>";
+                } else if (data.km_restantes <= 0) {
+                    cell.innerHTML = "<span style='color:red; font-weight:bold'>🔴 VENCIDA</span>";
+                } else if (data.km_restantes <= 1000) {
+                    cell.innerHTML = "<span style='color:orange; font-weight:bold'>🟠 PRÓXIMA</span>";
+                } else {
+                    cell.innerHTML = "<span style='color:green; font-weight:bold'>🟢 OK</span>";
+                }
+            })
+            .catch(() => {
+                const cell = document.getElementById("mantencion-{{ camion.id_camion }}");
+                if (cell) {
+                    cell.innerHTML = "<span style='color:gray'>ERROR</span>";
+                }
+            });
+    {% endfor %}
+});
+</script>
+
+</body>
+</html>

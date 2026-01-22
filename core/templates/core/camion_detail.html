@@ -1,0 +1,98 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+<h2>Camión {{ camion.patente }}</h2>
+
+<hr>
+
+<h3>Estado actual</h3>
+
+{% if estado %}
+    <p>
+        <strong>Estado operativo:</strong>
+        {% if estado.estado_operativo == "OPERATIVO" %}
+            <span style="color: green; font-weight: bold;">OPERATIVO</span>
+        {% elif estado.estado_operativo == "EN_MANTENCION" %}
+            <span style="color: orange; font-weight: bold;">EN MANTENCIÓN</span>
+        {% elif estado.estado_operativo == "FUERA_DE_SERVICIO" %}
+            <span style="color: red; font-weight: bold;">FUERA DE SERVICIO</span>
+        {% else %}
+            {{ estado.estado_operativo }}
+        {% endif %}
+    </p>
+
+    <p><strong>Kilometraje actual:</strong> {{ estado.kilometraje }} km</p>
+    {% if estado.observacion %}
+        <p><strong>Observación:</strong> {{ estado.observacion }}</p>
+    {% endif %}
+{% else %}
+    <p>No hay estado actual registrado para este camión.</p>
+{% endif %}
+
+<hr>
+
+<h3>Mantención</h3>
+
+{% if mantenciones %}
+    {% with ultima=mantenciones.0 %}
+        <p><strong>Fecha última mantención:</strong> {{ ultima.fecha_mantencion }}</p>
+        <p><strong>Kilometraje mantención:</strong> {{ ultima.km_mantencion }} km</p>
+        <p><strong>Próxima mantención:</strong> {{ ultima.km_proxima_mantencion }} km</p>
+
+        <p><strong>Kilómetros restantes:</strong>
+            {% if ultima.km_restantes_calculados is None %}
+                -
+            {% elif ultima.km_restantes_calculados <= 0 %}
+                <span style="color:red; font-weight:bold;">VENCIDA</span>
+            {% elif ultima.km_restantes_calculados <= 1000 %}
+                <span style="color:orange; font-weight:bold;">
+                    {{ ultima.km_restantes_calculados }} km (PRÓXIMA)
+                </span>
+            {% else %}
+                <span style="color:green;">
+                    {{ ultima.km_restantes_calculados }} km
+                </span>
+            {% endif %}
+        </p>
+    {% endwith %}
+{% else %}
+    <p>No existen mantenciones registradas.</p>
+{% endif %}
+
+<hr>
+
+<h3>Historial de mantenciones</h3>
+
+<table border="1" cellpadding="6">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Kilometraje</th>
+            <th>Próxima</th>
+            <th>Taller</th>
+            <th>Observaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for m in mantenciones %}
+            <tr>
+                <td>{{ m.fecha_mantencion }}</td>
+                <td>{{ m.km_mantencion }}</td>
+                <td>{{ m.km_proxima_mantencion }}</td>
+                <td>{{ m.taller }}</td>
+                <td>{{ m.observaciones|default:"-" }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="5">Sin historial de mantenciones.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<hr>
+
+<a href="{% url 'camion_list' %}">← Volver al listado</a>
+
+{% endblock %}
