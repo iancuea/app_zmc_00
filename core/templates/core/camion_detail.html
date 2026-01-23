@@ -1,4 +1,5 @@
 {% extends "core/base.html" %}
+{% load static %}
 
 {% block content %}
 
@@ -11,18 +12,20 @@
 {% if estado %}
     <p>
         <strong>Estado operativo:</strong>
+
         {% if estado.estado_operativo == "OPERATIVO" %}
-            <span style="color: green; font-weight: bold;">OPERATIVO</span>
+            <span class="estado-ok">OPERATIVO</span>
         {% elif estado.estado_operativo == "EN_MANTENCION" %}
-            <span style="color: orange; font-weight: bold;">EN MANTENCIÓN</span>
+            <span class="estado-warning">EN MANTENCIÓN</span>
         {% elif estado.estado_operativo == "FUERA_DE_SERVICIO" %}
-            <span style="color: red; font-weight: bold;">FUERA DE SERVICIO</span>
+            <span class="estado-danger">FUERA DE SERVICIO</span>
         {% else %}
             {{ estado.estado_operativo }}
         {% endif %}
     </p>
 
     <p><strong>Kilometraje actual:</strong> {{ estado.kilometraje }} km</p>
+
     {% if estado.observacion %}
         <p><strong>Observación:</strong> {{ estado.observacion }}</p>
     {% endif %}
@@ -34,6 +37,25 @@
 
 <h3>Mantención</h3>
 
+{% with estado_mant=camion.estado_mantencion %}
+    <p>
+        <strong>Estado de mantención:</strong>
+        <span class="{{ estado_mant.css }}">
+            {{ estado_mant.label }}
+        </span>
+    </p>
+
+    {% if estado_mant.codigo == "VENCIDA" %}
+        <p><strong>Urgencia:</strong> 🔴 Alta</p>
+    {% elif estado_mant.codigo == "CRITICA" %}
+        <p><strong>Urgencia:</strong> 🟡 Media</p>
+    {% elif estado_mant.codigo == "OK" %}
+        <p><strong>Urgencia:</strong> 🟢 Baja</p>
+    {% else %}
+        <p><strong>Urgencia:</strong> —</p>
+    {% endif %}
+{% endwith %}
+
 {% if mantenciones %}
     {% with ultima=mantenciones.0 %}
         <p><strong>Fecha última mantención:</strong> {{ ultima.fecha_mantencion }}</p>
@@ -42,15 +64,15 @@
 
         <p><strong>Kilómetros restantes:</strong>
             {% if ultima.km_restantes_calculados is None %}
-                -
+                —
             {% elif ultima.km_restantes_calculados <= 0 %}
-                <span style="color:red; font-weight:bold;">VENCIDA</span>
+                <span class="estado-danger">VENCIDA</span>
             {% elif ultima.km_restantes_calculados <= 1000 %}
-                <span style="color:orange; font-weight:bold;">
+                <span class="estado-warning">
                     {{ ultima.km_restantes_calculados }} km (PRÓXIMA)
                 </span>
             {% else %}
-                <span style="color:green;">
+                <span class="estado-ok">
                     {{ ultima.km_restantes_calculados }} km
                 </span>
             {% endif %}
@@ -64,7 +86,7 @@
 
 <h3>Historial de mantenciones</h3>
 
-<table border="1" cellpadding="6">
+<table class="tabla-camiones">
     <thead>
         <tr>
             <th>Fecha</th>
@@ -95,4 +117,52 @@
 
 <a href="{% url 'camion_list' %}">← Volver al listado</a>
 
+
+<hr>
+
+<h3>¿Por qué este camión está en este estado?</h3>
+
+<ul>
+    {% if estado and estado.estado_operativo == "FUERA_DE_SERVICIO" %}
+        <li>
+            🔴 <strong>Estado operativo:</strong>
+            El camión está <strong>fuera de servicio</strong>, por lo que no puede operar,
+            independiente de su mantención.
+        </li>
+    {% endif %}
+
+    {% if estado and estado.estado_operativo == "EN_MANTENCION" %}
+        <li>
+            🟡 <strong>Estado operativo:</strong>
+            El camión se encuentra actualmente <strong>en mantención</strong>.
+        </li>
+    {% endif %}
+
+    {% with est=camion.estado_mantencion %}
+        {% if est.codigo == "VENCIDA" %}
+            <li>
+                🔴 <strong>Mantención vencida:</strong>
+                El camión <strong>superó el kilometraje</strong> definido para su próxima mantención.
+            </li>
+
+        {% elif est.codigo == "CRITICA" %}
+            <li>
+                🟡 <strong>Mantención crítica:</strong>
+                Al camión le quedan <strong>menos de 1000 km</strong> para su próxima mantención.
+            </li>
+
+        {% elif est.codigo == "OK" %}
+            <li>
+                🟢 <strong>Mantención al día:</strong>
+                El camión aún se encuentra dentro del rango de kilometraje permitido.
+            </li>
+
+        {% elif est.codigo == "SIN_DATOS" %}
+            <li>
+                ⚪ <strong>Sin información suficiente:</strong>
+                No existen datos completos de mantención o kilometraje para evaluar el estado.
+            </li>
+        {% endif %}
+    {% endwith %}
+</ul>
 {% endblock %}

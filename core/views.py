@@ -6,15 +6,31 @@ from .utils import estado_mantencion, estado_documento, ESTADO_PRIORIDAD
 
 
 def camion_list(request):
-    camiones = list(Camion.objects.all())
+    camiones = Camion.objects.all()
 
-    camiones.sort(
-        key=lambda c: c.prioridad_mantencion()
-    )
+    # --- FILTRO POR ESTADO ---
+    estado = request.GET.get("estado")
+    if estado:
+        camiones = [
+            c for c in camiones
+            if c.estado_mantencion()["codigo"] == estado
+        ]
 
-    return render(request, 'core/camion_list.html', {
-        'camiones': camiones
-    })
+    # --- ORDENAR POR PRIORIDAD ---
+    ordenar = request.GET.get("orden")
+    if ordenar == "urgencia":
+        camiones = sorted(
+            camiones,
+            key=lambda c: c.prioridad_mantencion()
+        )
+
+    context = {
+        "camiones": camiones,
+        "estado_seleccionado": estado,
+        "orden": ordenar,
+    }
+
+    return render(request, "core/camion_list.html", context)
 
 def camion_detail(request, id_camion):
     camion = get_object_or_404(Camion, id_camion=id_camion)

@@ -5,14 +5,34 @@
     <meta charset="UTF-8">
     <title>Listado de Camiones</title>
 
-    <!-- CSS externo -->
+    <!-- CSS -->
     <link rel="stylesheet" href="{% static 'core/css/camiones.css' %}">
 </head>
 <body>
 
 <h1>Listado de Camiones</h1>
 
-<table class="tabla-camiones">
+<!-- FILTRO Y ORDEN (backend, NO se toca) -->
+<form method="get" style="margin-bottom: 1rem;">
+    <label>Estado mantención:</label>
+    <select name="estado">
+        <option value="">Todos</option>
+        <option value="VENCIDA">Vencida</option>
+        <option value="CRITICA">Crítica</option>
+        <option value="OK">OK</option>
+        <option value="SIN_DATOS">Sin datos</option>
+    </select>
+
+    <label style="margin-left: 1rem;">Orden:</label>
+    <select name="orden">
+        <option value="">Normal</option>
+        <option value="urgencia">Por urgencia</option>
+    </select>
+
+    <button type="submit">Aplicar</button>
+</form>
+
+<table class="tabla-camiones" id="tabla-camiones">
     <thead>
         <tr>
             <th>Patente</th>
@@ -22,12 +42,17 @@
             <th>Estado Operativo</th>
             <th>Mantención</th>
             <th>Conductor</th>
+            <th>Motivos</th>
         </tr>
     </thead>
 
     <tbody>
         {% for camion in camiones %}
-        <tr class="{{ camion.estado_mantencion.css }}">
+        {% with estado=camion.estado_mantencion %}
+        <tr
+            class="{{ estado.css }}"
+            data-camion-id="{{ camion.id_camion }}"
+        >
 
             <!-- Patente -->
             <td>
@@ -43,13 +68,7 @@
             <td>{{ camion.rol_operativo }}</td>
 
             <!-- Activo -->
-            <td>
-                {% if camion.activo %}
-                    Sí
-                {% else %}
-                    No
-                {% endif %}
-            </td>
+            <td>{{ camion.activo|yesno:"Sí,No" }}</td>
 
             <!-- Estado operativo -->
             <td>
@@ -60,9 +79,9 @@
                 {% endif %}
             </td>
 
-            <!-- Mantención (urgencia) -->
+            <!-- Mantención -->
             <td class="estado-mantencion">
-                {{ camion.estado_mantencion.label }}
+                {{ estado.label }}
             </td>
 
             <!-- Conductor -->
@@ -74,14 +93,23 @@
                 {% endif %}
             </td>
 
+            <!-- Motivos (vienen del JSON) -->
+            <td class="motivos">
+                Cargando...
+            </td>
+
         </tr>
+        {% endwith %}
         {% empty %}
         <tr>
-            <td colspan="7">No hay camiones registrados.</td>
+            <td colspan="8">No hay camiones registrados.</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+
+<!-- JS -->
+<script src="{% static 'core/js/camiones.js' %}"></script>
 
 </body>
 </html>
