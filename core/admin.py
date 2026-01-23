@@ -5,7 +5,9 @@ from .models import (
     Mantencion,
     EstadoCamion,
     HistorialEstadoCamion,
-    DocumentoMantencion
+    DocumentoMantencion,
+    Conductor,
+    DocumentacionGeneral
 )
 
 admin.site.register(Empresa)
@@ -62,3 +64,13 @@ class MantencionAdmin(admin.ModelAdmin):
 class DocumentoMantencionAdmin(admin.ModelAdmin):
     list_display = ('mantencion', 'nombre_archivo', 'tipo_documento', 'fecha_subida')
 
+@admin.register(Conductor)
+class ConductorAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'rut', 'activo')
+    search_fields = ('nombre', 'rut')
+
+@admin.register(DocumentacionGeneral)
+class DocumentacionGeneralAdmin(admin.ModelAdmin):
+    # Usamos los nombres exactos que pusimos en el SQL de arriba
+    list_display = ('id_documento', 'tipo_entidad', 'id_referencia', 'categoria', 'fecha_vencimiento', 'estado')
+    list_filter = ('tipo_entidad', 'categoria')

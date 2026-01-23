@@ -1,5 +1,5 @@
 from django.db import models
-
+from datetime import date
 # Create your models here.
 
 
@@ -160,3 +160,67 @@ class DocumentoMantencion(models.Model):
 
     def __str__(self):
         return self.nombre_archivo
+
+class Conductor(models.Model):
+    nombre = models.CharField(max_length=100)
+    rut = models.CharField(max_length=20, unique=True)
+    telefono = models.CharField(max_length=20, blank=True, null=True)
+    correo = models.EmailField(blank=True, null=True)
+    activo = models.BooleanField(default=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Conductor"
+        verbose_name_plural = "Conductores"
+
+    def __str__(self):
+        return f"{self.nombre} ({self.rut})"
+    
+class DocumentacionGeneral(models.Model):
+    # ID único (Django lo crea como Serial PK automáticamente)
+    id_documento = models.AutoField(primary_key=True)
+    
+    # tipo_entidad: 'CAMION' o 'CONDUCTOR'
+    ENTIDAD_CHOICES = [
+        ('CAMION', 'Camión'),
+        ('CONDUCTOR', 'Conductor'),
+    ]
+    tipo_entidad = models.CharField(max_length=10, choices=ENTIDAD_CHOICES)
+    
+    # id_referencia: El ID del camión o del conductor
+    id_referencia = models.IntegerField(help_text="ID del camión o conductor según el tipo de entidad")
+    
+    # categoria
+    CATEGORIA_CHOICES = [
+        ('LICENCIA', 'Licencia de Conducir'),
+        ('EXTINTOR', 'Extintor'),
+        ('REVISION_TECNICA', 'Revisión Técnica'),
+        ('SEGURO', 'Seguro / SOAP'),
+        ('PERMISO_CIRCULACION', 'Permiso de Circulación'),
+    ]
+    categoria = models.CharField(max_length=50, choices=CATEGORIA_CHOICES)
+    
+    # fecha_vencimiento
+    fecha_vencimiento = models.DateField()
+    
+    # url_drive
+    url_drive = models.URLField(max_length=500)
+
+    class Meta:
+        db_table = 'documentos_general'
+        verbose_name = "Documento General"
+        ordering = ['fecha_vencimiento']
+
+    def __str__(self):
+        return f"{self.tipo_entidad} ({self.id_referencia}) - {self.get_categoria_display()}"
+
+    # Estado Calculado (Vigente, Próximo a vencer, Vencido)
+    @property
+    def estado(self):
+        hoy = date.today()
+        diferencia = (self.fecha_vencimiento - hoy).days
+        if diferencia < 0:
+            return "Vencido"
+        elif diferencia <= 15:
+            return "Próximo a vencer"
+        return "Vigente"
