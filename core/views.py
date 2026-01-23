@@ -6,7 +6,12 @@ from .utils import estado_mantencion, estado_documento, ESTADO_PRIORIDAD
 
 
 def camion_list(request):
-    camiones = Camion.objects.all().order_by('patente')
+    camiones = list(Camion.objects.all())
+
+    camiones.sort(
+        key=lambda c: c.prioridad_mantencion()
+    )
+
     return render(request, 'core/camion_list.html', {
         'camiones': camiones
     })

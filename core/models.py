@@ -56,7 +56,43 @@ class Camion(models.Model):
             return None
 
         return ultima.km_proxima_mantencion - estado.kilometraje
+    
+    def estado_mantencion(self):
+        km = self.km_restantes()
 
+        if km is None:
+            return {
+                "codigo": "SIN_DATOS",
+                "label": "SIN DATOS",
+                "css": "estado-muted",
+                "prioridad": 5,
+            }
+
+        if km <= 0:
+            return {
+                "codigo": "VENCIDA",
+                "label": "VENCIDA",
+                "css": "estado-danger",
+                "prioridad": 1,
+            }
+
+        if km <= 1000:
+            return {
+                "codigo": "CRITICA",
+                "label": "CRÍTICA",
+                "css": "estado-warning",
+                "prioridad": 2,
+            }
+
+        return {
+            "codigo": "OK",
+            "label": "OK",
+            "css": "estado-ok",
+            "prioridad": 3,
+        }
+
+    def prioridad_mantencion(self):
+        return self.estado_mantencion()["prioridad"]
 
     def __str__(self):
         return self.patente
