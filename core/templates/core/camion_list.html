@@ -1,54 +1,45 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Camiones</title>
+    <title>Listado de Camiones</title>
 
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        a {
-            text-decoration: none;
-            font-weight: bold;
-            color: #333;
-        }
-    </style>
+    <!-- CSS externo -->
+    <link rel="stylesheet" href="{% static 'core/camion_list.css' %}">
 </head>
 <body>
 
 <h1>Listado de Camiones</h1>
 
-<table>
+<table class="tabla-camiones">
     <thead>
         <tr>
             <th>Patente</th>
             <th>Tipo</th>
             <th>Rol</th>
             <th>Activo</th>
-            <th>Estado</th>
+            <th>Estado Operativo</th>
             <th>Mantención</th>
         </tr>
     </thead>
     <tbody>
         {% for camion in camiones %}
-        <tr>
+        <tr id="fila-{{ camion.id_camion }}">
+            <!-- Patente -->
             <td>
                 <a href="{% url 'camion_detail' camion.id_camion %}">
                     {{ camion.patente }}
                 </a>
             </td>
+
+            <!-- Tipo -->
             <td>{{ camion.tipo_camion }}</td>
+
+            <!-- Rol -->
             <td>{{ camion.rol_operativo }}</td>
+
+            <!-- Activo -->
             <td>
                 {% if camion.activo %}
                     Sí
@@ -56,15 +47,19 @@
                     No
                 {% endif %}
             </td>
+
+            <!-- Estado operativo -->
             <td>
                 {% if camion.estado_actual %}
                     {{ camion.estado_actual.estado_operativo }}
                 {% else %}
-                    SIN ESTADO
+                    <span class="muted">SIN ESTADO</span>
                 {% endif %}
             </td>
+
+            <!-- Mantención (se llena por JS) -->
             <td id="mantencion-{{ camion.id_camion }}">
-                Cargando...
+                <span class="muted">Cargando...</span>
             </td>
         </tr>
         {% endfor %}
@@ -73,31 +68,41 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+
     {% for camion in camiones %}
-        fetch("/api/camion/{{ camion.id_camion }}/")
-            .then(response => response.json())
-            .then(data => {
-                const cell = document.getElementById("mantencion-{{ camion.id_camion }}");
+    fetch("/api/camion/{{ camion.id_camion }}/")
+        .then(response => response.json())
+        .then(data => {
+            const celda = document.getElementById("mantencion-{{ camion.id_camion }}");
+            const fila = document.getElementById("fila-{{ camion.id_camion }}");
 
-                if (!cell) return;
+            if (!celda || !fila) return;
 
-                if (data.km_restantes === null) {
-                    cell.innerHTML = "<span style='color:gray'>SIN DATOS</span>";
-                } else if (data.km_restantes <= 0) {
-                    cell.innerHTML = "<span style='color:red; font-weight:bold'>🔴 VENCIDA</span>";
-                } else if (data.km_restantes <= 1000) {
-                    cell.innerHTML = "<span style='color:orange; font-weight:bold'>🟠 PRÓXIMA</span>";
-                } else {
-                    cell.innerHTML = "<span style='color:green; font-weight:bold'>🟢 OK</span>";
-                }
-            })
-            .catch(() => {
-                const cell = document.getElementById("mantencion-{{ camion.id_camion }}");
-                if (cell) {
-                    cell.innerHTML = "<span style='color:gray'>ERROR</span>";
-                }
-            });
+            if (data.km_restantes === null) {
+                celda.innerHTML = "<span class='estado sindatos'>SIN DATOS</span>";
+                fila.classList.add("sindatos");
+            } 
+            else if (data.km_restantes <= 0) {
+                celda.innerHTML = "<span class='estado vencida'>VENCIDA</span>";
+                fila.classList.add("vencida");
+            } 
+            else if (data.km_restantes <= 1000) {
+                celda.innerHTML = "<span class='estado proxima'>PRÓXIMA</span>";
+                fila.classList.add("proxima");
+            } 
+            else {
+                celda.innerHTML = "<span class='estado ok'>OK</span>";
+                fila.classList.add("ok");
+            }
+        })
+        .catch(() => {
+            const celda = document.getElementById("mantencion-{{ camion.id_camion }}");
+            if (celda) {
+                celda.innerHTML = "<span class='estado sindatos'>ERROR</span>";
+            }
+        });
     {% endfor %}
+
 });
 </script>
 

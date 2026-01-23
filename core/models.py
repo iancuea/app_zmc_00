@@ -12,7 +12,6 @@ class Empresa(models.Model):
     def __str__(self):
         return self.nombre
 
-
 class Camion(models.Model):
     id_camion = models.AutoField(primary_key=True)
     patente = models.CharField(max_length=10, unique=True)
@@ -93,7 +92,22 @@ class Mantencion(models.Model):
 
     def __str__(self):
         return f"{self.camion.patente} - {self.fecha_mantencion}"
-    
+
+class Conductor(models.Model):
+    nombre = models.CharField(max_length=100)
+    rut = models.CharField(max_length=20, unique=True)
+    telefono = models.CharField(max_length=20, blank=True, null=True)
+    correo = models.EmailField(blank=True, null=True)
+    activo = models.BooleanField(default=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Conductor"
+        verbose_name_plural = "Conductores"
+
+    def __str__(self):
+        return f"{self.nombre} ({self.rut})" 
+       
 class EstadoCamion(models.Model):
     id_estado = models.AutoField(primary_key=True)
 
@@ -102,6 +116,15 @@ class EstadoCamion(models.Model):
         on_delete=models.CASCADE,
         db_column='id_camion',
         related_name='estado_actual'
+    )
+
+    conductor = models.ForeignKey(
+        Conductor,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        db_column='id_conductor',
+        related_name='camiones_asignados'
     )
 
     kilometraje = models.IntegerField()
@@ -160,21 +183,6 @@ class DocumentoMantencion(models.Model):
 
     def __str__(self):
         return self.nombre_archivo
-
-class Conductor(models.Model):
-    nombre = models.CharField(max_length=100)
-    rut = models.CharField(max_length=20, unique=True)
-    telefono = models.CharField(max_length=20, blank=True, null=True)
-    correo = models.EmailField(blank=True, null=True)
-    activo = models.BooleanField(default=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = "Conductor"
-        verbose_name_plural = "Conductores"
-
-    def __str__(self):
-        return f"{self.nombre} ({self.rut})"
     
 class DocumentacionGeneral(models.Model):
     # ID único (Django lo crea como Serial PK automáticamente)

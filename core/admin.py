@@ -50,7 +50,7 @@ class CamionAdmin(admin.ModelAdmin):
 
 @admin.register(EstadoCamion)
 class EstadoCamionAdmin(admin.ModelAdmin):
-    list_display = ('camion', 'estado_operativo', 'kilometraje', 'fecha_actualizacion')
+    list_display = ('camion', 'estado_operativo', 'kilometraje', 'fecha_actualizacion', 'conductor')
     list_filter = ('estado_operativo',)
 
 
