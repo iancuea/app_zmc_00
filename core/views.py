@@ -3,12 +3,19 @@ from .models import Camion, EstadoCamion, Mantencion, DocumentacionGeneral
 from django.http import JsonResponse
 from django.db.models import Max
 from .utils import estado_mantencion, estado_documento, ESTADO_PRIORIDAD
+from itertools import groupby
+from operator import attrgetter
 
 
 def camion_list(request):
-    camiones = Camion.objects.all()
+    camiones = list(
+        Camion.objects.select_related(
+            "estado_actual",
+            "estado_actual__conductor"
+        )
+    )
 
-    # --- FILTRO POR ESTADO ---
+    # --- FILTRO POR ESTADO DE MANTENCIÓN ---
     estado = request.GET.get("estado")
     if estado:
         camiones = [
@@ -16,16 +23,36 @@ def camion_list(request):
             if c.estado_mantencion()["codigo"] == estado
         ]
 
-    # --- ORDENAR POR PRIORIDAD ---
+    # --- ORDENAR POR URGENCIA ---
     ordenar = request.GET.get("orden")
     if ordenar == "urgencia":
-        camiones = sorted(
-            camiones,
-            key=lambda c: c.prioridad_mantencion()
+        camiones.sort(key=lambda c: c.prioridad_mantencion())
+
+    # --- ORDEN BASE (SIEMPRE, para agrupar bien) ---
+    camiones.sort(
+        key=lambda c: (
+            c.estado_actual.base_actual if c.estado_actual else "ZZZ",
+            c.prioridad_mantencion()
         )
+    )
+
+    # --- AGRUPAR POR BASE ---
+    camiones_por_base = []
+    for base, grupo in groupby(
+        camiones,
+        key=lambda c: (
+            c.estado_actual.get_base_actual_display()
+            if c.estado_actual
+            else "SIN BASE"
+        )
+    ):
+        camiones_por_base.append({
+            "base": base,
+            "camiones": list(grupo)
+        })
 
     context = {
-        "camiones": camiones,
+        "camiones_por_base": camiones_por_base,
         "estado_seleccionado": estado,
         "orden": ordenar,
     }

@@ -165,6 +165,19 @@ class EstadoCamion(models.Model):
 
     kilometraje = models.IntegerField()
     estado_operativo = models.CharField(max_length=20)
+
+    BASE_CHOICES = [
+        ('SOMBRERO', 'Sombrero'),
+        ('GREGORIO', 'Gregorio'),
+        ('CULLEN', 'Cullen'),
+        ('POSESION', 'Posesión'),
+        ('PUNTA_ARENAS', 'Punta Arenas'),
+    ]
+    base_actual = models.CharField(
+        max_length=20,
+        choices=BASE_CHOICES
+    )
+
     observacion = models.TextField(blank=True, null=True)
     fecha_actualizacion = models.DateTimeField()
 
@@ -173,7 +186,7 @@ class EstadoCamion(models.Model):
         db_table = 'estado_camion'
 
     def __str__(self):
-        return f"{self.camion.patente} - {self.estado_operativo}"
+        return f"{self.camion.patente} - {self.estado_operativo} - {self.base_actual}"
 
 class HistorialEstadoCamion(models.Model):
     id_historial = models.AutoField(primary_key=True)
