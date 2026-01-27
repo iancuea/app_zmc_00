@@ -90,6 +90,20 @@ class Camion(models.Model):
             "prioridad": 3,
         }
 
+    @property
+    def asignacion_actual(self):
+        """Retorna la asignación activa si existe, usando la tabla intermedia."""
+        from .models import AsignacionTractoRemolque
+        return AsignacionTractoRemolque.objects.filter(
+            camion=self, 
+            activo=True
+        ).select_related('remolque').first()
+
+    @property
+    def tiene_remolque(self):
+        """Verifica de forma rápida si tiene un remolque enganchado."""
+        return self.asignacion_actual is not None
+
     def prioridad_mantencion(self):
         return self.estado_mantencion()["prioridad"]
 

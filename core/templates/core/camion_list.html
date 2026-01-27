@@ -47,91 +47,59 @@
         </tr>
     </thead>
 
-        <tbody>
+    <tbody>
+    {% for grupo in camiones_por_base %}
+        <tr class="separador-base">
+            <td colspan="9">BASE: {{ grupo.base|upper }}</td>
+        </tr>
 
-        {% for grupo in camiones_por_base %}
-
-            <!-- SEPARADOR DE BASE -->
-            <tr class="separador-base">
-                <td colspan="9">
-                    BASE: {{ grupo.base|upper }}
-                </td>
-            </tr>
-
-            {% for camion in grupo.camiones %}
-            {% with estado=camion.estado_mantencion %}
-
-            <tr
-                class="{{ estado.css }}"
-                data-camion-id="{{ camion.id_camion }}"
-            >
-
-                <!-- Patente -->
+        {% for camion in grupo.camiones %}
+            {% with estado_t=camion.estado_mantencion asignacion=camion.asignacion_actual %}
+            
+            <tr class="{{ estado_t.css }}" data-camion-id="{{ camion.id_camion }}">
                 <td>
                     <a href="{% url 'camion_detail' camion.id_camion %}">
                         {{ camion.patente }}
                     </a>
                 </td>
-
-                <!-- Tipo -->
                 <td>{{ camion.tipo_camion }}</td>
-
-                <!-- Rol -->
                 <td>{{ camion.rol_operativo }}</td>
-
-                <!-- Base -->
-                <td>
-                    {% if camion.estado_actual %}
-                        {{ camion.estado_actual.get_base_actual_display }}
-                    {% else %}
-                        —
-                    {% endif %}
-                </td>
-
-                <!-- Activo -->
+                <td>{{ camion.estado_actual.get_base_actual_display|default:"—" }}</td>
                 <td>{{ camion.activo|yesno:"Sí,No" }}</td>
-
-                <!-- Estado operativo -->
-                <td>
-                    {% if camion.estado_actual %}
-                        {{ camion.estado_actual.estado_operativo }}
-                    {% else %}
-                        —
-                    {% endif %}
-                </td>
-
-                <!-- Mantención -->
-                <td class="estado-mantencion">
-                    {{ estado.label }}
-                </td>
-
-                <!-- Conductor -->
-                <td>
-                    {% if camion.estado_actual and camion.estado_actual.conductor %}
-                        {{ camion.estado_actual.conductor }}
-                    {% else %}
-                        —
-                    {% endif %}
-                </td>
-
-                <!-- Motivos (JS / JSON) -->
-                <td class="motivos">
-                    Cargando...
-                </td>
-
+                <td>{{ camion.estado_actual.estado_operativo|default:"—" }}</td>
+                <td class="estado-mantencion">{{ estado_t.label }}</td>
+                <td>{{ camion.estado_actual.conductor|default:"—" }}</td>
+                <td class="motivos">Cargando...</td>
             </tr>
+
+            {% if asignacion %}
+                {% with remolque=asignacion.remolque %}
+                <tr class="fila-remolque" data-remolque-id="{{ remolque.id_remolque }}">
+                    <td style="padding-left: 25px;">
+                        <span class="flecha-vinculo">↳</span> 
+                        <strong>{{ remolque.patente }}</strong>
+                    </td>
+                    <td>REMOLQUE</td>
+                    <td style="color: #888; font-style: italic;">(Heredado)</td>
+                    <td>{{ camion.estado_actual.get_base_actual_display|default:"—" }}</td>
+                    <td>{{ remolque.activo|yesno:"Sí,No" }}</td>
+                    <td>{{ remolque.estado_operativo }}</td>
+                    
+                    <td class="estado-mantencion">
+                        {# Aquí asumo que crearás una lógica similar a estado_mantencion para Remolque #}
+                        {{ remolque.estado_mantencion.label|default:"OK" }}
+                    </td>
+
+                    <td>{{ camion.estado_actual.conductor|default:"—" }}</td>
+                    <td>Vínculo: {{ asignacion.fecha_desde|date:"d/m/Y" }}</td>
+                </tr>
+                {% endwith %}
+            {% endif %}
 
             {% endwith %}
-            {% endfor %}
-
-        {% empty %}
-            <tr>
-                <td colspan="9">No hay camiones registrados.</td>
-            </tr>
-
         {% endfor %}
-
-    </tbody>
+    {% endfor %}
+</tbody>
 </table>
 
 <!-- JS -->
