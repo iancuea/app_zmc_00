@@ -15,7 +15,6 @@ class Empresa(models.Model):
 class Camion(models.Model):
     id_camion = models.AutoField(primary_key=True)
     patente = models.CharField(max_length=10, unique=True)
-    patente_remolque = models.CharField(max_length=10, blank=True, null=True)
     vin = models.CharField(max_length=17, unique=True, blank=True, null=True)
     marca = models.CharField(max_length=50, blank=True, null=True)
     modelo = models.CharField(max_length=50, blank=True, null=True)
@@ -97,16 +96,114 @@ class Camion(models.Model):
     def __str__(self):
         return self.patente
 
-class Mantencion(models.Model):
-    id_mantencion = models.AutoField(primary_key=True)
+class Remolque(models.Model):
+    # Opciones para el estado operativo
+    ESTADO_CHOICES = [
+        ('disponible', 'Disponible'),
+        ('mantenimiento', 'En Mantención'),
+        ('ruta', 'En Ruta'),
+        ('baja', 'De Baja'),
+    ]
+    id_remolque = models.AutoField(primary_key=True, db_column='id_remolque')
+    patente = models.CharField(max_length=20, unique=True, verbose_name="Patente")
+    marca = models.CharField(max_length=100, blank=True, null=True)
+    modelo = models.CharField(max_length=100, blank=True, null=True)
+    anio = models.PositiveIntegerField(blank=True, null=True, verbose_name="Año")
+    tipo_remolque = models.CharField(max_length=50, blank=True, null=True)
+    capacidad_carga = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    n_ejes = models.PositiveIntegerField(default=2)
+    
+    # Este es el campo clave para tus mantenciones futuras
+    kilometraje_acumulado = models.DecimalField(
+        max_digits=12, 
+        decimal_places=2, 
+        default=0.00,
+        help_text="Suma de kilómetros recorridos por los tractos asignados"
+    )
+    
+    estado_operativo = models.CharField(
+        max_length=50, 
+        choices=ESTADO_CHOICES, 
+        default='disponible'
+    )
+    activo = models.BooleanField(default=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        db_table = 'remolques' # Forzamos el nombre de la tabla para que coincida con el SQL
+        verbose_name = 'Remolque'
+        verbose_name_plural = 'Remolques'
+
+    def __str__(self):
+        return f"{self.patente} - {self.tipo_remolque}"
+
+class AsignacionTractoRemolque(models.Model):
+    # Relaciones
+    id_asignacion = models.AutoField(
+        primary_key=True, 
+        db_column='id_asignacion'
+    )
     camion = models.ForeignKey(
-        Camion,
-        on_delete=models.CASCADE,
-        db_column='id_camion',
+        'Camion', 
+        on_delete=models.CASCADE, 
+        db_column='id_camion'  # <-- Esto arregla el error de la columna que no existe
+    )
+    remolque = models.ForeignKey(
+        'Remolque', 
+        on_delete=models.CASCADE, 
+        db_column='id_remolque' # <-- Esto también
+    )
+    
+    # Datos de la asignación
+    fecha_desde = models.DateTimeField(auto_now_add=True)
+    fecha_hasta = models.DateTimeField(null=True, blank=True)
+    
+    # Muy importante para el cálculo de kms futuros
+    km_inicio_camion = models.DecimalField(
+        max_digits=12, 
+        decimal_places=2,
+        help_text="Kilometraje del camión al momento de realizar el enganche"
+    )
+    
+    activo = models.BooleanField(
+        default=True,
+        help_text="Indica si el remolque está actualmente enganchado a este camión"
+    )
+
+    class Meta:
+        db_table = 'asignacion_tracto_remolque'
+        verbose_name = 'Asignación Tracto-Remolque'
+        verbose_name_plural = 'Asignaciones Tracto-Remolque'
+
+    def __str__(self):
+        return f"{self.camion.patente} <-> {self.remolque.patente} ({self.fecha_desde.date()})"
+
+class Mantencion(models.Model):
+    # 1. Definir la llave primaria exacta
+    id_mantencion = models.AutoField(
+        primary_key=True, 
+        db_column='id_mantencion'
+    )
+
+    # 2. Forzar el nombre de la columna para Camion
+    camion = models.ForeignKey(
+        'Camion', 
+        on_delete=models.CASCADE, 
+        null=True, 
+        blank=True, 
+        db_column='id_camion',  # <-- Esto arregla el error "no existe camion_id"
         related_name='mantenciones'
     )
 
+    # 3. Forzar el nombre de la columna para Remolque (por si acaso)
+    remolque = models.ForeignKey(
+        'Remolque', 
+        on_delete=models.CASCADE, 
+        null=True, 
+        blank=True, 
+        db_column='id_remolque', # <-- Evita el mismo error con remolques
+        related_name='mantenciones_remolque'
+    )
     taller = models.CharField(max_length=10)
     fecha_mantencion = models.DateField()
     km_mantencion = models.IntegerField(blank=True, null=True)
