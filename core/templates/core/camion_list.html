@@ -74,14 +74,14 @@
                 {% with remolque=asignacion.remolque %}
                 <tr class="fila-remolque" data-remolque-id="{{ remolque.id_remolque }}">
                     <td style="padding-left: 25px;">
-                        <span style="color: #ccc;">↳</span> <i>{{ remolque.patente }}</i>
+                        <span style="color: #ccc;">↳</span> <strong>{{ remolque.patente }}</strong>
                     </td>
-                    <td style="font-size: 0.8em; color: #777;">REMOLQUE</td>
-                    <td style="font-size: 0.8em; color: #999;">(Vinculado)</td>
+                    <td>REMOLQUE</td>
+                    <td>(Vinculado)</td>
                     <td class="col-base">{{ grupo.base }}</td>
                     <td>{{ remolque.activo|yesno:"Sí,No" }}</td>
                     <td>{{ remolque.estado_actual.get_estado_operativo_display|default:"OPERATIVO" }}</td>
-                    <td class="estado-mantencion-texto-rem">OK</td>
+                    <td class="estado-mantencion-texto-rem"><strong>OK</strong></td>
                     <td>—</td>
                     <td class="motivos-remolque">Cargando datos...</td>
                 </tr>
