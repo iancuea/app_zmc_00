@@ -111,12 +111,8 @@ class Camion(models.Model):
 
     @property
     def asignacion_actual(self):
-        """Retorna la asignación activa si existe, usando la tabla intermedia."""
-        from .models import AsignacionTractoRemolque
-        return AsignacionTractoRemolque.objects.filter(
-            camion=self, 
-            activo=True
-        ).select_related('remolque').first()
+        """Retorna la asignación de remolque activa para este camión"""
+        return self.asignaciontractoremolque_set.filter(activo=True).first()
 
     @property
     def tiene_remolque(self):
@@ -127,7 +123,7 @@ class Camion(models.Model):
         return self.estado_mantencion()["prioridad"]
 
     def __str__(self):
-        return self.patente
+        return self.patente if self.patente else "Camión sin patente"
 
 class Conductor(models.Model):
     nombre = models.CharField(max_length=100)
@@ -183,7 +179,7 @@ class Remolque(models.Model):
         verbose_name_plural = 'Remolques'
 
     def __str__(self):
-        return f"{self.patente} - {self.tipo_remolque}"
+        return self.patente if self.patente else "Remolque sin patente"
 
 class Mantencion(models.Model):
     # 1. Definir la llave primaria exacta
@@ -231,7 +227,16 @@ class Mantencion(models.Model):
         return self.km_proxima_mantencion - self.km_mantencion
 
     def __str__(self):
-        return f"{self.camion.patente} - {self.fecha_mantencion}"
+        # 1. Si hay camión, mostramos su patente
+        if self.camion:
+            return f"🚜 {self.camion.patente} - {self.fecha_mantencion}"
+        
+        # 2. Si hay remolque, mostramos su patente
+        if self.remolque:
+            return f"🚛 {self.remolque.patente} - {self.fecha_mantencion}"
+        
+        # 3. Caso de emergencia (cuando estás creando el registro)
+        return f"Nueva Mantención - {self.fecha_mantencion}"
 
 #---------AUXILIARES-------
 
@@ -453,15 +458,16 @@ class DocumentacionGeneral(models.Model):
     # ID único (Django lo crea como Serial PK automáticamente)
     id_documento = models.AutoField(primary_key=True)
     
-    # tipo_entidad: 'CAMION' o 'CONDUCTOR'
+    # tipo_entidad: 'CAMION' o 'CONDUCTOR' o 'REMOLQUE'
     ENTIDAD_CHOICES = [
         ('CAMION', 'Camión'),
         ('CONDUCTOR', 'Conductor'),
+        ('REMOLQUE', 'Remolque'), 
     ]
     tipo_entidad = models.CharField(max_length=10, choices=ENTIDAD_CHOICES)
     
     # id_referencia: El ID del camión o del conductor
-    id_referencia = models.IntegerField(help_text="ID del camión o conductor según el tipo de entidad")
+    id_referencia = models.IntegerField(help_text="ID del camión, conductor o remolque")    
     
     # categoria
     CATEGORIA_CHOICES = [

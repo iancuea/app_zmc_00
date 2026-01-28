@@ -94,54 +94,73 @@ def api_camion_detalle(request, camion_id):
 
 def api_estado_camiones(request):
     resultado = []
-
+    # Traemos los camiones activos
     camiones = Camion.objects.filter(activo=True).select_related("estado_actual")
 
     for camion in camiones:
-        estado_global = "OK"
+        # --- 🚜 DATOS TRACTO (CAMIÓN) ---
         prioridad_global = ESTADO_PRIORIDAD["OK"]
-        motivos = []
-
+        estado_global = "OK"
+        motivos_tracto = []
+        
         estado_actual = getattr(camion, "estado_actual", None)
-        km_actual = estado_actual.kilometraje if estado_actual else None
+        km_actual = estado_actual.kilometraje if estado_actual else 0
 
-        # 🔧 Mantención
-        ultima_mantencion = camion.mantenciones.order_by("-fecha_mantencion").first()
-        if ultima_mantencion:
-            estado, motivo = estado_mantencion(
-                km_actual,
-                ultima_mantencion.km_proxima_mantencion
-            )
-            if ESTADO_PRIORIDAD[estado] > prioridad_global:
-                estado_global = estado
-                prioridad_global = ESTADO_PRIORIDAD[estado]
-            if motivo:
-                motivos.append(motivo)
+        # Mantención Tracto
+        ultima_m = camion.mantenciones.order_by("-fecha_mantencion").first()
+        if ultima_m:
+            est, motivo = estado_mantencion(km_actual, ultima_m.km_proxima_mantencion)
+            if ESTADO_PRIORIDAD[est] > prioridad_global:
+                estado_global = est
+                prioridad_global = ESTADO_PRIORIDAD[est]
+            if motivo: motivos_tracto.append(f"Tracto: {motivo}")
 
-        # 📄 Documentación del camión
-        documentos = DocumentacionGeneral.objects.filter(
-            tipo_entidad="CAMION",
-            id_referencia=camion.id_camion
-        )
+        # Documentos Tracto
+        docs_t = DocumentacionGeneral.objects.filter(tipo_entidad="CAMION", id_referencia=camion.id_camion)
+        for doc in docs_t:
+            est, motivo = estado_documento(doc.fecha_vencimiento)
+            if ESTADO_PRIORIDAD[est] > prioridad_global:
+                estado_global = est
+                prioridad_global = ESTADO_PRIORIDAD[est]
+            if motivo: motivos_tracto.append(f"Doc Tracto ({doc.get_categoria_display()}): {motivo}")
 
-        for doc in documentos:
-            estado, motivo = estado_documento(doc.fecha_vencimiento)
-            if ESTADO_PRIORIDAD[estado] > prioridad_global:
-                estado_global = estado
-                prioridad_global = ESTADO_PRIORIDAD[estado]
-            if motivo:
-                motivos.append(f"{doc.get_categoria_display()}: {motivo}")
+        # --- 🚛 DATOS REMOLQUE ASIGNADO ---
+        motivos_remolque = []
+        id_remolque = None
+        estado_rem_css = "estado-ok" # Clase CSS para el remolque
+        
+        asignacion = camion.asignacion_actual 
 
+        if asignacion:
+            rem = asignacion.remolque
+            id_remolque = rem.id_remolque
+            
+            # 🔧 Mantención Remolque
+            ultima_m_r = rem.mantenciones_remolque.order_by("-fecha_mantencion").first()
+            if ultima_m_r:
+                est, motivo = estado_mantencion(float(rem.kilometraje_acumulado), ultima_m_r.km_proxima_mantencion)
+                # Si el remolque está mal, el color de su fila cambia
+                if ESTADO_PRIORIDAD[est] > 1:
+                    estado_rem_css = f"estado-{est.lower()}"
+                if motivo: motivos_remolque.append(f"Remolque: {motivo}")
+
+            # 📄 Documentos Remolque
+            docs_r = DocumentacionGeneral.objects.filter(tipo_entidad="REMOLQUE", id_referencia=rem.id_remolque)
+            for doc in docs_r:
+                est, motivo = estado_documento(doc.fecha_vencimiento)
+                if ESTADO_PRIORIDAD[est] > 1:
+                    # Guardamos la clase (ej: estado-vencido o estado-critico)
+                    estado_rem_css = f"estado-{est.lower()}"
+                if motivo: motivos_remolque.append(f"Doc Remolque ({doc.get_categoria_display()}): {motivo}")
+
+        # --- CONSTRUCCIÓN DE RESPUESTA ---
         resultado.append({
             "id_camion": camion.id_camion,
-            "patente": camion.patente,
-            "estado": estado_global,
-            "urgencia": prioridad_global,
-            "conductor": estado_actual.conductor.nombre if estado_actual and estado_actual.conductor else None,
-            "motivos": motivos
+            "id_remolque": id_remolque,
+            "estado": estado_global,             # Color para el tracto
+            "motivos": motivos_tracto,           # Motivos tracto
+            "motivos_remolque": motivos_remolque, # Motivos remolque
+            "estado_remolque_css": estado_rem_css # Clase para la fila del remolque
         })
-
-    # Orden por urgencia (más crítico primero)
-    resultado.sort(key=lambda x: x["urgencia"], reverse=True)
 
     return JsonResponse(resultado, safe=False)

@@ -72,12 +72,23 @@ class CamionAdmin(admin.ModelAdmin):
     estado_actual_display.short_description = 'Estado actual'
     remolque_actual.short_description = 'Remolque Activo'
 
+@admin.register(Remolque)
+class RemolqueAdmin(admin.ModelAdmin):
+    list_display = ('patente', 'tipo_remolque', 'estado_actual_display', 'activo')
+    inlines = [AsignacionInline, HistorialEstadoRemolqueInline] # Verás sus conductores y su historial
 
-@admin.register(EstadoCamion)
-class EstadoCamionAdmin(admin.ModelAdmin):
-    list_display = ('camion', 'estado_operativo', 'kilometraje', 'fecha_actualizacion', 'conductor')
-    list_filter = ('estado_operativo',)
+    def estado_actual_display(self, obj):
+        return getattr(obj.estado_actual, 'estado_operativo', 'SIN ESTADO')
+    estado_actual_display.short_description = 'Estado'
 
+@admin.register(Conductor)
+class ConductorAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'rut', 'activo')
+    search_fields = ('nombre', 'rut')
+
+@admin.register(AsignacionTractoRemolque)
+class AsignacionTractoRemolqueAdmin(admin.ModelAdmin):
+    list_display = ('camion', 'remolque', 'fecha_desde', 'activo')
 
 @admin.register(Mantencion)
 class MantencionAdmin(admin.ModelAdmin):
@@ -88,41 +99,23 @@ class MantencionAdmin(admin.ModelAdmin):
     inlines = [DocumentoMantencionInline]
 
     def get_unidad(self, obj):
-        if obj.camion:
-            return format_html('<span style="color: #2c3e50;">🚜 <b>{}</b></span>', obj.camion.patente)
-        if obj.remolque:
-            return format_html('<span style="color: #16a085;">🚛 <b>{}</b></span>', obj.remolque.patente)
-        return "⚠️ Sin asignar"
+        # Usamos getattr para evitar el AttributeError si obj.camion es None
+        camion = getattr(obj, 'camion', None)
+        remolque = getattr(obj, 'remolque', None)
+
+        if camion:
+            return format_html('🚜 <b>{}</b>', camion.patente)
+        if remolque:
+            return format_html('🚛 <b>{}</b>', remolque.patente)
+        
+        return "Nueva Mantención"
+
     get_unidad.short_description = 'Unidad'
 
-
-@admin.register(DocumentoMantencion)
-class DocumentoMantencionAdmin(admin.ModelAdmin):
-    list_display = ('mantencion', 'nombre_archivo', 'tipo_documento', 'fecha_subida')
-
-@admin.register(Conductor)
-class ConductorAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'rut', 'activo')
-    search_fields = ('nombre', 'rut')
-
-@admin.register(DocumentacionGeneral)
-class DocumentacionGeneralAdmin(admin.ModelAdmin):
-    # Usamos los nombres exactos que pusimos en el SQL de arriba
-    list_display = ('id_documento', 'tipo_entidad', 'id_referencia', 'categoria', 'fecha_vencimiento', 'estado')
-    list_filter = ('tipo_entidad', 'categoria')
-
-@admin.register(AsignacionTractoRemolque)
-class AsignacionTractoRemolqueAdmin(admin.ModelAdmin):
-    list_display = ('camion', 'remolque', 'fecha_desde', 'activo')
-
-@admin.register(Remolque)
-class RemolqueAdmin(admin.ModelAdmin):
-    list_display = ('patente', 'tipo_remolque', 'estado_actual_display', 'activo')
-    inlines = [AsignacionInline, HistorialEstadoRemolqueInline] # Verás sus conductores y su historial
-
-    def estado_actual_display(self, obj):
-        return getattr(obj.estado_actual, 'estado_operativo', 'SIN ESTADO')
-    estado_actual_display.short_description = 'Estado'
+@admin.register(EstadoCamion)
+class EstadoCamionAdmin(admin.ModelAdmin):
+    list_display = ('camion', 'estado_operativo', 'kilometraje', 'fecha_actualizacion', 'conductor')
+    list_filter = ('estado_operativo',)
 
 @admin.register(EstadoRemolque)
 class EstadoRemolqueAdmin(admin.ModelAdmin):
@@ -136,3 +129,29 @@ class EstadoRemolqueAdmin(admin.ModelAdmin):
     def get_base_actual(self, obj):
         return obj.base_actual
     get_base_actual.short_description = 'Ubicación (Heredada)'
+
+@admin.register(DocumentoMantencion)
+class DocumentoMantencionAdmin(admin.ModelAdmin):
+    list_display = ('mantencion', 'nombre_archivo', 'tipo_documento', 'fecha_subida')
+
+@admin.register(DocumentacionGeneral)
+class DocumentacionGeneralAdmin(admin.ModelAdmin):
+    list_display = ('id_documento', 'tipo_entidad', 'get_entidad_nombre', 'categoria', 'fecha_vencimiento', 'estado')
+    list_filter = ('tipo_entidad', 'categoria')
+    search_fields = ('id_referencia',)
+
+    def get_entidad_nombre(self, obj):
+        """Muestra el nombre o patente real en lugar de solo el ID"""
+        try:
+            if obj.tipo_entidad == 'CAMION':
+                return Camion.objects.get(id_camion=obj.id_referencia).patente
+            elif obj.tipo_entidad == 'CONDUCTOR':
+                return Conductor.objects.get(id_conductor=obj.id_referencia).nombre
+            elif obj.tipo_entidad == 'REMOLQUE':
+                return Remolque.objects.get(id_remolque=obj.id_referencia).patente
+        except:
+            return f"ID {obj.id_referencia} (No encontrado)"
+    
+    get_entidad_nombre.short_description = 'Entidad (Nombre/Patente)'
+
+

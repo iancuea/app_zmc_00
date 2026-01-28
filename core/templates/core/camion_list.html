@@ -47,51 +47,43 @@
         </tr>
     </thead>
 
-    <tbody>
+<tbody>
     {% for grupo in camiones_por_base %}
         <tr class="separador-base">
-            <td colspan="9">BASE: {{ grupo.base|upper }}</td>
+            <td colspan="9">
+                BASE: {{ grupo.base|upper }}
+            </td>
         </tr>
 
         {% for camion in grupo.camiones %}
             {% with estado_t=camion.estado_mantencion asignacion=camion.asignacion_actual %}
             
             <tr class="{{ estado_t.css }}" data-camion-id="{{ camion.id_camion }}">
-                <td>
-                    <a href="{% url 'camion_detail' camion.id_camion %}">
-                        {{ camion.patente }}
-                    </a>
-                </td>
+                <td><a href="{% url 'camion_detail' camion.id_camion %}"><strong>{{ camion.patente }}</strong></a></td>
                 <td>{{ camion.tipo_camion }}</td>
                 <td>{{ camion.rol_operativo }}</td>
-                <td>{{ camion.estado_actual.get_base_actual_display|default:"—" }}</td>
+                <td class="col-base">{{ grupo.base }}</td>
                 <td>{{ camion.activo|yesno:"Sí,No" }}</td>
-                <td>{{ camion.estado_actual.estado_operativo|default:"—" }}</td>
-                <td class="estado-mantencion">{{ estado_t.label }}</td>
-                <td>{{ camion.estado_actual.conductor|default:"—" }}</td>
-                <td class="motivos">Cargando...</td>
+                <td>{{ camion.estado_actual.get_estado_operativo_display|default:"—" }}</td>
+                <td class="estado-mantencion-texto"><strong>{{ estado_t.label }}</strong></td>
+                <td>{{ camion.estado_actual.conductor.nombre|default:"—" }}</td>
+                <td class="motivos">Cargando datos...</td>
             </tr>
 
             {% if asignacion %}
                 {% with remolque=asignacion.remolque %}
                 <tr class="fila-remolque" data-remolque-id="{{ remolque.id_remolque }}">
                     <td style="padding-left: 25px;">
-                        <span class="flecha-vinculo">↳</span> 
-                        <strong>{{ remolque.patente }}</strong>
+                        <span style="color: #ccc;">↳</span> <i>{{ remolque.patente }}</i>
                     </td>
-                    <td>REMOLQUE</td>
-                    <td style="color: #888; font-style: italic;">(Heredado)</td>
-                    <td>{{ camion.estado_actual.get_base_actual_display|default:"—" }}</td>
+                    <td style="font-size: 0.8em; color: #777;">REMOLQUE</td>
+                    <td style="font-size: 0.8em; color: #999;">(Vinculado)</td>
+                    <td class="col-base">{{ grupo.base }}</td>
                     <td>{{ remolque.activo|yesno:"Sí,No" }}</td>
-                    <td>{{ remolque.estado_operativo }}</td>
-                    
-                    <td class="estado-mantencion">
-                        {# Aquí asumo que crearás una lógica similar a estado_mantencion para Remolque #}
-                        {{ remolque.estado_mantencion.label|default:"OK" }}
-                    </td>
-
-                    <td>{{ camion.estado_actual.conductor|default:"—" }}</td>
-                    <td>Vínculo: {{ asignacion.fecha_desde|date:"d/m/Y" }}</td>
+                    <td>{{ remolque.estado_actual.get_estado_operativo_display|default:"OPERATIVO" }}</td>
+                    <td class="estado-mantencion-texto-rem">OK</td>
+                    <td>—</td>
+                    <td class="motivos-remolque">Cargando datos...</td>
                 </tr>
                 {% endwith %}
             {% endif %}
