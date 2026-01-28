@@ -1,7 +1,24 @@
 from django.db import models
 from datetime import date
+from django.core.exceptions import ValidationError
 # Create your models here.
 
+# Opciones de Base (Magallanes)
+BASE_CHOICES = [
+    ('SOMBRERO', 'Sombrero'),
+    ('GREGORIO', 'Gregorio'),
+    ('CULLEN', 'Cullen'),
+    ('POSESION', 'Posesión'),
+    ('PUNTA_ARENAS', 'Punta Arenas'),
+]
+
+# Estados Operativos (según tu imagen)
+ESTADO_OPERATIVO_CHOICES = [
+    ('OPERATIVO', 'Operativo'),
+    ('EN_MANTENCION', 'En Mantención'),
+    ('NO_OPERATIVO', 'No Operativo'),
+    ('FUERA_DE_SERVICIO', 'Fuera de Servicio'),
+]
 
 class Empresa(models.Model):
     nombre = models.CharField(max_length=100)
@@ -11,6 +28,8 @@ class Empresa(models.Model):
 
     def __str__(self):
         return self.nombre
+
+#---------ENTIDADES-------
 
 class Camion(models.Model):
     id_camion = models.AutoField(primary_key=True)
@@ -110,6 +129,21 @@ class Camion(models.Model):
     def __str__(self):
         return self.patente
 
+class Conductor(models.Model):
+    nombre = models.CharField(max_length=100)
+    rut = models.CharField(max_length=20, unique=True)
+    telefono = models.CharField(max_length=20, blank=True, null=True)
+    correo = models.EmailField(blank=True, null=True)
+    activo = models.BooleanField(default=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Conductor"
+        verbose_name_plural = "Conductores"
+
+    def __str__(self):
+        return f"{self.nombre} ({self.rut})" 
+
 class Remolque(models.Model):
     # Opciones para el estado operativo
     ESTADO_CHOICES = [
@@ -150,47 +184,6 @@ class Remolque(models.Model):
 
     def __str__(self):
         return f"{self.patente} - {self.tipo_remolque}"
-
-class AsignacionTractoRemolque(models.Model):
-    # Relaciones
-    id_asignacion = models.AutoField(
-        primary_key=True, 
-        db_column='id_asignacion'
-    )
-    camion = models.ForeignKey(
-        'Camion', 
-        on_delete=models.CASCADE, 
-        db_column='id_camion'  # <-- Esto arregla el error de la columna que no existe
-    )
-    remolque = models.ForeignKey(
-        'Remolque', 
-        on_delete=models.CASCADE, 
-        db_column='id_remolque' # <-- Esto también
-    )
-    
-    # Datos de la asignación
-    fecha_desde = models.DateTimeField(auto_now_add=True)
-    fecha_hasta = models.DateTimeField(null=True, blank=True)
-    
-    # Muy importante para el cálculo de kms futuros
-    km_inicio_camion = models.DecimalField(
-        max_digits=12, 
-        decimal_places=2,
-        help_text="Kilometraje del camión al momento de realizar el enganche"
-    )
-    
-    activo = models.BooleanField(
-        default=True,
-        help_text="Indica si el remolque está actualmente enganchado a este camión"
-    )
-
-    class Meta:
-        db_table = 'asignacion_tracto_remolque'
-        verbose_name = 'Asignación Tracto-Remolque'
-        verbose_name_plural = 'Asignaciones Tracto-Remolque'
-
-    def __str__(self):
-        return f"{self.camion.patente} <-> {self.remolque.patente} ({self.fecha_desde.date()})"
 
 class Mantencion(models.Model):
     # 1. Definir la llave primaria exacta
@@ -240,21 +233,84 @@ class Mantencion(models.Model):
     def __str__(self):
         return f"{self.camion.patente} - {self.fecha_mantencion}"
 
-class Conductor(models.Model):
-    nombre = models.CharField(max_length=100)
-    rut = models.CharField(max_length=20, unique=True)
-    telefono = models.CharField(max_length=20, blank=True, null=True)
-    correo = models.EmailField(blank=True, null=True)
-    activo = models.BooleanField(default=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
+#---------AUXILIARES-------
+
+class AsignacionTractoRemolque(models.Model):
+    # Relaciones
+    id_asignacion = models.AutoField(
+        primary_key=True, 
+        db_column='id_asignacion'
+    )
+    camion = models.ForeignKey(
+        'Camion', 
+        on_delete=models.CASCADE, 
+        db_column='id_camion'  # <-- Esto arregla el error de la columna que no existe
+    )
+    remolque = models.ForeignKey(
+        'Remolque', 
+        on_delete=models.CASCADE, 
+        db_column='id_remolque' # <-- Esto también
+    )
+    
+    # Datos de la asignación
+    fecha_desde = models.DateTimeField(auto_now_add=True)
+    fecha_hasta = models.DateTimeField(null=True, blank=True)
+    
+    # Muy importante para el cálculo de kms futuros
+    km_inicio_camion = models.DecimalField(
+        max_digits=12, 
+        decimal_places=2,
+        help_text="Kilometraje del camión al momento de realizar el enganche"
+    )
+    
+    activo = models.BooleanField(
+        default=True,
+        help_text="Indica si el remolque está actualmente enganchado a este camión"
+    )
+
+    def clean(self):
+        # Solo validamos si el usuario está intentando activar esta asignación
+        if self.activo:
+            # 1. Verificar si el CAMIÓN ya tiene otro remolque activo
+            query_camion = AsignacionTractoRemolque.objects.filter(
+                camion=self.camion, 
+                activo=True
+            )
+            if self.pk: # Si estamos editando una existente, la excluimos de la búsqueda
+                query_camion = query_camion.exclude(pk=self.pk)
+            
+            if query_camion.exists():
+                raise ValidationError(
+                    f"Error: El camión {self.camion.patente} ya tiene un remolque activo asignado."
+                )
+
+            # 2. Verificar si el REMOLQUE ya está enganchado a otro camión
+            query_remolque = AsignacionTractoRemolque.objects.filter(
+                remolque=self.remolque, 
+                activo=True
+            )
+            if self.pk:
+                query_remolque = query_remolque.exclude(pk=self.pk)
+
+            if query_remolque.exists():
+                raise ValidationError(
+                    f"Error: El remolque {self.remolque.patente} ya está activo con otro camión."
+                )
+    def save(self, *args, **kwargs):
+        # Forzamos la ejecución de clean() antes de guardar
+        self.full_clean()
+        super().save(*args, **kwargs)
 
     class Meta:
-        verbose_name = "Conductor"
-        verbose_name_plural = "Conductores"
+        db_table = 'asignacion_tracto_remolque'
+        verbose_name = 'Asignación Tracto-Remolque'
+        verbose_name_plural = 'Asignaciones Tracto-Remolque'
 
     def __str__(self):
-        return f"{self.nombre} ({self.rut})" 
-       
+        return f"{self.camion.patente} <-> {self.remolque.patente} ({self.fecha_desde.date()})"
+
+#---------ESTADOS-------
+
 class EstadoCamion(models.Model):
     id_estado = models.AutoField(primary_key=True)
 
@@ -275,22 +331,16 @@ class EstadoCamion(models.Model):
     )
 
     kilometraje = models.IntegerField()
-    estado_operativo = models.CharField(max_length=20)
+    estado_operativo = models.CharField(max_length=20,choices=ESTADO_OPERATIVO_CHOICES)
 
-    BASE_CHOICES = [
-        ('SOMBRERO', 'Sombrero'),
-        ('GREGORIO', 'Gregorio'),
-        ('CULLEN', 'Cullen'),
-        ('POSESION', 'Posesión'),
-        ('PUNTA_ARENAS', 'Punta Arenas'),
-    ]
     base_actual = models.CharField(
         max_length=20,
-        choices=BASE_CHOICES
+        choices=BASE_CHOICES,
+        default='PUNTA_ARENAS'
     )
 
     observacion = models.TextField(blank=True, null=True)
-    fecha_actualizacion = models.DateTimeField()
+    fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -298,6 +348,56 @@ class EstadoCamion(models.Model):
 
     def __str__(self):
         return f"{self.camion.patente} - {self.estado_operativo} - {self.base_actual}"
+
+class EstadoRemolque(models.Model):
+    id_estado = models.AutoField(primary_key=True, db_column='id_estado_remolque')
+    remolque = models.OneToOneField( # OneToOne porque cada remolque tiene SOLO UN estado actual
+        'Remolque', 
+        on_delete=models.CASCADE, 
+        db_column='id_remolque',
+        related_name='estado_actual'
+    )
+    estado_operativo = models.CharField(
+        max_length=20,
+        choices=ESTADO_OPERATIVO_CHOICES, # Agregado
+        default='OPERATIVO'
+    )
+    observacion = models.TextField(blank=True, null=True)
+    fecha_actualizacion = models.DateTimeField(auto_now=True)
+
+    @property
+    def base_actual(self):
+        # Buscamos la asignación donde este remolque esté activo
+        asignacion = self.remolque.asignaciontractoremolque_set.filter(activo=True).first()
+        
+        if asignacion and asignacion.camion.estado_actual:
+            # Retorna la base del camión usando el nombre "bonito" de BASE_CHOICES
+            return asignacion.camion.estado_actual.get_base_actual_display()
+        
+        return "SIN ASIGNACIÓN"
+
+    class Meta:
+        db_table = 'estado_remolque'    
+
+#---------HISTORIALES-------
+
+class HistorialEstadoRemolque(models.Model):
+    id_historial = models.AutoField(primary_key=True, db_column='id_historial')
+    remolque = models.ForeignKey(
+        'Remolque', 
+        on_delete=models.CASCADE, 
+        db_column='id_remolque'
+    )
+    kilometraje = models.DecimalField(max_digits=12, decimal_places=2)
+    estado_operativo = models.CharField(
+        max_length=20,
+        choices=ESTADO_OPERATIVO_CHOICES # Agregado
+    )
+    descripcion_evente = models.TextField(db_column='descripcion_evente') # Manteniendo tu nombre de SQL
+    fecha_evento = models.DateTimeField(auto_now_add=True, db_column='fecha_evento')
+
+    class Meta:
+        db_table = 'historial_estado_remolque'
 
 class HistorialEstadoCamion(models.Model):
     id_historial = models.AutoField(primary_key=True)
@@ -310,7 +410,10 @@ class HistorialEstadoCamion(models.Model):
     )
 
     kilometraje = models.IntegerField(blank=True, null=True)
-    estado_operativo = models.CharField(max_length=20)
+    estado_operativo = models.CharField(
+        max_length=20,
+        choices=ESTADO_OPERATIVO_CHOICES # Agregado
+    )
     id_conductor = models.IntegerField(blank=True, null=True)
     descripcion_evento = models.TextField(blank=True, null=True)
     fecha_evento = models.DateTimeField()
@@ -321,6 +424,8 @@ class HistorialEstadoCamion(models.Model):
 
     def __str__(self):
         return f"{self.camion.patente} - {self.estado_operativo}"
+
+#---------DOCUMENTOS-------
 
 class DocumentoMantencion(models.Model):
     id_documento = models.AutoField(primary_key=True)
