@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Camion, EstadoCamion, Mantencion, DocumentacionGeneral
+from .models import Camion, EstadoCamion, Mantencion, DocumentacionGeneral, Remolque, AsignacionTractoRemolque
 from django.http import JsonResponse
 from django.db.models import Max
 from .utils import estado_mantencion, estado_documento, ESTADO_PRIORIDAD
@@ -71,6 +71,57 @@ def camion_detail(request, id_camion):
         'estado': estado,
         'mantenciones': mantenciones,
     })
+
+def remolque_detail(request, pk):
+    # Verificado: id_remolque es la PK
+    remolque = get_object_or_404(Remolque, id_remolque=pk)
+    
+    # Verificado: related_name es 'mantenciones_remolque'
+    mantenciones = remolque.mantenciones_remolque.all().order_by('-fecha_mantencion')
+    asignacion = AsignacionTractoRemolque.objects.filter(remolque=remolque, activo=True).first()
+    camion_vinculado = asignacion.camion if asignacion else None
+
+    # Calculamos el estado de salud (Mantención + Documentos)
+    prioridad_global = 1
+    estado_final = "OK"
+    motivos = []
+
+    # 🔧 Chequeo de última mantención
+    ultima_m = mantenciones.first()
+    if ultima_m and ultima_m.km_proxima_mantencion:
+        # Verificado: kilometraje_acumulado es el campo de Remolque
+        km_actual = float(remolque.kilometraje_acumulado)
+        # Usamos tu función de negocio (estado_mantencion)
+        est, motivo = estado_mantencion(km_actual, ultima_m.km_proxima_mantencion)
+        
+        # Mapeo de prioridad (asumiendo que tienes ESTADO_PRIORIDAD definido)
+        if ESTADO_PRIORIDAD[est] > prioridad_global:
+            estado_final = est
+            prioridad_global = ESTADO_PRIORIDAD[est]
+        if motivo: motivos.append(f"Mecánica: {motivo}")
+
+    # 📄 Chequeo de documentos (usando id_referencia=remolque.id_remolque)
+    # Asumiendo que DocumentacionGeneral usa id_referencia
+    docs = DocumentacionGeneral.objects.filter(tipo_entidad="REMOLQUE", id_referencia=remolque.id_remolque)
+    for doc in docs:
+        est_d, motivo_d = estado_documento(doc.fecha_vencimiento)
+        if ESTADO_PRIORIDAD[est_d] > prioridad_global:
+            estado_final = est_d
+            prioridad_global = ESTADO_PRIORIDAD[est_d]
+        if motivo_d: motivos.append(f"{doc.get_categoria_display()}: {motivo_d}")
+
+    context = {
+        'remolque': remolque,
+        'mantenciones': mantenciones,
+        'camion_vinculado': camion_vinculado,
+        'estado_mant': {
+            'codigo': estado_final,
+            'label': estado_final,
+            'css': f"estado-{estado_final.lower()}",
+            'motivos': motivos
+        }
+    }
+    return render(request, 'core/remolque_detail.html', context)
 
 def api_camion_detalle(request, camion_id):
     camion = get_object_or_404(Camion, id_camion=camion_id)
@@ -164,3 +215,59 @@ def api_estado_camiones(request):
         })
 
     return JsonResponse(resultado, safe=False)
+
+def api_remolque_detalle(request, remolque_id):
+    rem = get_object_or_404(Remolque, id_remolque=remolque_id)
+    
+    # Buscamos la última mantención usando el related_name que definiste
+    ultima_m = rem.mantenciones_remolque.order_by("-fecha_mantencion").first()
+    km_proxima = ultima_m.km_proxima_mantencion if ultima_m else 0
+    
+    # Cálculo de km restantes
+    km_actual = float(rem.kilometraje_acumulado)
+    km_restantes = km_proxima - km_actual if km_proxima > 0 else 0
+
+    return JsonResponse({
+        "id_remolque": rem.id_remolque,
+        "patente": rem.patente,
+        "estado_operativo": rem.get_estado_operativo_display(),
+        "kilometraje_acumulado": km_actual,
+        "km_restantes": km_restantes,
+        "proxima_km": km_proxima,
+    })
+
+def api_estado_salud_remolque(request, remolque_id):
+    """
+    Evalúa mantenciones y documentos solo para un remolque específico.
+    """
+    rem = get_object_or_404(Remolque, id_remolque=remolque_id)
+    prioridad_global = 1 # OK
+    estado_final = "OK"
+    motivos = []
+
+    # 1. Chequeo de Mantención
+    ultima_m = rem.mantenciones_remolque.order_by("-fecha_mantencion").first()
+    if ultima_m:
+        # Usamos tus funciones auxiliares estado_mantencion
+        est, motivo = estado_mantencion(float(rem.kilometraje_acumulado), ultima_m.km_proxima_mantencion)
+        if ESTADO_PRIORIDAD[est] > prioridad_global:
+            estado_final = est
+            prioridad_global = ESTADO_PRIORIDAD[est]
+        if motivo: motivos.append(f"Mecánica: {motivo}")
+
+    # 2. Chequeo de Documentos
+    docs = DocumentacionGeneral.objects.filter(tipo_entidad="REMOLQUE", id_referencia=rem.id_remolque)
+    for doc in docs:
+        est, motivo = estado_documento(doc.fecha_vencimiento)
+        if ESTADO_PRIORIDAD[est] > prioridad_global:
+            estado_final = est
+            prioridad_global = ESTADO_PRIORIDAD[est]
+        if motivo: motivos.append(f"{doc.get_categoria_display()}: {motivo}")
+
+    return JsonResponse({
+        "estado": estado_final,
+        "css": f"estado-{estado_final.lower()}",
+        "label": estado_final,
+        "motivos": motivos
+    })
+

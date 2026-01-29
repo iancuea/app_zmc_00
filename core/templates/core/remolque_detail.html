@@ -1,0 +1,79 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<div class="container-detail">
+    <div class="header-camion">
+        <h2>Unidad Remolque: <span class="patente-destacada">{{ remolque.patente }}</span></h2>
+        <a href="{% url 'camion_list' %}" class="btn-volver">← Volver al listado</a>
+    </div>
+
+    <div class="card-hero {{ estado_mant.css }} {{ estado_mant.codigo }}">
+        <div class="hero-info">
+            <span class="urgencia-tag">ESTADO TÉCNICO</span>
+            <h1 class="label-gigante">{{ estado_mant.label }}</h1>
+            
+            <ul style="list-style: none; padding: 0; margin-top: 10px;">
+                {% for motivo in estado_mant.motivos %}
+                    <li><strong style="font-size: 1.1rem;">• {{ motivo }}</strong></li>
+                {% empty %}
+                    <li>✅ Sin alertas vigentes</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div class="hero-stats">
+            <div class="stat-item">
+                <small>KILOMETRAJE ACUMULADO</small><br>
+                <strong>{{ remolque.kilometraje_acumulado|intcomma }} km</strong>
+            </div>
+            {% if mantenciones %}
+            <div class="stat-item">
+                <small>ÚLTIMA MANTENCIÓN</small><br>
+                <strong>{{ mantenciones.0.fecha_mantencion|date:"d M Y" }}</strong>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="grid-detalles">
+        <div class="card">
+            <h3>Ficha Técnica</h3>
+            <div class="info-row"><strong>Tipo:</strong> <span>{{ remolque.tipo_remolque|default:"S/D" }}</span></div>
+            <div class="info-row"><strong>Ejes:</strong> <span>{{ remolque.n_ejes }}</span></div>
+            <div class="info-row"><strong>Capacidad:</strong> <span>{{ remolque.capacidad_carga|intcomma }} kg</span></div>
+            <div class="info-row">
+                <strong>Estado:</strong>
+                <span class="badge {% if remolque.activo %}bg-ok{% else %}bg-danger{% endif %}">
+                    {{ remolque.get_estado_operativo_display }}
+                </span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Tracto Asignado</h3>
+            {% if camion_vinculado %}
+                <div class="info-row">
+                    <strong>Patente Tracto:</strong>
+                    <span class="patente-destacada">{{ camion_vinculado.patente }}</span>
+                </div>
+                <div class="info-row">
+                    <strong>Modelo:</strong>
+                    <span>{{ camion_vinculado.modelo|default:"S/D" }}</span>
+                </div>
+                <p style="margin-top:20px;">
+                    <a href="{% url 'camion_detail' camion_vinculado.id_camion %}" class="btn-link">
+                        Ver ficha del camión →
+                    </a>
+                </p>
+            {% else %}
+                <div style="text-align: center; padding: 20px;">
+                    <p style="color: #999; font-style: italic;">Sin tracto asignado</p>
+                    <span style="font-size: 2rem;">🔓</span>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

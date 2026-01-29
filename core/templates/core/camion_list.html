@@ -74,7 +74,10 @@
                 {% with remolque=asignacion.remolque %}
                 <tr class="fila-remolque" data-remolque-id="{{ remolque.id_remolque }}">
                     <td style="padding-left: 25px;">
-                        <span style="color: #ccc;">↳</span> <strong>{{ remolque.patente }}</strong>
+                        <span style="color: #ccc;">↳</span> 
+                        <a href="{% url 'remolque_detail' remolque.id_remolque %}">
+                            <strong>{{ remolque.patente }}</strong>
+                        </a>
                     </td>
                     <td>REMOLQUE</td>
                     <td>(Vinculado)</td>
