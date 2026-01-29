@@ -39,7 +39,7 @@
     </div>
     {% endwith %}
 
-    <div class="grid-detalles">
+   <div class="grid-detalles">
         <div class="card">
             <h3>Estado Operativo</h3>
             <div class="info-row">
@@ -52,28 +52,56 @@
                     {{ estado.get_estado_operativo_display|default:"OPERATIVO" }}
                 </span>
             </div>
-            <p><strong>Observación:</strong><br><small>{{ estado.observacion|default:"Sin observaciones técnicas." }}</small></p>
+            <p style="margin-top: 10px;">
+                <strong>Observación:</strong><br>
+                <small>{{ estado.observacion|default:"Sin observaciones técnicas." }}</small>
+            </p>
         </div>
 
-        <div class="card">
-            <h3>Equipo Asignado (Remolque)</h3>
-            {% with asignacion=camion.asignacion_actual %}
-                {% if asignacion %}
-                    <div class="info-row">
-                        <strong>Patente:</strong>
-                        <span class="patente-destacada" style="font-size: 0.9rem;">{{ asignacion.remolque.patente }}</span>
-                    </div>
-                    <div class="info-row">
-                        <strong>Kilometraje:</strong>
-                        <span>{{ asignacion.remolque.kilometraje_acumulado|intcomma }} km</span>
-                    </div>
-                    <p style="margin-top:15px;"><a href="#">Ir a ficha de remolque →</a></p>
-                {% else %}
-                    <p style="color: #999; font-style: italic;">No tiene remolque vinculado actualmente.</p>
-                {% endif %}
-            {% endwith %}
-        </div>
+        {% if "TRACTO" in camion.tipo_camion.upper or camion.tiene_remolque %}
+            <div class="card">
+                <h3>Equipo Asignado (Remolque)</h3>
+                {% with asignacion=camion.asignacion_actual %}
+                    {% if asignacion %}
+                        <div class="info-row">
+                            <strong>Patente:</strong>
+                            <span class="patente-badge">{{ asignacion.remolque.patente }}</span>
+                        </div>
+                        <div class="info-row">
+                            <strong>Kilometraje:</strong>
+                            <span>{{ asignacion.remolque.kilometraje_acumulado|intcomma }} km</span>
+                        </div>
+                        <p style="margin-top:20px;">
+                            <a href="{% url 'remolque_detail' asignacion.remolque.id_remolque %}" class="btn-link">
+                                Ir a ficha de remolque →
+                            </a>
+                        </p>
+                    {% else %}
+                        <div style="text-align: center; padding: 10px;">
+                            <p style="color: #999; font-style: italic;">Sin remolque vinculado</p>
+                            <span style="font-size: 1.5rem;">🔓</span>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+        {% else %}
+            <div class="card">
+                <h3>Especificaciones de Unidad</h3>
+                <div class="info-row">
+                    <strong>Tipo de Camión:</strong>
+                    <span>{{ camion.tipo_camion }}</span>
+                </div>
+                <div class="info-row">
+                    <strong>Capacidad:</strong>
+                    <span>{{ camion.capacidad_m3 }} m³</span>
+                </div>
+                <p style="margin-top: 15px; color: #666; font-size: 0.85rem;">
+                    Unidad rígida de operación autónoma. No requiere equipo de arrastre adicional.
+                </p>
+            </div>
+        {% endif %}
     </div>
+    
 
     <div class="card" style="width: 100%;">
         <h3>Historial Reciente de Mantenciones</h3>
