@@ -25,17 +25,30 @@
         </div>
         
         <div class="hero-stats">
-            {% with ultima=mantenciones.0 %}
-            <div class="stat-item">
-                <small>KM RESTANTES</small><br>
-                <strong>{{ ultima.km_restantes_calculados|intcomma|default:"—" }} km</strong>
-            </div>
-            <div class="stat-item">
-                <small>PRÓXIMA MANTENCIÓN</small><br>
-                <strong>{{ ultima.km_proxima_mantencion|intcomma }} km</strong>
-            </div>
+    <div class="stat-item">
+        <small>KM RESTANTES (CALCULADOS)</small><br>
+        <strong>
+            {# Usamos el método del modelo que resta: Proxima Mantencion - Km Actual #}
+            {% with restantes=camion.km_restantes %}
+                {% if restantes is not None %}
+                    {% if restantes <= 0 %}
+                        <span style="color: #fff; font-weight: 900;">VENCIDA ({{ restantes|intcomma }} km)</span>
+                    {% else %}
+                        {{ restantes|intcomma }} km
+                    {% endif %}
+                {% else %}
+                    —
+                {% endif %}
             {% endwith %}
-        </div>
+        </strong>
+    </div>
+    <div class="stat-item">
+        {% with ultima=mantenciones.0 %}
+        <small>PRÓXIMA MANTENCIÓN</small><br>
+        <strong>{{ ultima.km_proxima_mantencion|intcomma|default:"—" }} km</strong>
+        {% endwith %}
+    </div>
+</div>
     </div>
     {% endwith %}
 
