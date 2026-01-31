@@ -142,6 +142,7 @@ class DocumentacionGeneralAdmin(admin.ModelAdmin):
     # 1. Quitamos 'get_entidad_nombre' (que usaba id_referencia) y ponemos 'get_vinculo'
     list_display = ('id_documento', 'tipo_entidad', 'get_vinculo', 'categoria', 'fecha_vencimiento', 'estado', 'ver_pdf')
     list_filter = ('tipo_entidad', 'categoria')
+    list_display_links = ('id_documento', 'tipo_entidad')
     
     # 2. IMPORTANTE: El buscador ahora debe apuntar a campos que existan. 
     # Podemos buscar por patente de camión o nombre de conductor directamente:

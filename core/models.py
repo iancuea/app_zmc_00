@@ -506,14 +506,27 @@ class DocumentacionGeneral(models.Model):
     )
 
     CATEGORIA_CHOICES = [
-        ('LICENCIA', 'Licencia de Conducir'),
-        ('EXTINTOR', 'Extintor'),
-        ('REVISION_TECNICA', 'Revisión Técnica'),
-        ('SEGURO', 'Seguro / SOAP'),
+        # --- DOCUMENTOS VEHICULARES ---
+        ('PADRON', 'Padrón / Certificado Inscripción'),
         ('PERMISO_CIRCULACION', 'Permiso de Circulación'),
+        ('REVISION_TECNICA', 'Revisión Técnica'),
+        ('SOAP', 'Seguro Obligatorio (SOAP)'),
+        ('HERMETICIDAD', 'Prueba de Hermeticidad'),
+        ('TC8', 'Certificado TC8 (Gases)'),
+        ('EXTINTOR', 'Certificado Carga de Extintor'),
+        
+        # --- SEGUROS Y TRANSPORTE ---
+        ('SEGURO_CARGA', 'Seguro Transporte Terrestre (Carga)'),
+        ('SEGURO_RC', 'Seguro Responsabilidad Civil'),
+        ('SEC' , 'Certificado SEC'),
+        
+        # --- PERSONAL ---
+        ('LICENCIA', 'Licencia de Conducir'),
+        ('CONTRATO', 'Contrato de Trabajo'),
+        ('EXAMEN_PREOCUPACIONAL', 'Examen Preocupacional'),
     ]
     categoria = models.CharField(max_length=50, choices=CATEGORIA_CHOICES)
-    fecha_vencimiento = models.DateField()
+    fecha_vencimiento = models.DateField(null=True, blank=True)
     
     # Mantenemos url_drive por compatibilidad, pero la dejamos opcional
     url_drive = models.URLField(max_length=500, blank=True, null=True)
@@ -547,6 +560,10 @@ class DocumentacionGeneral(models.Model):
     
     @property
     def estado(self):
+        # Si no tiene fecha, asumimos que es un documento permanente
+        if not self.fecha_vencimiento:
+            return "Permanente"
+        
         hoy = date.today()
         diferencia = (self.fecha_vencimiento - hoy).days
         if diferencia < 0:
