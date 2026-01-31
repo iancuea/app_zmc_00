@@ -509,16 +509,17 @@ class DocumentacionGeneral(models.Model):
         # --- DOCUMENTOS VEHICULARES ---
         ('PADRON', 'Padrón / Certificado Inscripción'),
         ('PERMISO_CIRCULACION', 'Permiso de Circulación'),
-        ('REVISION_TECNICA', 'Revisión Técnica'),
         ('SOAP', 'Seguro Obligatorio (SOAP)'),
-        ('HERMETICIDAD', 'Prueba de Hermeticidad'),
+        ('REVISION_TECNICA', 'Revisión Técnica'),
         ('TC8', 'Certificado TC8 (Gases)'),
+        ('SEC' , 'Certificado SEC'),
+        ('HERMETICIDAD', 'Prueba de Hermeticidad'),
         ('EXTINTOR', 'Certificado Carga de Extintor'),
         
         # --- SEGUROS Y TRANSPORTE ---
         ('SEGURO_CARGA', 'Seguro Transporte Terrestre (Carga)'),
         ('SEGURO_RC', 'Seguro Responsabilidad Civil'),
-        ('SEC' , 'Certificado SEC'),
+  
         
         # --- PERSONAL ---
         ('LICENCIA', 'Licencia de Conducir'),
