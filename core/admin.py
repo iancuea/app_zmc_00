@@ -49,6 +49,7 @@ class HistorialEstadoRemolqueInline(admin.TabularInline):
 
 @admin.register(Camion)
 class CamionAdmin(admin.ModelAdmin):
+    search_fields = ['patente']
     list_display = (
         'patente',
         'activo',
@@ -74,6 +75,7 @@ class CamionAdmin(admin.ModelAdmin):
 
 @admin.register(Remolque)
 class RemolqueAdmin(admin.ModelAdmin):
+    search_fields = ['patente']
     list_display = ('patente', 'tipo_remolque', 'estado_actual_display', 'activo')
     inlines = [AsignacionInline, HistorialEstadoRemolqueInline] # Verás sus conductores y su historial
 
@@ -83,6 +85,7 @@ class RemolqueAdmin(admin.ModelAdmin):
 
 @admin.register(Conductor)
 class ConductorAdmin(admin.ModelAdmin):
+    search_fields = ['patente']
     list_display = ('nombre', 'rut', 'activo')
     search_fields = ('nombre', 'rut')
 
@@ -136,22 +139,43 @@ class DocumentoMantencionAdmin(admin.ModelAdmin):
 
 @admin.register(DocumentacionGeneral)
 class DocumentacionGeneralAdmin(admin.ModelAdmin):
-    list_display = ('id_documento', 'tipo_entidad', 'get_entidad_nombre', 'categoria', 'fecha_vencimiento', 'estado')
+    # 1. Quitamos 'get_entidad_nombre' (que usaba id_referencia) y ponemos 'get_vinculo'
+    list_display = ('id_documento', 'tipo_entidad', 'get_vinculo', 'categoria', 'fecha_vencimiento', 'estado', 'ver_pdf')
     list_filter = ('tipo_entidad', 'categoria')
-    search_fields = ('id_referencia',)
-
-    def get_entidad_nombre(self, obj):
-        """Muestra el nombre o patente real en lugar de solo el ID"""
-        try:
-            if obj.tipo_entidad == 'CAMION':
-                return Camion.objects.get(id_camion=obj.id_referencia).patente
-            elif obj.tipo_entidad == 'CONDUCTOR':
-                return Conductor.objects.get(id_conductor=obj.id_referencia).nombre
-            elif obj.tipo_entidad == 'REMOLQUE':
-                return Remolque.objects.get(id_remolque=obj.id_referencia).patente
-        except:
-            return f"ID {obj.id_referencia} (No encontrado)"
     
-    get_entidad_nombre.short_description = 'Entidad (Nombre/Patente)'
+    # 2. IMPORTANTE: El buscador ahora debe apuntar a campos que existan. 
+    # Podemos buscar por patente de camión o nombre de conductor directamente:
+    search_fields = ('camion__patente', 'remolque__patente', 'conductor__nombre', 'categoria')
+    
+    # 3. Autocompletado para que no pida IDs de memoria
+    autocomplete_fields = ['camion', 'remolque', 'conductor']
 
+    # 4. Organización del formulario
+    fieldsets = (
+        ('Información del Documento', {
+            'fields': ('tipo_entidad', 'categoria', 'fecha_vencimiento', 'archivo', 'url_drive')
+        }),
+        ('Relación con Equipo o Personal', {
+            'fields': ('camion', 'remolque', 'conductor'),
+            'description': 'Selecciona solo el campo que corresponda al tipo de entidad elegido arriba.'
+        }),
+    )
 
+    def get_vinculo(self, obj):
+        """Muestra la patente o nombre real sin usar id_referencia"""
+        if obj.camion:
+            return format_html('🚜 <strong>{}</strong>', obj.camion.patente)
+        if obj.remolque:
+            return format_html('🚛 <strong>{}</strong>', obj.remolque.patente)
+        if obj.conductor:
+            return format_html('👤 <strong>{}</strong>', obj.conductor.nombre)
+        return format_html('<span style="color: #999;">Sin asignar</span>')
+    
+    get_vinculo.short_description = 'Equipo / Personal'
+
+    def ver_pdf(self, obj):
+        """Link directo al archivo almacenado"""
+        if obj.archivo:
+            return format_html('<a href="{}" target="_blank" style="color: #264b5d; font-weight: bold;">📄 Ver PDF</a>', obj.archivo.url)
+        return "—"
+    ver_pdf.short_description = 'Archivo'

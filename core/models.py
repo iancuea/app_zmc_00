@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import date
 from django.core.exceptions import ValidationError
+import os
 # Create your models here.
 
 # Opciones de Base (Magallanes)
@@ -19,6 +20,21 @@ ESTADO_OPERATIVO_CHOICES = [
     ('NO_OPERATIVO', 'No Operativo'),
     ('FUERA_DE_SERVICIO', 'Fuera de Servicio'),
 ]
+
+def path_documentos_general(instance, filename):
+    # Determinamos el ID real de la entidad vinculada
+    # Usamos getattr por seguridad, pero como ya son FK, podemos acceder directo
+    entidad_id = "sin_id"
+    
+    if instance.camion_id:
+        entidad_id = instance.camion_id
+    elif instance.remolque_id:
+        entidad_id = instance.remolque_id
+    elif instance.conductor_id:
+        entidad_id = instance.conductor_id
+    
+    # Retorna la ruta: documentos/CAMION/10/archivo.pdf
+    return f'documentos/{instance.tipo_entidad}/{entidad_id}/{filename}'
 
 class Empresa(models.Model):
     nombre = models.CharField(max_length=100)
@@ -455,21 +471,40 @@ class DocumentoMantencion(models.Model):
         return self.nombre_archivo
     
 class DocumentacionGeneral(models.Model):
-    # ID único (Django lo crea como Serial PK automáticamente)
     id_documento = models.AutoField(primary_key=True)
     
-    # tipo_entidad: 'CAMION' o 'CONDUCTOR' o 'REMOLQUE'
     ENTIDAD_CHOICES = [
         ('CAMION', 'Camión'),
         ('CONDUCTOR', 'Conductor'),
         ('REMOLQUE', 'Remolque'), 
     ]
     tipo_entidad = models.CharField(max_length=10, choices=ENTIDAD_CHOICES)
-    
-    # id_referencia: El ID del camión o del conductor
-    id_referencia = models.IntegerField(help_text="ID del camión, conductor o remolque")    
-    
-    # categoria
+   # --- RELACIONES DIRECTAS (NUEVAS) ---
+    camion = models.ForeignKey(
+        'Camion', 
+        on_delete=models.CASCADE, 
+        db_column='id_camion', 
+        null=True, 
+        blank=True,
+        related_name='documentos_general'
+    )
+    remolque = models.ForeignKey(
+        'Remolque', 
+        on_delete=models.CASCADE, 
+        db_column='id_remolque', 
+        null=True, 
+        blank=True,
+        related_name='documentos_general'
+    )
+    conductor = models.ForeignKey(
+        'Conductor', 
+        on_delete=models.CASCADE, 
+        db_column='id_conductor', # Este apunta al id en core_conductor
+        null=True, 
+        blank=True,
+        related_name='documentos_general'
+    )
+
     CATEGORIA_CHOICES = [
         ('LICENCIA', 'Licencia de Conducir'),
         ('EXTINTOR', 'Extintor'),
@@ -478,22 +513,38 @@ class DocumentacionGeneral(models.Model):
         ('PERMISO_CIRCULACION', 'Permiso de Circulación'),
     ]
     categoria = models.CharField(max_length=50, choices=CATEGORIA_CHOICES)
-    
-    # fecha_vencimiento
     fecha_vencimiento = models.DateField()
     
-    # url_drive
-    url_drive = models.URLField(max_length=500)
+    # Mantenemos url_drive por compatibilidad, pero la dejamos opcional
+    url_drive = models.URLField(max_length=500, blank=True, null=True)
+
+    # NUEVO CAMPO: Se mapea con archivo_path en la BD
+    # upload_to llama a la función de arriba para crear las carpetas
+    archivo = models.FileField(
+        upload_to=path_documentos_general, 
+        db_column='archivo_path', 
+        null=True, 
+        blank=True
+    )
 
     class Meta:
+        managed = False  # Mantén esto si manejas la tabla por fuera de las migraciones
         db_table = 'documentos_general'
         verbose_name = "Documento General"
         ordering = ['fecha_vencimiento']
 
     def __str__(self):
-        return f"{self.tipo_entidad} ({self.id_referencia}) - {self.get_categoria_display()}"
+            # Buscamos qué entidad está vinculada para mostrarla en el nombre
+            entidad = "Sin asignar"
+            if self.camion:
+                entidad = self.camion.patente
+            elif self.remolque:
+                entidad = self.remolque.patente
+            elif self.conductor:
+                entidad = self.conductor.nombre
 
-    # Estado Calculado (Vigente, Próximo a vencer, Vencido)
+            return f"{self.get_categoria_display()} - {entidad} ({self.tipo_entidad})"
+    
     @property
     def estado(self):
         hoy = date.today()
