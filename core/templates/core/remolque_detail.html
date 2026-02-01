@@ -11,7 +11,7 @@
 
     <div class="card-hero {{ estado_mant.css }} {{ estado_mant.codigo }}">
         <div class="hero-info">
-            <span class="urgencia-tag">ESTADO TÉCNICO</span>
+            <span class="urgencia-tag">ESTADO TÉCNICO GLOBAL</span>
             <h1 class="label-gigante">{{ estado_mant.label }}</h1>
             
             <ul style="list-style: none; padding: 0; margin-top: 10px;">
@@ -74,6 +74,76 @@
                 </div>
             {% endif %}
         </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 30px;">
+        <h3>Documentación y Certificados</h3>
+        <div class="table-responsive">
+            <table class="tabla-camiones">
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Fecha Vencimiento</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doc in documentos %}
+                    <tr class="estado-{{ doc.estado|lower }}">
+                        <td><strong>{{ doc.get_categoria_display }}</strong></td>
+                        <td>{{ doc.fecha_vencimiento|default:"Permanente" }}</td>
+                        <td>
+                            <span class="badge {% if doc.estado == 'Vencido' %}bg-danger{% elif doc.estado == 'OK' %}bg-ok{% else %}bg-warning{% endif %}">
+                                {{ doc.estado }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if doc.archivo %}
+                                <a href="{{ doc.archivo.url }}" target="_blank" class="btn-volver" style="font-size: 0.8rem; padding: 4px 8px;">
+                                    {% if ".pdf" in doc.archivo.name %}📄 Ver PDF{% else %}📷 Ver Foto{% endif %}
+                                </a>
+                            {% else %}
+                                <small style="color: #999;">Sin archivo</small>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: #999;">No hay documentos registrados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Historial de Mantenciones</h3>
+        <table class="tabla-camiones">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Kilometraje</th>
+                    <th>Próxima (km)</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in mantenciones %}
+                <tr>
+                    <td>{{ m.fecha_mantencion|date:"d/m/Y" }}</td>
+                    <td>{{ m.kilometraje|intcomma }}</td>
+                    <td>{{ m.km_proxima_mantencion|intcomma }}</td>
+                    <td>{{ m.descripcion|truncatechars:50 }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" style="text-align: center;">No hay registros de mantención.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}

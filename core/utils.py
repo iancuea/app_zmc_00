@@ -24,13 +24,19 @@ def estado_mantencion(km_actual, km_proxima):
 
 
 def estado_documento(fecha_vencimiento):
+    # 1. El Guardia: Si no hay fecha, el documento es eterno y está OK
+    if fecha_vencimiento is None:
+        return "OK", None
+
     hoy = date.today()
+    # 2. Ahora sí, calculamos los días con seguridad
     dias = (fecha_vencimiento - hoy).days
 
     if dias < 0:
-        return "VENCIDO", f"Documento vencido hace {-dias} días"
+        return "VENCIDO", f"Vencido hace {-dias} días"
     elif dias <= 7:
-        return "CRITICO", f"Documento vence en {dias} días"
+        return "CRITICO", f"Vence en {dias} días"
     elif dias <= 15:
-        return "PROXIMO", f"Documento vence en {dias} días"
+        return "PROXIMO", f"Vence en {dias} días"
+    
     return "OK", None
