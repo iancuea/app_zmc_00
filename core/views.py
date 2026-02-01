@@ -60,18 +60,64 @@ def camion_list(request):
 
     return render(request, "core/camion_list.html", context)
 
-def camion_detail(request, id_camion):
-    camion = get_object_or_404(Camion, id_camion=id_camion)
+def camion_detail(request, pk):
+    # 1. Obtenemos el camión o lanzamos 404
+    camion = get_object_or_404(Camion, id_camion=pk)
+    
+    # 2. Traemos las mantenciones ordenadas por fecha (usando related_name 'mantenciones')
+    mantenciones = camion.mantenciones.all().order_by('-fecha_mantencion')
+    
+    # 3. Traemos la documentación vinculada (usando related_name 'documentos_general')
+    # Esto evita usar id_referencia manualmente y es más seguro
+    documentos = camion.documentos_general.all().order_by('fecha_vencimiento')
+    
+    # 4. Buscamos si tiene un remolque asignado actualmente
+    asignacion = AsignacionTractoRemolque.objects.filter(camion=camion, activo=True).first()
+    remolque_vinculado = asignacion.remolque if asignacion else None
 
-    estado = EstadoCamion.objects.filter(camion_id=id_camion).first()
+    # 5. Lógica de Semáforo (Salud del Camión)
+    prioridad_global = 1
+    estado_final = "OK"
+    motivos = []
 
-    mantenciones = Mantencion.objects.filter(camion_id=id_camion).order_by('-fecha_mantencion')
+    # --- Chequeo de Mantención (Kilometraje) ---
+    ultima_m = mantenciones.first()
+    km_actual = camion.estado_actual.kilometraje if hasattr(camion, 'estado_actual') else 0
+    
+    if ultima_m and ultima_m.km_proxima_mantencion:
+        # Usamos tu función de negocio estado_mantencion
+        est, motivo = estado_mantencion(km_actual, ultima_m.km_proxima_mantencion)
+        if ESTADO_PRIORIDAD[est] > prioridad_global:
+            estado_final = est
+            prioridad_global = ESTADO_PRIORIDAD[est]
+        if motivo:
+            motivos.append(f"Mecánica: {motivo}")
 
-    return render(request, 'core/camion_detail.html', {
+    # --- Chequeo de Documentos (Fechas) ---
+    for doc in documentos:
+        # Usamos tu función estado_documento (la que ya maneja None para el Padrón)
+        est_d, motivo_d = estado_documento(doc.fecha_vencimiento)
+        
+        if ESTADO_PRIORIDAD[est_d] > prioridad_global:
+            estado_final = est_d
+            prioridad_global = ESTADO_PRIORIDAD[est_d]
+        
+        if motivo_d:
+            motivos.append(f"{doc.get_categoria_display()}: {motivo_d}")
+
+    context = {
         'camion': camion,
-        'estado': estado,
         'mantenciones': mantenciones,
-    })
+        'documentos': documentos,
+        'remolque_vinculado': remolque_vinculado,
+        'estado_mant': {
+            'codigo': estado_final,
+            'label': estado_final,
+            'css': f"estado-{estado_final.lower()}",
+            'motivos': motivos
+        }
+    }
+    return render(request, 'core/camion_detail.html', context)
 
 def remolque_detail(request, pk):
     remolque = get_object_or_404(Remolque, id_remolque=pk)

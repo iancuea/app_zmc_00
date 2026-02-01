@@ -5,137 +5,169 @@
 {% block content %}
 <div class="container-detail">
     <div class="header-camion">
-        <h2>Unidad: <span class="patente-destacada">{{ camion.patente }}</span></h2>
+        <h2>Unidad Tracto: <span class="patente-destacada">{{ camion.patente }}</span></h2>
         <a href="{% url 'camion_list' %}" class="btn-volver">← Volver al listado</a>
     </div>
 
-    {% with estado_mant=camion.estado_mantencion %}
     <div class="card-hero {{ estado_mant.css }} {{ estado_mant.codigo }}">
         <div class="hero-info">
-            <span class="urgencia-tag">ESTADO ACTUAL</span>
+            <span class="urgencia-tag">ESTADO TÉCNICO TRACTO</span>
             <h1 class="label-gigante">{{ estado_mant.label }}</h1>
             
-            {% if estado_mant.codigo == "VENCIDA" %}
-                <strong>⚠️ REQUIERE TALLER INMEDIATO</strong>
-            {% elif estado_mant.codigo == "CRITICA" %}
-                <strong>⏳ AGENDAR PRÓXIMA SEMANA</strong>
-            {% else %}
-                <strong>✅ VEHÍCULO AL DÍA</strong>
-            {% endif %}
+            <ul style="list-style: none; padding: 0; margin-top: 10px;">
+                {% for motivo in estado_mant.motivos %}
+                    <li><strong style="font-size: 1.1rem;">• {{ motivo }}</strong></li>
+                {% empty %}
+                    <li>✅ Operativo y al día</li>
+                {% endfor %}
+            </ul>
         </div>
         
         <div class="hero-stats">
-    <div class="stat-item">
-        <small>KM RESTANTES</small><br>
-        <strong>
-            {# Usamos el método del modelo que resta: Proxima Mantencion - Km Actual #}
-            {% with restantes=camion.km_restantes %}
-                {% if restantes is not None %}
-                    {% if restantes <= 0 %}
-                        <span style="color: #fff; font-weight: 900;">VENCIDA ({{ restantes|intcomma }} km)</span>
-                    {% else %}
-                        {{ restantes|intcomma }} km
-                    {% endif %}
-                {% else %}
-                    —
-                {% endif %}
-            {% endwith %}
-        </strong>
-    </div>
-    <div class="stat-item">
-        {% with ultima=mantenciones.0 %}
-        <small>PRÓXIMA MANTENCIÓN</small><br>
-        <strong>{{ ultima.km_proxima_mantencion|intcomma|default:"—" }} km</strong>
-        {% endwith %}
-    </div>
-</div>
-    </div>
-    {% endwith %}
-
-   <div class="grid-detalles">
-        <div class="card">
-            <h3>Estado Operativo</h3>
-            <div class="info-row">
-                <strong>Kilometraje Actual:</strong>
-                <span>{{ estado.kilometraje|intcomma }} km</span>
+            <div class="stat-item">
+                <small>KILOMETRAJE ACTUAL</small><br>
+                <strong>{{ camion.estado_actual.kilometraje|intcomma }} km</strong>
             </div>
+            {% if mantenciones %}
+            <div class="stat-item">
+                <small>ÚLTIMA INTERVENCIÓN</small><br>
+                <strong>{{ mantenciones.0.fecha_mantencion|date:"d M Y" }}</strong>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="grid-detalles">
+        <div class="card especificaciones-card">
+            <h3>Estado Operativo Actual</h3>
+            
             <div class="info-row">
-                <strong>Operatividad:</strong>
-                <span class="badge {% if estado.estado_operativo == 'OPERATIVO' %}bg-ok{% else %}bg-danger{% endif %}">
-                    {{ estado.get_estado_operativo_display|default:"OPERATIVO" }}
+                <strong>Situación Actual:</strong> 
+                <span class="badge {% if camion.estado_actual.estado_operativo == 'OPERATIVO' %}bg-ok{% else %}bg-danger{% endif %}">
+                    {{ camion.estado_actual.get_estado_operativo_display|default:"SIN DATOS" }}
                 </span>
             </div>
-            <p style="margin-top: 10px;">
-                <strong>Observación:</strong><br>
-                <small>{{ estado.observacion|default:"Sin observaciones técnicas." }}</small>
-            </p>
+
+            <div class="info-row">
+                <strong>Base Actual:</strong> 
+                <span>{{ camion.estado_actual.get_base_actual_display|default:"No asignada" }}</span>
+            </div>
+
+            <div class="info-row">
+                <strong>Conductor en Ruta:</strong> 
+                <span>
+                    {% if camion.estado_actual.conductor %}
+                        {{ camion.estado_actual.conductor.nombre }} {{ camion.estado_actual.conductor.apellido }}
+                    {% else %}
+                        <small style="color: #999;">Sin conductor asignado</small>
+                    {% endif %}
+                </span>
+            </div>
+
+            <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+
+            <div class="info-row">
+                <strong>Rol en Flota:</strong> 
+                <span class="badge {% if camion.rol_operativo == 'TITULAR' %}bg-ok{% else %}bg-warning{% endif %}">
+                    {{ camion.get_rol_operativo_display }}
+                </span>
+            </div>
+
+            <div class="info-row">
+                <strong>Marca/Modelo:</strong> 
+                <span>{{ camion.marca|default:"" }} {{ camion.modelo|default:"S/D" }} ({{ camion.anio }})</span>
+            </div>
         </div>
 
-        {% if "TRACTO" in camion.tipo_camion.upper or camion.tiene_remolque %}
-            <div class="card">
-                <h3>Equipo Asignado (Remolque)</h3>
-                {% with asignacion=camion.asignacion_actual %}
-                    {% if asignacion %}
-                        <div class="info-row">
-                            <strong>Patente:</strong>
-                            <span class="patente-badge">{{ asignacion.remolque.patente }}</span>
-                        </div>
-                        <div class="info-row">
-                            <strong>Kilometraje:</strong>
-                            <span>{{ asignacion.remolque.kilometraje_acumulado|intcomma }} km</span>
-                        </div>
-                        <p style="margin-top:20px;">
-                            <a href="{% url 'remolque_detail' asignacion.remolque.id_remolque %}" class="btn-link">
-                                Ir a ficha de remolque →
-                            </a>
-                        </p>
-                    {% else %}
-                        <div style="text-align: center; padding: 10px;">
-                            <p style="color: #999; font-style: italic;">Sin remolque vinculado</p>
-                            <span style="font-size: 1.5rem;">🔓</span>
-                        </div>
-                    {% endif %}
-                {% endwith %}
-            </div>
-        {% else %}
-            <div class="card">
-                <h3>Especificaciones de Unidad</h3>
+        <div class="card">
+            <h3>Remolque Vinculado</h3>
+            {% if remolque_vinculado %}
                 <div class="info-row">
-                    <strong>Tipo de Camión:</strong>
-                    <span>{{ camion.tipo_camion }}</span>
+                    <strong>Patente Remolque:</strong>
+                    <span class="patente-destacada">{{ remolque_vinculado.patente }}</span>
                 </div>
                 <div class="info-row">
-                    <strong>Capacidad:</strong>
-                    <span>{{ camion.capacidad_m3 }} m³</span>
+                    <strong>Tipo:</strong>
+                    <span>{{ remolque_vinculado.tipo_remolque|default:"S/D" }}</span>
                 </div>
-                <p style="margin-top: 15px; color: #666; font-size: 0.85rem;">
-                    Unidad rígida de operación autónoma. No requiere equipo de arrastre adicional.
+                <p style="margin-top:20px;">
+                    <a href="{% url 'remolque_detail' remolque_vinculado.id_remolque %}" class="btn-link">
+                        Ver ficha del remolque →
+                    </a>
                 </p>
-            </div>
-        {% endif %}
+            {% else %}
+                <div style="text-align: center; padding: 20px;">
+                    <p style="color: #999; font-style: italic;">Sin remolque asignado</p>
+                    <span style="font-size: 2rem;">🚚</span>
+                </div>
+            {% endif %}
+        </div>
     </div>
-    
 
-    <div class="card" style="width: 100%;">
-        <h3>Historial Reciente de Mantenciones</h3>
+    <div class="card" style="margin-bottom: 30px;">
+        <h3>Documentación Legal y Permisos</h3>
+        <div class="table-responsive">
+            <table class="tabla-camiones">
+                <thead>
+                    <tr>
+                        <th>Documento</th>
+                        <th>Vencimiento</th>
+                        <th>Estado</th>
+                        <th>Archivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doc in documentos %}
+                    <tr class="estado-{{ doc.estado|lower }}">
+                        <td><strong>{{ doc.get_categoria_display }}</strong></td>
+                        <td>{{ doc.fecha_vencimiento|default:"Vigencia Indefinida" }}</td>
+                        <td>
+                            <span class="badge {% if doc.estado == 'Vencido' %}bg-danger{% elif doc.estado == 'OK' %}bg-ok{% else %}bg-warning{% endif %}">
+                                {{ doc.estado }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if doc.archivo %}
+                                <a href="{{ doc.archivo.url }}" target="_blank" class="btn-volver" style="font-size: 0.8rem; padding: 4px 8px;">
+                                    Ver Documento
+                                </a>
+                            {% else %}
+                                <small style="color: #999;">No cargado</small>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 20px;">No hay documentos registrados para este tracto.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Log de Mantenciones</h3>
         <table class="tabla-camiones">
             <thead>
                 <tr>
                     <th>Fecha</th>
-                    <th>Km Realizada</th>
-                    <th>Próxima</th>
-                    <th>Taller</th>
-                    <th>Observaciones</th>
+                    <th>KM al realizar</th>
+                    <th>KM Próxima</th>
+                    <th>Detalle</th>
                 </tr>
             </thead>
             <tbody>
                 {% for m in mantenciones %}
                 <tr>
-                    <td>{{ m.fecha_mantencion }}</td>
-                    <td>{{ m.km_mantencion|intcomma }} km</td>
+                    <td>{{ m.fecha_mantencion|date:"d/m/Y" }}</td>
+                    <td>{{ m.kilometraje|intcomma }} km</td>
                     <td>{{ m.km_proxima_mantencion|intcomma }} km</td>
-                    <td>{{ m.taller }}</td>
-                    <td>{{ m.observaciones|default:"-" }}</td>
+                    <td>{{ m.descripcion|truncatechars:60 }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" style="text-align: center;">Sin historial de mantenciones.</td>
                 </tr>
                 {% endfor %}
             </tbody>
