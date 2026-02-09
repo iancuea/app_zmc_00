@@ -129,9 +129,10 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'core' / 'static',
+    BASE_DIR / 'core' / 'static',  # Tus estáticos globales de core
 ]
 
+# Esto es para cuando hagas 'python manage.py collectstatic' en producción
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'

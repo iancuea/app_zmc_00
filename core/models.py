@@ -55,6 +55,8 @@ class Camion(models.Model):
     modelo = models.CharField(max_length=50, blank=True, null=True)
     anio = models.IntegerField(blank=True, null=True)
 
+    intervalo_mantencion = models.IntegerField(default=25000, help_text="KM entre mantenciones")
+
     tipo_camion = models.CharField(max_length=50)
     tipo_carga = models.CharField(max_length=30, blank=True, null=True)
 
@@ -80,16 +82,29 @@ class Camion(models.Model):
         db_table = 'camiones'
 
     def km_restantes(self):
-        ultima = self.mantenciones.order_by('-fecha_mantencion').first()
-        estado = getattr(self, 'estado_actual', None)
+            """
+            Nueva lógica: Busca la última inspección de la app 'mantenciones' 
+            donde se renovó el aceite de motor.
+            """
+            # Accedemos a la relación 'inspecciones' definida en el ForeignKey de la nueva app
+            ultima = self.inspecciones.filter(
+                lubricantes__tipo_lubricante__icontains="MOTOR", 
+                lubricantes__renovado=True
+            ).order_by('-fecha_ingreso').first()
 
-        if not ultima or not estado:
-            return None
+            estado = getattr(self, 'estado_actual', None)
 
-        if ultima.km_proxima_mantencion is None or estado.kilometraje is None:
-            return None
+            if not ultima or not estado:
+                return None
 
-        return ultima.km_proxima_mantencion - estado.kilometraje
+            # Obtenemos el registro de lubricante específico de esa inspección
+            lubricante = ultima.lubricantes.filter(tipo_lubricante__icontains="MOTOR").first()
+            
+            if not lubricante or not lubricante.proximo_cambio_km or not estado.kilometraje:
+                return None
+
+            # Retorna la resta entre la meta calculada y el GPS actual
+            return lubricante.proximo_cambio_km - estado.kilometraje
     
     def estado_mantencion(self):
         km = self.km_restantes()
@@ -127,12 +142,10 @@ class Camion(models.Model):
 
     @property
     def asignacion_actual(self):
-        """Retorna la asignación de remolque activa para este camión"""
         return self.asignaciontractoremolque_set.filter(activo=True).first()
 
     @property
     def tiene_remolque(self):
-        """Verifica de forma rápida si tiene un remolque enganchado."""
         return self.asignacion_actual is not None
 
     def prioridad_mantencion(self):

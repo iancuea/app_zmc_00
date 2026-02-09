@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZMC - Nueva Mantención</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .categoria-header { background: #1a2a6c; color: white; padding: 12px; border-radius: 8px; margin-top: 20px; }
+        .sticky-bottom-btn { position: sticky; bottom: 20px; z-index: 1000; }
+        .btn-check:checked + .btn-outline-success { background-color: #28a745; color: white; }
+        .btn-check:checked + .btn-outline-warning { background-color: #ffc107; color: white; }
+        .btn-check:checked + .btn-outline-danger { background-color: #dc3545; color: white; }
+    </style>
+</head>
+<body class="container py-4">
+
+    <div class="header-section text-center mb-4">
+        <h2 class="fw-bold text-dark">INFORME DE MANTENCIÓN</h2>
+        <span class="badge bg-primary">Operaciones ZMC</span>
+    </div>
+
+    <form id="inspeccion-form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="card p-4 mb-4">
+            <h5 class="fw-bold border-bottom pb-2 mb-3">1. Identificación de Unidad</h5>
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <label class="form-label fw-bold">Camión (Tractor)</label>
+                    {{ form.camion }}
+                </div>
+                <div class="col-12 col-md-6">
+                    <label class="form-label fw-bold">Kilometraje Actual</label>
+                    {{ form.kilometraje_unidad }}
+                </div>
+                <div class="col-12">
+                    <label class="form-label fw-bold">Responsable</label>
+                    {{ form.responsable }}
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-4 mb-4">
+            <h5 class="fw-bold border-bottom pb-2 mb-3">2. Checklist de Inspección</h5>
+            {% for cat in categorias %}
+                <div class="categoria-header mb-3">
+                    <h6 class="m-0 text-uppercase fw-bold">{{ cat.nombre }}</h6>
+                </div>
+                {% for item in cat.items.all %}
+                <div class="d-flex justify-content-between align-items-center mb-2 p-2 bg-white border-bottom">
+                    <div class="item-info">
+                        <span class="d-block fw-bold">{{ item.nombre }}</span>
+                        {% if item.es_critico %}
+                            <small class="text-danger fw-bold"><i class="bi bi-exclamation-triangle"></i> CRÍTICO</small>
+                        {% endif %}
+                    </div>
+                    <div class="btn-group" role="group">
+                        <input type="radio" class="btn-check" name="item_{{ item.id }}" id="b_{{ item.id }}" value="B" checked>
+                        <label class="btn btn-sm btn-outline-success px-3" for="b_{{ item.id }}">B</label>
+                        
+                        <input type="radio" class="btn-check" name="item_{{ item.id }}" id="r_{{ item.id }}" value="R">
+                        <label class="btn btn-sm btn-outline-warning px-3" for="r_{{ item.id }}">R</label>
+                        
+                        <input type="radio" class="btn-check" name="item_{{ item.id }}" id="m_{{ item.id }}" value="M">
+                        <label class="btn btn-sm btn-outline-danger px-3" for="m_{{ item.id }}">M</label>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+
+        <div class="card p-4 mb-4">
+            <h5 class="fw-bold border-bottom pb-2 mb-3">3. Renovación de Fluidos</h5>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="aceite_motor_renovado" name="aceite_motor_renovado">
+                <label class="form-check-label fw-bold" for="aceite_motor_renovado">¿Se realizó cambio de ACEITE MOTOR?</label>
+                <div class="text-muted small">Esto reseteará el semáforo a 25.000 km.</div>
+            </div>
+        </div>
+
+        <div class="card p-4 mb-5">
+            <h5 class="fw-bold border-bottom pb-2 mb-3">4. Cierre</h5>
+            {{ form.observaciones }}
+        </div>
+
+        <div class="sticky-bottom-btn">
+            <button type="submit" class="btn btn-primary btn-lg w-100 shadow-lg">FINALIZAR E IMPRIMIR</button>
+        </div>
+    </form>
+
+    <script src="{% static 'mantenciones/js/inspeccion.js' %}"></script>
+</body>
+</html>

@@ -82,3 +82,13 @@ class RegistroLubricantes(models.Model):
     tipo_lubricante = models.CharField(max_length=100) # ej: "ACEITE MOTOR" [cite: 24]
     renovado = models.BooleanField(default=False) # [cite: 24]
     proximo_cambio_km = models.IntegerField(null=True, blank=True) #
+
+    def save(self, *args, **kwargs):
+            # Si se renovó el aceite y no se puso el próximo km a mano
+            if self.renovado and not self.proximo_cambio_km:
+                km_entrada = self.inspeccion.kilometraje_unidad
+                # Usa el intervalo personalizado del camión
+                intervalo = self.inspeccion.camion.intervalo_mantencion
+                self.proximo_cambio_km = km_entrada + intervalo
+                
+            super().save(*args, **kwargs)
