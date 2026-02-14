@@ -160,10 +160,10 @@
             <tbody>
                 {% for m in mantenciones %}
                 <tr>
-                    <td>{{ m.fecha_mantencion|date:"d/m/Y" }}</td>
-                    <td>{{ m.kilometraje|intcomma }} km</td>
+                   <td>{{ m.fecha_mantencion|date:"d/m/Y" }}</td>
+                    <td>{{ m.km_mantencion|intcomma }} km</td>
                     <td>{{ m.km_proxima_mantencion|intcomma }} km</td>
-                    <td>{{ m.descripcion|truncatechars:60 }}</td>
+                    <td>{{ m.observaciones|truncatechars:60 }}</td>
                 </tr>
                 {% empty %}
                 <tr>

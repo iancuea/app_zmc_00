@@ -11,7 +11,7 @@ from .models import (
     CategoriaChecklist, ItemChecklist, Inspeccion, 
     ResultadoItem, RegistroLubricantes
 )
-from core.models import EstadoCamion, Mantencion # <--- Importamos la tabla vieja
+from core.models import EstadoCamion, Mantencion 
 
 def crear_inspeccion(request):
     if request.method == 'POST':
@@ -20,12 +20,12 @@ def crear_inspeccion(request):
         if form.is_valid():
             try:
                 with transaction.atomic():
-                    # 1. Guardamos la nueva Inspección (Registro Técnico)
+                    # 1. Guardamos la nueva Inspección (Registro Técnico detallado)
                     inspeccion = form.save(commit=False)
                     inspeccion.fecha_ingreso = timezone.now()
                     inspeccion.save()
 
-                    # 2. Actualizamos el Kilometraje Actual (EstadoCamion)
+                    # 2. Actualizamos el Kilometraje Actual (Dashboard Tarjeta)
                     camion = inspeccion.camion
                     estado = getattr(camion, 'estado_actual', None)
                     if estado:
@@ -44,14 +44,14 @@ def crear_inspeccion(request):
                                 estado=data['estado']
                             )
 
-                    # 4. ACTUALIZACIÓN DEL SEMÁFORO (Tabla Vieja y Nueva)
+                    # 4. ACTUALIZACIÓN DEL LOG E HISTORIAL (Tabla core 'mantenciones')
                     aceite_renovado = request.POST.get('aceite_motor_renovado') == 'true'
                     
                     if aceite_renovado:
-                        # Calculamos la meta basada en el intervalo del camión
+                        # Calculamos la meta basada en el intervalo del camión (25k, 50k, etc.)
                         nueva_meta = inspeccion.kilometraje_unidad + camion.intervalo_mantencion
                         
-                        # Guardamos en la tabla NUEVA (Lubricantes)
+                        # Guardamos en la tabla NUEVA (Lubricantes) para auditoría técnica
                         RegistroLubricantes.objects.create(
                             inspeccion=inspeccion,
                             tipo_lubricante="ACEITE MOTOR",
@@ -59,34 +59,26 @@ def crear_inspeccion(request):
                             proximo_cambio_km=nueva_meta
                         )
 
-                        # --- EL PUENTE: ACTUALIZAMOS LA TABLA QUE LEE EL DASHBOARD ---
-                        # Buscamos el registro en la tabla vieja 'mantenciones'
-                        mantencion_dashboard = Mantencion.objects.filter(camion=camion).first()
-                        
-                        if mantencion_dashboard:
-                            mantencion_dashboard.km_mantencion = inspeccion.kilometraje_unidad
-                            mantencion_dashboard.km_proxima_mantencion = nueva_meta
-                            mantencion_dashboard.fecha_mantencion = timezone.now().date()
-                            mantencion_dashboard.taller = 'ZMC' # O el que corresponda
-                            mantencion_dashboard.save()
-                        else:
-                            # Si no existe registro previo en la tabla vieja, lo creamos
-                            Mantencion.objects.create(
-                                camion=camion,
-                                taller='ZMC',
-                                fecha_mantencion=timezone.now().date(),
-                                km_mantencion=inspeccion.kilometraje_unidad,
-                                km_proxima_mantencion=nueva_meta,
-                                fecha_creacion=timezone.now()
-                            )
+                        # --- EL HISTORIAL: CREAMOS UN NUEVO REGISTRO EN EL LOG ---
+                        # Usamos .create() para que aparezca como una nueva fila en el Log de Mantenciones
+                        Mantencion.objects.create(
+                            camion=camion,
+                            taller='ZMC',
+                            fecha_mantencion=timezone.now().date(),
+                            km_mantencion=inspeccion.kilometraje_unidad,
+                            km_proxima_mantencion=nueva_meta,
+                            # Combinamos responsable y observaciones para el detalle del Log
+                            observaciones=f"Realizado por {inspeccion.responsable}. {inspeccion.observaciones or ''}",
+                            fecha_creacion=timezone.now()
+                        )
                     # ------------------------------------------------------------
 
-                messages.success(request, f"¡Mantención de {camion.patente} exitosa! Semáforo actualizado.")
+                messages.success(request, f"¡Mantención de {camion.patente} exitosa! Log y Semáforo actualizados.")
                 return redirect('camion_list')
 
             except Exception as e:
-                messages.error(request, f"Error: {e}")
-                print(f"Error crítico: {e}")
+                messages.error(request, f"Error al guardar: {e}")
+                print(f"Error crítico en view: {e}")
         else:
             messages.error(request, "Formulario inválido.")
     
