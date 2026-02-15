@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib import admin
 from .models import (
     Inspeccion, CategoriaChecklist, ItemChecklist, 
-    ResultadoItem, RegistroLubricantes
+    ResultadoItem, RegistroLubricantes,RegistroDiario
 )
 
 # Esto permite editar los ítems directamente dentro de la categoría
@@ -24,13 +24,18 @@ class ResultadoItemInline(admin.TabularInline):
 
 class RegistroLubricantesInline(admin.TabularInline):
     model = RegistroLubricantes
-    extra = 0
+    extra = 1
 
 @admin.register(Inspeccion)
 class InspeccionAdmin(admin.ModelAdmin):
-    list_display = ('id_inspeccion', 'camion', 'responsable', 'fecha_ingreso', 'apto_operacion')
-    list_filter = ('apto_operacion', 'camion', 'fecha_ingreso')
-    search_fields = ('camion__patente', 'responsable')
-    inlines = [ResultadoItemInline, RegistroLubricantesInline]
+    # Usamos los nombres reales de tu modelo
+    list_display = ('id', 'vehiculo', 'km_registro', 'tipo_inspeccion', 'es_apto_operar')
+    list_filter = ('tipo_inspeccion', 'es_apto_operar', 'vehiculo')
+    search_fields = ('vehiculo__patente',)
 
 admin.site.register(ItemChecklist)
+
+@admin.register(RegistroDiario)
+class RegistroDiarioAdmin(admin.ModelAdmin):
+    list_display = ('vehiculo', 'fecha', 'km_actual', 'revisado_por', 'es_apto')
+    list_filter = ('es_apto', 'fecha')

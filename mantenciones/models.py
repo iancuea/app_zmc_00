@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from core.models import Camion, Remolque
+from django.contrib.auth.models import User
 
 class Inspeccion(models.Model):
     """
@@ -76,19 +77,71 @@ class ResultadoItem(models.Model):
 
 class RegistroLubricantes(models.Model):
     """
-    Sección especial para los aceites renovados[cite: 24].
+    Sección especial para los aceites renovados.
     """
     inspeccion = models.ForeignKey(Inspeccion, on_delete=models.CASCADE, related_name='lubricantes')
-    tipo_lubricante = models.CharField(max_length=100) # ej: "ACEITE MOTOR" [cite: 24]
-    renovado = models.BooleanField(default=False) # [cite: 24]
-    proximo_cambio_km = models.IntegerField(null=True, blank=True) #
+    tipo_lubricante = models.CharField(max_length=100) # ej: "ACEITE MOTOR"
+    renovado = models.BooleanField(default=False)
+    proximo_cambio_km = models.IntegerField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
-            # Si se renovó el aceite y no se puso el próximo km a mano
-            if self.renovado and not self.proximo_cambio_km:
-                km_entrada = self.inspeccion.kilometraje_unidad
-                # Usa el intervalo personalizado del camión
-                intervalo = self.inspeccion.camion.intervalo_mantencion
-                self.proximo_cambio_km = km_entrada + intervalo
-                
-            super().save(*args, **kwargs)
+        # Si se renovó el aceite y no se puso el próximo km a mano
+        if self.renovado and not self.proximo_cambio_km:
+            # CORRECCIÓN: Usamos 'km_registro' que es el nombre real en tu modelo Inspeccion
+            km_entrada = self.inspeccion.km_registro
+            
+            # CORRECCIÓN: Usamos 'vehiculo' que es el nombre real en tu modelo Inspeccion
+            # Asegúrate de que el modelo Camion tenga el campo 'intervalo_mantencion'
+            intervalo = self.inspeccion.vehiculo.intervalo_mantencion
+            
+            self.proximo_cambio_km = km_entrada + intervalo
+            
+        super().save(*args, **kwargs)
+
+class Inspeccion(models.Model):
+    TIPO_CHOICES = [
+        ('DIARIO', 'Checklist Diario'),
+        ('MANTENCION', 'Mantención Técnica'),
+    ]
+    tipo_inspeccion = models.CharField(max_length=20, choices=TIPO_CHOICES)
+    vehiculo = models.ForeignKey(Camion, on_delete=models.CASCADE, related_name="inspecciones")
+    km_registro = models.PositiveIntegerField() # Este KM actualiza el estado_actual del camión
+    # Si quieres el nombre del responsable y observaciones, agrégalos aquí:
+    responsable = models.CharField(max_length=100, default="Tomás Rocamora")
+    observaciones = models.TextField(blank=True, null=True)
+    # El Checklist se vuelve dinámicocls
+    es_apto_operar = models.BooleanField(default=True) # Para el flujo diario
+    renovó_aceite = models.BooleanField(default=False) # Para el flujo de mantención
+
+class RegistroDiario(models.Model):
+    # Relaciones básicas
+    vehiculo = models.ForeignKey(Camion, on_delete=models.CASCADE, related_name='checklists_diarios')
+    revisado_por = models.CharField(max_length=100, help_text="Nombre de quien realiza la inspección")    
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    # Datos de control
+    km_actual = models.PositiveIntegerField(verbose_name="Kilometraje actual")
+    horometro = models.PositiveIntegerField(null=True, blank=True, verbose_name="Horómetro (opcional)")
+
+    # Filtros Lógicos de Estado
+    es_apto = models.BooleanField(default=True, verbose_name="¿Apto para operar?")
+    nivel_combustible = models.CharField(max_length=20, choices=[
+        ('bajo', 'Bajo'), ('medio', 'Medio'), ('full', 'Full')
+    ], default='full')
+
+    # Almacenamiento flexible del Checklist
+    # Guardamos las respuestas como un JSON para no crear 50 columnas de Sí/No
+    # Ej: {"luces": true, "frenos": false, "limpieza": true}
+    check_datos = models.JSONField(default=dict, help_text="Resultados del checklist diario")
+
+    # Observaciones críticas
+    novedades = models.TextField(blank=True, null=True, verbose_name="Novedades o fallas detectadas")
+    
+    class Meta:
+        ordering = ['-fecha']
+        verbose_name = "Registro Diario"
+        verbose_name_plural = "Registros Diarios"
+
+    def __str__(self):
+        estado = "APTO" if self.es_apto else "NO APTO"
+        return f"{self.vehiculo.patente} - {self.fecha.strftime('%d/%m/%Y')} - {estado}"

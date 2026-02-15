@@ -4,15 +4,20 @@ from .models import Inspeccion, ResultadoItem
 class InspeccionForm(forms.ModelForm):
     class Meta:
         model = Inspeccion
-        fields = ['camion', 'remolque', 'kilometraje_unidad', 'responsable', 'observaciones']
+        # Ajustamos los nombres a los que definiste en el modelo
+        fields = ['tipo_inspeccion', 'vehiculo', 'km_registro', 'es_apto_operar', 'renovó_aceite']
+        
         widgets = {
-            # Widgets con clases de Bootstrap para que se vean bien en el celular
-            'camion': forms.Select(attrs={'class': 'form-control form-control-lg'}),
-            'kilometraje_unidad': forms.NumberInput(attrs={'class': 'form-control form-control-lg', 'placeholder': 'Ej: 423193'}),
-            'responsable': forms.TextInput(attrs={'class': 'form-control', 'value': 'Tomás Rocamora'}),
-            'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'tipo_inspeccion': forms.Select(attrs={'class': 'form-select form-select-lg'}),
+            'vehiculo': forms.Select(attrs={'class': 'form-select form-select-lg'}),
+            'km_registro': forms.NumberInput(attrs={
+                'class': 'form-control form-control-lg', 
+                'placeholder': 'Ej: 423193'
+            }),
+            # Agregamos los checkboxes por si los necesitas en el form
+            'es_apto_operar': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'renovó_aceite': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
-
 # Formulario para los ítems B-R-M
 class ResultadoItemForm(forms.ModelForm):
     class Meta:
