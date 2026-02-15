@@ -1,104 +1,106 @@
+{% extends "core/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Listado de Camiones</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'core/css/camiones.css' %}">
-</head>
-<body>
+{% block content %}
+<div class="dashboard-header">
+    <div class="title-section">
+        <h1 class="page-title">Gestión de Unidades</h1>
+        <p class="page-subtitle">Monitoreo de estado técnico y documentación en tiempo real.</p>
+    </div>
+    
+    <form method="get" class="filter-card">
+        <div class="filter-group">
+            <label>Estado de Salud</label>
+            <select name="estado" class="pro-input">
+                <option value="">Todos los estados</option>
+                <option value="VENCIDA" {% if request.GET.estado == 'VENCIDA' %}selected{% endif %}>🔴 Vencida</option>
+                <option value="CRITICA" {% if request.GET.estado == 'CRITICA' %}selected{% endif %}>🟡 Crítica</option>
+                <option value="OK" {% if request.GET.estado == 'OK' %}selected{% endif %}>🟢 OK</option>
+            </select>
+        </div>
 
-<h1>Listado de Camiones</h1>
+        <div class="filter-group">
+            <label>Priorizar por</label>
+            <select name="orden" class="pro-input">
+                <option value="">Normal (Por Base)</option>
+                <option value="urgencia" {% if request.GET.orden == 'urgencia' %}selected{% endif %}>🚨 Mayor Urgencia</option>
+            </select>
+        </div>
 
-<!-- FILTRO Y ORDEN (backend, NO se toca) -->
-<form method="get" style="margin-bottom: 1rem;">
-    <label>Estado mantención:</label>
-    <select name="estado">
-        <option value="">Todos</option>
-        <option value="VENCIDA">Vencida</option>
-        <option value="CRITICA">Crítica</option>
-        <option value="OK">OK</option>
-        <option value="SIN_DATOS">Sin datos</option>
-    </select>
+        <button type="submit" class="btn-primary-pro">Actualizar Vista</button>
+    </form>
+</div>
 
-    <label style="margin-left: 1rem;">Orden:</label>
-    <select name="orden">
-        <option value="">Normal</option>
-        <option value="urgencia">Por urgencia</option>
-    </select>
-
-    <button type="submit">Aplicar</button>
-</form>
-
-<table class="tabla-camiones" id="tabla-camiones">
-    <thead>
-        <tr>
-            <th>Patente</th>
-            <th>Tipo</th>
-            <th>Rol</th>
-            <th>Base</th>
-            <th>Activo</th>
-            <th>Estado Operativo</th>
-            <th>Mantención</th>
-            <th>Conductor</th>
-            <th>Motivos</th>
-        </tr>
-    </thead>
-
-<tbody>
-    {% for grupo in camiones_por_base %}
-        <tr class="separador-base">
-            <td colspan="9">
-                BASE: {{ grupo.base|upper }}
-            </td>
-        </tr>
-
-        {% for camion in grupo.camiones %}
-            {% with estado_t=camion.estado_mantencion asignacion=camion.asignacion_actual %}
-            
-            <tr class="{{ estado_t.css }}" data-camion-id="{{ camion.id_camion }}">
-                <td><a href="{% url 'camion_detail' camion.id_camion %}"><strong>{{ camion.patente }}</strong></a></td>
-                <td>{{ camion.tipo_camion }}</td>
-                <td>{{ camion.rol_operativo }}</td>
-                <td class="col-base">{{ grupo.base }}</td>
-                <td>{{ camion.activo|yesno:"Sí,No" }}</td>
-                <td>{{ camion.estado_actual.get_estado_operativo_display|default:"—" }}</td>
-                <td class="estado-mantencion-texto"><strong>{{ estado_t.label }}</strong></td>
-                <td>{{ camion.estado_actual.conductor.nombre|default:"—" }}</td>
-                <td class="motivos">Cargando datos...</td>
+<div class="table-container-pro">
+    <table class="tabla-pro">
+        <thead>
+            <tr>
+                <th>Unidad</th>
+                <th>Especificaciones</th>
+                <th>Ubicación</th>
+                <th>Estado Operativo</th>
+                <th>Mecánica</th>
+                <th>Motivos y Alertas</th>
             </tr>
-
-            {% if asignacion %}
-                {% with remolque=asignacion.remolque %}
-                <tr class="fila-remolque" data-remolque-id="{{ remolque.id_remolque }}">
-                    <td style="padding-left: 25px;">
-                        <span style="color: #ccc;">↳</span> 
-                        <a href="{% url 'remolque_detail' remolque.id_remolque %}">
-                            <strong>{{ remolque.patente }}</strong>
-                        </a>
-                    </td>
-                    <td>REMOLQUE</td>
-                    <td>(Vinculado)</td>
-                    <td class="col-base">{{ grupo.base }}</td>
-                    <td>{{ remolque.activo|yesno:"Sí,No" }}</td>
-                    <td>{{ remolque.estado_actual.get_estado_operativo_display|default:"OPERATIVO" }}</td>
-                    <td class="estado-mantencion-texto-rem"><strong>OK</strong></td>
-                    <td>—</td>
-                    <td class="motivos-remolque">Cargando datos...</td>
+        </thead>
+        <tbody>
+            {% for grupo in camiones_por_base %}
+                <tr class="base-row-divider">
+                    <td colspan="6">Base Actual: <strong>{{ grupo.base }}</strong></td>
                 </tr>
-                {% endwith %}
-            {% endif %}
 
-            {% endwith %}
-        {% endfor %}
-    {% endfor %}
-</tbody>
-</table>
+                {% for camion in grupo.camiones %}
+                    {% with estado_t=camion.get_salud_completa asignacion=camion.asignacion_actual %}
+                    <tr class="unit-row {{ estado_t.css }}" data-camion-id="{{ camion.id_camion }}">
+                        <td class="col-patente">
+                            <a href="{% url 'camion_detail' camion.id_camion %}" class="patente-pill">
+                                {{ camion.patente }}
+                            </a>
+                        </td>
+                        <td>
+                            <div class="unit-specs">
+                                <span class="spec-type">{{ camion.tipo_camion }}</span>
+                                <span class="spec-rol">{{ camion.rol_operativo }}</span>
+                            </div>
+                        </td>
+                        <td class="col-base">{{ grupo.base }}</td>
+                        <td>
+                            <span class="badge-op-status">
+                                {{ camion.estado_actual.get_estado_operativo_display|default:"Sin Datos" }}
+                            </span>
+                        </td>
+                        <td class="col-health">
+                            <div class="health-indicator">
+                                <span class="health-dot"></span>
+                                <strong>{{ estado_t.label }}</strong>
+                            </div>
+                        </td>
+                        <td class="motivos">
+                            <span class="loader-dots">Cargando detalles...</span>
+                        </td>
+                    </tr>
+                    {% if asignacion %}
+                        {% with remolque=asignacion.remolque %}
+                        <tr class="trailer-row" data-remolque-id="{{ remolque.id_remolque }}">
+                            <td class="trailer-patente">
+                                <span class="connector-line"></span>
+                                <a href="{% url 'remolque_detail' remolque.id_remolque %}">
+                                    {{ remolque.patente }}
+                                </a>
+                            </td>
+                            <td colspan="2" class="trailer-label">Remolque Vinculado</td>
+                            <td>{{ remolque.estado_actual.get_estado_operativo_display|default:"OPERATIVO" }}</td>
+                            <td class="estado-mantencion-texto-rem">OK</td>
+                            <td class="motivos-remolque">Cargando...</td>
+                        </tr>
+                        {% endwith %}
+                    {% endif %}
+                    {% endwith %}
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
-<!-- JS -->
 <script src="{% static 'core/js/camiones.js' %}"></script>
-
-</body>
-</html>
+{% endblock %}

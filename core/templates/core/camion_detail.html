@@ -3,175 +3,141 @@
 {% load humanize %}
 
 {% block content %}
-<div class="container-detail">
-    <div class="header-camion">
-        <h2>Unidad Tracto: <span class="patente-destacada">{{ camion.patente }}</span></h2>
-        <a href="{% url 'camion_list' %}" class="btn-volver">← Volver al listado</a>
+<div class="container-detail-pro">
+    <div class="detail-navigation">
+        <div class="breadcrumb-pro">
+            <a href="{% url 'camion_list' %}">Flota</a> 
+            <span class="separator">/</span> 
+            <span class="current">Detalle de Unidad</span>
+        </div>
+        <a href="{% url 'camion_list' %}" class="btn-secondary-pro">← Volver al listado</a>
     </div>
 
-    <div class="card-hero {{ estado_mant.css }} {{ estado_mant.codigo }}">
-        <div class="hero-info">
-            <span class="urgencia-tag">ESTADO TÉCNICO TRACTO</span>
-            <h1 class="label-gigante">{{ estado_mant.label }}</h1>
+    <div class="detail-header-section">
+        <h1 class="detail-title">Unidad Tracto <span class="patente-hero">{{ camion.patente }}</span></h1>
+    </div>
+
+    <div class="card-hero-pro {{ estado_mant.css }} {{ estado_mant.codigo }}">
+        <div class="hero-main-info">
+            <span class="hero-badge-label">Estado Técnico Tracto</span>
+            <h2 class="hero-status-text">{{ estado_mant.label }}</h2>
             
-            <ul style="list-style: none; padding: 0; margin-top: 10px;">
+            <ul class="hero-motivos-list">
                 {% for motivo in estado_mant.motivos %}
-                    <li><strong style="font-size: 1.1rem;">• {{ motivo }}</strong></li>
+                    <li>{{ motivo }}</li>
                 {% empty %}
-                    <li>✅ Operativo y al día</li>
+                    <li>✅ Unidad operativa sin alertas pendientes</li>
                 {% endfor %}
             </ul>
         </div>
         
-        <div class="hero-stats">
-            <div class="stat-item">
-                <small>KILOMETRAJE ACTUAL</small><br>
-                <strong>{{ camion.estado_actual.kilometraje|intcomma }} km</strong>
+        <div class="hero-stats-grid">
+            <div class="hero-stat-box">
+                <span class="stat-label">Kilometraje Actual</span>
+                <span class="stat-value">{{ camion.estado_actual.kilometraje|default:0|intcomma }} <small>km</small></span>
             </div>
             {% if mantenciones %}
-            <div class="stat-item">
-                <small>ÚLTIMA INTERVENCIÓN</small><br>
-                <strong>{{ mantenciones.0.fecha_mantencion|date:"d M Y" }}</strong>
+            <div class="hero-stat-box">
+                <span class="stat-label">Última Mantención</span>
+                <span class="stat-value">{{ mantenciones.0.fecha_mantencion|date:"d M Y" }}</span>
             </div>
             {% endif %}
         </div>
     </div>
 
-    <div class="grid-detalles">
-        <div class="card especificaciones-card">
-            <h3>Estado Operativo Actual</h3>
-            
-            <div class="info-row">
-                <strong>Situación Actual:</strong> 
-                <span class="badge {% if camion.estado_actual.estado_operativo == 'OPERATIVO' %}bg-ok{% else %}bg-danger{% endif %}">
-                    {{ camion.estado_actual.get_estado_operativo_display|default:"SIN DATOS" }}
-                </span>
+    <div class="grid-layout-pro">
+        
+        <div class="card-pro">
+            <div class="card-header-pro">
+                <h3>Situación Operativa</h3>
             </div>
-
-            <div class="info-row">
-                <strong>Base Actual:</strong> 
-                <span>{{ camion.estado_actual.get_base_actual_display|default:"No asignada" }}</span>
-            </div>
-
-            <div class="info-row">
-                <strong>Conductor en Ruta:</strong> 
-                <span>
-                    {% if camion.estado_actual.conductor %}
-                        {{ camion.estado_actual.conductor.nombre }} {{ camion.estado_actual.conductor.apellido }}
-                    {% else %}
-                        <small style="color: #999;">Sin conductor asignado</small>
-                    {% endif %}
-                </span>
-            </div>
-
-            <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
-
-            <div class="info-row">
-                <strong>Rol en Flota:</strong> 
-                <span class="badge {% if camion.rol_operativo == 'TITULAR' %}bg-ok{% else %}bg-warning{% endif %}">
-                    {{ camion.get_rol_operativo_display }}
-                </span>
-            </div>
-
-            <div class="info-row">
-                <strong>Marca/Modelo:</strong> 
-                <span>{{ camion.marca|default:"" }} {{ camion.modelo|default:"S/D" }} ({{ camion.anio }})</span>
+            <div class="card-body-pro">
+                <div class="data-row">
+                    <span class="data-label">Estado:</span>
+                    <span class="badge-status {% if camion.estado_actual.estado_operativo == 'OPERATIVO' %}bg-success{% else %}bg-danger{% endif %}">
+                        {{ camion.estado_actual.get_estado_operativo_display|default:"SIN DATOS" }}
+                    </span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Base Actual:</span>
+                    <span class="data-value">{{ camion.estado_actual.get_base_actual_display|default:"No asignada" }}</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Conductor:</span>
+                    <span class="data-value">
+                        {% if camion.estado_actual.conductor %}
+                            {{ camion.estado_actual.conductor.nombre }} {{ camion.estado_actual.conductor.apellido }}
+                        {% else %}
+                            <span class="text-muted">Sin asignar</span>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Rol Flota:</span>
+                    <span class="badge-outline">{{ camion.get_rol_operativo_display }}</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Marca / Modelo:</span>
+                    <span class="data-value">{{ camion.marca|default:"" }} {{ camion.modelo|default:"S/D" }} ({{ camion.anio }})</span>
+                </div>
             </div>
         </div>
 
-        <div class="card">
-            <h3>Remolque Vinculado</h3>
-            {% if remolque_vinculado %}
-                <div class="info-row">
-                    <strong>Patente Remolque:</strong>
-                    <span class="patente-destacada">{{ remolque_vinculado.patente }}</span>
-                </div>
-                <div class="info-row">
-                    <strong>Tipo:</strong>
-                    <span>{{ remolque_vinculado.tipo_remolque|default:"S/D" }}</span>
-                </div>
-                <p style="margin-top:20px;">
-                    <a href="{% url 'remolque_detail' remolque_vinculado.id_remolque %}" class="btn-link">
-                        Ver ficha del remolque →
-                    </a>
-                </p>
-            {% else %}
-                <div style="text-align: center; padding: 20px;">
-                    <p style="color: #999; font-style: italic;">Sin remolque asignado</p>
-                    <span style="font-size: 2rem;">🚚</span>
-                </div>
-            {% endif %}
+        <div class="card-pro">
+            <div class="card-header-pro">
+                <h3>Remolque Vinculado</h3>
+            </div>
+            <div class="card-body-pro">
+                {% if remolque_vinculado %}
+                    <div class="trailer-active-box">
+                        <div class="trailer-icon">🚚</div>
+                        <div class="trailer-info">
+                            <span class="trailer-patente">{{ remolque_vinculado.patente }}</span>
+                            <span class="trailer-type">{{ remolque_vinculado.tipo_remolque|default:"Semirremolque" }}</span>
+                        </div>
+                    </div>
+                    <a href="{% url 'remolque_detail' remolque_vinculado.id_remolque %}" class="btn-link-pro">Ver ficha técnica →</a>
+                {% else %}
+                    <div class="empty-state-pro">
+                        <p>No tiene remolque asignado actualmente.</p>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 
-    <div class="card" style="margin-bottom: 30px;">
-        <h3>Documentación Legal y Permisos</h3>
-        <div class="table-responsive">
-            <table class="tabla-camiones">
+    <div class="card-pro section-margin">
+        <div class="card-header-pro">
+            <h3>Documentación Legal</h3>
+        </div>
+        <div class="table-container-minimal">
+            <table class="table-minimal">
                 <thead>
                     <tr>
                         <th>Documento</th>
                         <th>Vencimiento</th>
                         <th>Estado</th>
-                        <th>Archivo</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for doc in documentos %}
-                    <tr class="estado-{{ doc.estado|lower }}">
+                    <tr class="doc-row state-{{ doc.estado|lower }}">
                         <td><strong>{{ doc.get_categoria_display }}</strong></td>
-                        <td>{{ doc.fecha_vencimiento|default:"Vigencia Indefinida" }}</td>
-                        <td>
-                            <span class="badge {% if doc.estado == 'Vencido' %}bg-danger{% elif doc.estado == 'OK' %}bg-ok{% else %}bg-warning{% endif %}">
-                                {{ doc.estado }}
-                            </span>
-                        </td>
+                        <td>{{ doc.fecha_vencimiento|default:"Indefinido" }}</td>
+                        <td><span class="status-dot-label {{ doc.estado|lower }}">{{ doc.estado }}</span></td>
                         <td>
                             {% if doc.archivo %}
-                                <a href="{{ doc.archivo.url }}" target="_blank" class="btn-volver" style="font-size: 0.8rem; padding: 4px 8px;">
-                                    Ver Documento
-                                </a>
+                                <a href="{{ doc.archivo.url }}" target="_blank" class="btn-action-small">Abrir PDF</a>
                             {% else %}
-                                <small style="color: #999;">No cargado</small>
+                                <span class="text-muted">No cargado</span>
                             {% endif %}
                         </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="4" style="text-align: center; padding: 20px;">No hay documentos registrados para este tracto.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-    </div>
-
-    <div class="card">
-        <h3>Log de Mantenciones</h3>
-        <table class="tabla-camiones">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>KM al realizar</th>
-                    <th>KM Próxima</th>
-                    <th>Detalle</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for m in mantenciones %}
-                <tr>
-                   <td>{{ m.fecha_mantencion|date:"d/m/Y" }}</td>
-                    <td>{{ m.km_mantencion|intcomma }} km</td>
-                    <td>{{ m.km_proxima_mantencion|intcomma }} km</td>
-                    <td>{{ m.observaciones|truncatechars:60 }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="4" style="text-align: center;">Sin historial de mantenciones.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
 </div>
 {% endblock %}

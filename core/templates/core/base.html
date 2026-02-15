@@ -3,23 +3,29 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Sistema de Camiones{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FleetManager Pro{% endblock %}</title>
     
-    <link rel="stylesheet" href="{% static 'core/css/camiones.css' %}">
-    
-    </head>
-<body>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'core/css/camiones.css' %}?v=1.1">
+</head>
+<body class="app-layout">
 
-<header class="header-global">
-    <h1>Sistema de Gestión de Flota</h1>
-    <nav>
-        <a href="/camiones/">Camiones</a>
-    </nav>
+<header class="navbar-pro">
+    <div class="navbar-container">
+        <div class="brand">
+            <span class="brand-icon">🚛</span>
+            <span class="brand-name">Fleet<strong>Manager</strong></span>
+        </div>
+        <nav class="main-nav">
+            <a href="/camiones/" class="nav-link active">Panel de Flota</a>
+            <a href="#" class="nav-link">Historial</a>
+            <a href="#" class="nav-link">Reportes</a>
+        </nav>
+    </div>
 </header>
 
-<hr>
-
-<main>
+<main class="content-wrapper">
     {% block content %}
     {% endblock %}
 </main>
