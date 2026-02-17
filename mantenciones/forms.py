@@ -5,8 +5,7 @@ class InspeccionForm(forms.ModelForm):
     class Meta:
         model = Inspeccion
         # Ajustamos los nombres a los que definiste en el modelo
-        fields = ['tipo_inspeccion', 'vehiculo', 'km_registro', 'es_apto_operar', 'renovó_aceite']
-        
+        fields = ['tipo_inspeccion', 'vehiculo', 'remolque', 'km_registro', 'responsable', 'observaciones', 'es_apto_operar', 'renovó_aceite']        
         widgets = {
             'tipo_inspeccion': forms.Select(attrs={'class': 'form-select form-select-lg'}),
             'vehiculo': forms.Select(attrs={'class': 'form-select form-select-lg'}),

@@ -4,36 +4,42 @@ from core.models import Camion, Remolque
 from django.contrib.auth.models import User
 
 class Inspeccion(models.Model):
-    """
-    Representa el informe completo (cabecera). 
-    Equivale al 'Informe Mantención' que hoy manejas en PDF.
-    """
+    # Tipos de inspección para el filtro lógico
+    TIPO_CHOICES = [
+        ('DIARIO', 'Checklist Diario'),
+        ('MANTENCION', 'Mantención Técnica'),
+    ]
+    tipo_inspeccion = models.CharField(max_length=20, choices=TIPO_CHOICES, default='DIARIO')
+
+    # Identificador único
     id_inspeccion = models.AutoField(primary_key=True)
     
     # Datos de la Unidad (Fierros)
-    camion = models.ForeignKey(Camion, on_delete=models.CASCADE, related_name='inspecciones', db_column='id_camion')
+    # Usamos 'vehiculo' como nombre principal para evitar líos
+    vehiculo = models.ForeignKey(Camion, on_delete=models.CASCADE, related_name='inspecciones', db_column='id_camion')
     remolque = models.ForeignKey(Remolque, on_delete=models.SET_NULL, null=True, blank=True, related_name='inspecciones', db_column='id_remolque')
     
-    # Datos Operativos del Informe [cite: 6, 11]
-    kilometraje_unidad = models.IntegerField() # Los 423.193 km del informe [cite: 11]
-    fecha_ingreso = models.DateTimeField() # [cite: 6]
-    fecha_salida = models.DateTimeField(null=True, blank=True) # [cite: 6]
+    # Datos Operativos
+    km_registro = models.PositiveIntegerField() # Equivale a kilometraje_unidad
+    fecha_ingreso = models.DateTimeField(auto_now_add=True) # Se auto-rellena al crear
+    fecha_salida = models.DateTimeField(null=True, blank=True) #
     
-    # Responsable (Tomás Rocamora) [cite: 8]
-    responsable = models.CharField(max_length=100)
-    
-    # Resultados Finales [cite: 32]
+    # Responsable y Observaciones
+    responsable = models.CharField(max_length=100, default="Tomás Rocamora")
     observaciones = models.TextField(blank=True, null=True)
-    apto_operacion = models.BooleanField(default=True) # "La unidad se encuentra en condiciones de incorporarse" [cite: 32]
     
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    # Estados de Control
+    es_apto_operar = models.BooleanField(default=True, verbose_name="¿Apto para operar?")
+    renovó_aceite = models.BooleanField(default=False, verbose_name="¿Renovó Aceite Motor?")
+
+    ajuste_db = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'mantencion_inspeccion'
         verbose_name_plural = "Inspecciones"
 
     def __str__(self):
-        return f"Inspección {self.id_inspeccion} - {self.camion.patente}"
+        return f"{self.tipo_inspeccion} - {self.vehiculo.patente} ({self.fecha_ingreso.strftime('%d/%m/%Y')})"
 
 class CategoriaChecklist(models.Model):
     """
@@ -97,21 +103,6 @@ class RegistroLubricantes(models.Model):
             self.proximo_cambio_km = km_entrada + intervalo
             
         super().save(*args, **kwargs)
-
-class Inspeccion(models.Model):
-    TIPO_CHOICES = [
-        ('DIARIO', 'Checklist Diario'),
-        ('MANTENCION', 'Mantención Técnica'),
-    ]
-    tipo_inspeccion = models.CharField(max_length=20, choices=TIPO_CHOICES)
-    vehiculo = models.ForeignKey(Camion, on_delete=models.CASCADE, related_name="inspecciones")
-    km_registro = models.PositiveIntegerField() # Este KM actualiza el estado_actual del camión
-    # Si quieres el nombre del responsable y observaciones, agrégalos aquí:
-    responsable = models.CharField(max_length=100, default="Tomás Rocamora")
-    observaciones = models.TextField(blank=True, null=True)
-    # El Checklist se vuelve dinámicocls
-    es_apto_operar = models.BooleanField(default=True) # Para el flujo diario
-    renovó_aceite = models.BooleanField(default=False) # Para el flujo de mantención
 
 class RegistroDiario(models.Model):
     # Relaciones básicas

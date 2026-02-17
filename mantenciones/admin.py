@@ -29,7 +29,7 @@ class RegistroLubricantesInline(admin.TabularInline):
 @admin.register(Inspeccion)
 class InspeccionAdmin(admin.ModelAdmin):
     # Usamos los nombres reales de tu modelo
-    list_display = ('id', 'vehiculo', 'km_registro', 'tipo_inspeccion', 'es_apto_operar')
+    list_display = ('id_inspeccion', 'vehiculo', 'km_registro', 'tipo_inspeccion', 'es_apto_operar')
     list_filter = ('tipo_inspeccion', 'es_apto_operar', 'vehiculo')
     search_fields = ('vehiculo__patente',)
 
