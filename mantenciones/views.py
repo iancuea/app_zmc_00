@@ -1,92 +1,198 @@
 import json
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.db import transaction
 from django.contrib import messages
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
 
 from mantenciones.forms import InspeccionForm
+from .utils import obtener_datos_camion_autocompletado, generar_pdf_inspeccion
 
 # Importamos modelos de ambas apps
 from .models import (
     CategoriaChecklist, ItemChecklist, Inspeccion, 
-    ResultadoItem, RegistroLubricantes
+    ResultadoItem, RegistroLubricantes, RegistroDiario
 )
-from core.models import EstadoCamion, Mantencion 
+from core.models import EstadoCamion, Mantencion, Camion, Remolque, AsignacionTractoRemolque
 
 def crear_inspeccion(request):
+    """Vista para crear una nueva inspección con checklist dinámico"""
+    
     if request.method == 'POST':
-        form = InspeccionForm(request.POST, request.FILES)
+        form = InspeccionForm(request.POST)
         
         if form.is_valid():
             try:
                 with transaction.atomic():
-                    # 1. Guardamos la nueva Inspección (Registro Técnico detallado)
+                    # 1. Guardamos la Inspección
                     inspeccion = form.save(commit=False)
                     inspeccion.fecha_ingreso = timezone.now()
                     inspeccion.save()
-
-                    # 2. Actualizamos el Kilometraje Actual (Dashboard Tarjeta)
-                    camion = inspeccion.camion
-                    estado = getattr(camion, 'estado_actual', None)
-                    if estado:
-                        estado.kilometraje = inspeccion.kilometraje_unidad
-                        estado.save()
-
-                    # 3. Procesamos el Checklist B-R-M (JSON)
-                    checklist_raw = request.POST.get('checklist_json')
-                    if checklist_raw:
-                        checklist_data = json.loads(checklist_raw)
-                        for data in checklist_data:
-                            item = ItemChecklist.objects.get(id=data['id'])
+                    
+                    # 2. Procesar resultados del checklist
+                    resultados_raw = request.POST.get('resultados_checklist', '[]')
+                    resultados_data = json.loads(resultados_raw)
+                    
+                    for data in resultados_data:
+                        try:
+                            item = ItemChecklist.objects.get(id=data['item_id'])
                             ResultadoItem.objects.create(
                                 inspeccion=inspeccion,
                                 item=item,
-                                estado=data['estado']
+                                estado=data['estado'],
+                                observacion=data.get('observacion', '')
                             )
-
-                    # 4. ACTUALIZACIÓN DEL LOG E HISTORIAL (Tabla core 'mantenciones')
-                    aceite_renovado = request.POST.get('aceite_motor_renovado') == 'true'
+                        except ItemChecklist.DoesNotExist:
+                            continue
                     
-                    if aceite_renovado:
-                        # Calculamos la meta basada en el intervalo del camión (25k, 50k, etc.)
-                        nueva_meta = inspeccion.kilometraje_unidad + camion.intervalo_mantencion
+                    # 3. Obtener datos auto-completados
+                    datos_autocompletado = obtener_datos_camion_autocompletado(inspeccion.vehiculo)
+                    datos_autocompletado['apto_trabajar'] = 'SI' if inspeccion.es_apto_operar else 'NO'
+                    
+                    # 4. Generar PDF
+                    resultados_items = inspeccion.resultados.all()
+                    ruta_pdf = generar_pdf_inspeccion(inspeccion, resultados_items, datos_autocompletado)
+                    
+                    # 5. Guardar registro en RegistroDiario
+                    registro_diario = RegistroDiario.objects.create(
+                        vehiculo=inspeccion.vehiculo,
+                        revisado_por=inspeccion.responsable,
+                        km_actual=inspeccion.km_registro,
+                        es_apto=inspeccion.es_apto_operar,
+                        check_datos=json.dumps(resultados_data),
+                        novedades=inspeccion.observaciones
+                    )
+                    
+                    # 6. Si se renovó aceite, actualizar en Mantencion (core)
+                    if inspeccion.renovó_aceite:
+                        nueva_meta = inspeccion.km_registro + inspeccion.vehiculo.intervalo_mantencion
                         
-                        # Guardamos en la tabla NUEVA (Lubricantes) para auditoría técnica
                         RegistroLubricantes.objects.create(
                             inspeccion=inspeccion,
                             tipo_lubricante="ACEITE MOTOR",
                             renovado=True,
                             proximo_cambio_km=nueva_meta
                         )
-
-                        # --- EL HISTORIAL: CREAMOS UN NUEVO REGISTRO EN EL LOG ---
-                        # Usamos .create() para que aparezca como una nueva fila en el Log de Mantenciones
+                        
                         Mantencion.objects.create(
-                            camion=camion,
+                            camion=inspeccion.vehiculo,
                             taller='ZMC',
                             fecha_mantencion=timezone.now().date(),
-                            km_mantencion=inspeccion.kilometraje_unidad,
+                            km_mantencion=inspeccion.km_registro,
                             km_proxima_mantencion=nueva_meta,
-                            # Combinamos responsable y observaciones para el detalle del Log
                             observaciones=f"Realizado por {inspeccion.responsable}. {inspeccion.observaciones or ''}",
                             fecha_creacion=timezone.now()
                         )
-                    # ------------------------------------------------------------
-
-                messages.success(request, f"¡Mantención de {camion.patente} exitosa! Log y Semáforo actualizados.")
-                return redirect('camion_list')
-
+                    
+                    # 7. Actualizar estado actual del camión
+                    if hasattr(inspeccion.vehiculo, 'estado_actual'):
+                        inspeccion.vehiculo.estado_actual.kilometraje = inspeccion.km_registro
+                        inspeccion.vehiculo.estado_actual.save()
+                    
+                    messages.success(
+                        request, 
+                        f"¡Inspección de {inspeccion.vehiculo.patente} completada! PDF generado: {ruta_pdf}"
+                    )
+                    return redirect('camion_list')
+                    
+            except json.JSONDecodeError:
+                messages.error(request, "Error procesando el checklist. Intenta nuevamente.")
             except Exception as e:
-                messages.error(request, f"Error al guardar: {e}")
-                print(f"Error crítico en view: {e}")
-        else:
-            messages.error(request, "Formulario inválido.")
+                messages.error(request, f"Error al guardar: {str(e)}")
+                print(f"Error crítico: {e}")
     
     else:
         form = InspeccionForm()
-
+    
+    # Obtener categorías para mostrar en el formulario
     categorias = CategoriaChecklist.objects.all().order_by('orden')
-    return render(request, 'mantenciones/crear_inspeccion.html', {
+    
+    context = {
         'form': form,
         'categorias': categorias
-    })
+    }
+    
+    return render(request, 'mantenciones/crear_inspeccion.html', context)
+
+
+@require_http_methods(["GET"])
+def api_datos_autocompletado(request, camion_id):
+    """
+    API que retorna los datos que se auto-completan al seleccionar un camión
+    """
+    try:
+        camion = get_object_or_404(Camion, id_camion=camion_id)
+        datos = obtener_datos_camion_autocompletado(camion)
+        
+        return JsonResponse({
+            'success': True,
+            'datos': datos
+        })
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=400)
+
+
+@require_http_methods(["GET"])
+def api_categorias_por_tipo(request, tipo_inspeccion):
+    """
+    API que retorna todas las categorías de checklist
+    """
+    try:
+        # Obtener todas las categorías sin filtrar por tipo
+        categorias = CategoriaChecklist.objects.all().prefetch_related('items').order_by('orden')
+        
+        categorias_con_items = []
+        for cat in categorias:
+            items = ItemChecklist.objects.filter(categoria=cat).values('id', 'nombre', 'es_critico')
+            cat_data = {
+                'id': cat.id,
+                'nombre': cat.nombre,
+                'orden': cat.orden,
+                'items': list(items)
+            }
+            categorias_con_items.append(cat_data)
+        
+        return JsonResponse({
+            'success': True,
+            'categorias': categorias_con_items
+        })
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=400)
+
+
+@require_http_methods(["GET"])
+def api_remolque_asignado(request, camion_id):
+    """
+    API que verifica si un camión tiene remolque asignado
+    """
+    try:
+        camion = get_object_or_404(Camion, id_camion=camion_id)
+        asignacion = AsignacionTractoRemolque.objects.filter(
+            camion=camion,
+            activo=True
+        ).first()
+        
+        if asignacion:
+            return JsonResponse({
+                'success': True,
+                'tiene_remolque': True,
+                'remolque_id': asignacion.remolque.id_remolque,
+                'remolque_patente': asignacion.remolque.patente
+            })
+        else:
+            return JsonResponse({
+                'success': True,
+                'tiene_remolque': False
+            })
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=400)
