@@ -14,7 +14,7 @@ from .models import (
     CategoriaChecklist, ItemChecklist, Inspeccion, 
     ResultadoItem, RegistroLubricantes, RegistroDiario
 )
-from core.models import EstadoCamion, Mantencion, Camion, Remolque, AsignacionTractoRemolque
+from core.models import DocumentoMantencion, EstadoCamion, Mantencion, Camion, Remolque, AsignacionTractoRemolque
 
 def crear_inspeccion(request):
     """Vista para crear una nueva inspección con checklist dinámico"""
@@ -53,6 +53,7 @@ def crear_inspeccion(request):
                     # 4. Generar PDF
                     resultados_items = inspeccion.resultados.all()
                     ruta_pdf = generar_pdf_inspeccion(inspeccion, resultados_items, datos_autocompletado)
+                    print(f"DEBUG: La ruta del PDF es -> {ruta_pdf}")
                     
                     # 5. Guardar registro en RegistroDiario
                     registro_diario = RegistroDiario.objects.create(
@@ -64,27 +65,40 @@ def crear_inspeccion(request):
                         novedades=inspeccion.observaciones
                     )
                     
-                    # 6. Si se renovó aceite, actualizar en Mantencion (core)
+                    # 6. Crear la Mantención "Cabecera" siempre (necesaria para el documento)
+                    # Calculamos la meta de kilómetros
+                    nueva_meta = inspeccion.km_registro
                     if inspeccion.renovó_aceite:
                         nueva_meta = inspeccion.km_registro + inspeccion.vehiculo.intervalo_mantencion
-                        
+
+                    nueva_mantencion = Mantencion.objects.create(
+                        camion=inspeccion.vehiculo,
+                        taller='ZMC',
+                        fecha_mantencion=timezone.now().date(),
+                        km_mantencion=inspeccion.km_registro,
+                        km_proxima_mantencion=nueva_meta,
+                        observaciones=f"Checklist ENAP realizado por {inspeccion.responsable}.",
+                        fecha_creacion=timezone.now()
+                    )
+
+                    # 7. Guardar el registro del PDF en DocumentoMantencion (SIEMPRE que haya PDF)
+                    if ruta_pdf:
+                        DocumentoMantencion.objects.create(
+                            mantencion=nueva_mantencion,
+                            nombre_archivo=f"Checklist_{inspeccion.vehiculo.patente}_{inspeccion.fecha_ingreso.strftime('%Y%m%d')}.pdf",
+                            ruta_archivo=ruta_pdf,
+                            tipo_documento='CHECKLIST_ENAP',
+                            fecha_subida=timezone.now()
+                        )
+                    
+                    # 8. SOLO si se renovó aceite, crear el registro específico de lubricantes
+                    if inspeccion.renovó_aceite:
                         RegistroLubricantes.objects.create(
                             inspeccion=inspeccion,
                             tipo_lubricante="ACEITE MOTOR",
                             renovado=True,
                             proximo_cambio_km=nueva_meta
                         )
-                        
-                        Mantencion.objects.create(
-                            camion=inspeccion.vehiculo,
-                            taller='ZMC',
-                            fecha_mantencion=timezone.now().date(),
-                            km_mantencion=inspeccion.km_registro,
-                            km_proxima_mantencion=nueva_meta,
-                            observaciones=f"Realizado por {inspeccion.responsable}. {inspeccion.observaciones or ''}",
-                            fecha_creacion=timezone.now()
-                        )
-                    
                     # 7. Actualizar estado actual del camión
                     if hasattr(inspeccion.vehiculo, 'estado_actual'):
                         inspeccion.vehiculo.estado_actual.kilometraje = inspeccion.km_registro
