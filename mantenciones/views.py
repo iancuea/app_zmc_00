@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from mantenciones.forms import InspeccionForm
-from .utils import obtener_datos_camion_autocompletado, generar_pdf_inspeccion
+from .utils import obtener_datos_camion_autocompletado, generar_pdf_enap_diario, generar_pdf_mantencion_tecnica
 
 # Importamos modelos de ambas apps
 from .models import (
@@ -52,7 +52,11 @@ def crear_inspeccion(request):
                     
                     # 4. Generar PDF
                     resultados_items = inspeccion.resultados.all()
-                    ruta_pdf = generar_pdf_inspeccion(inspeccion, resultados_items, datos_autocompletado)
+                    if inspeccion.tipo_inspeccion == 'DIARIO':
+                        ruta_pdf = generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado)
+                    else:
+                        ruta_pdf = generar_pdf_mantencion_tecnica(inspeccion, resultados_items, datos_autocompletado)
+
                     print(f"DEBUG: La ruta del PDF es -> {ruta_pdf}")
                     
                     # 5. Guardar registro en RegistroDiario

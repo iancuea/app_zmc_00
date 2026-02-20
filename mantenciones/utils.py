@@ -103,217 +103,128 @@ def obtener_datos_camion_autocompletado(camion):
     
     return datos
 
+def generar_pdf_mantencion_tecnica(inspeccion, resultados_items, datos_autocompletado):
+    return 0
 
-def generar_pdf_inspeccion(inspeccion, resultados_items, datos_autocompletado):
-    """
-    Genera un PDF de inspección con el formato mostrado en las imágenes
-    
-    Args:
-        inspeccion: Objeto Inspeccion
-        resultados_items: QuerySet de ResultadoItem
-        datos_autocompletado: Diccionario con datos pre-llenados
-    
-    Returns:
-        path: Ruta del archivo PDF generado
-    """
-    
-    # Crear directorio si no existe
+def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
+    # Crear directorio
     tipo_insp = inspeccion.get_tipo_inspeccion_display().lower()
     directorio = f'media/reportes_diarios/{tipo_insp}/'
     os.makedirs(directorio, exist_ok=True)
     
-    # Nombre del archivo
     fecha_str = timezone.now().strftime('%Y%m%d_%H%M%S')
     patente = inspeccion.vehiculo.patente
     nombre_pdf = f'reporte_{fecha_str}_{patente}.pdf'
     ruta_pdf = os.path.join(directorio, nombre_pdf)
     
-    # Crear documento PDF
-    doc = SimpleDocTemplate(ruta_pdf, pagesize=letter)
+    # Reducimos márgenes para que quepa todo como en la foto
+    doc = SimpleDocTemplate(ruta_pdf, pagesize=letter,
+                            rightMargin=30, leftMargin=30, 
+                            topMargin=30, bottomMargin=30)
     story = []
-    styles = getSampleStyleSheet()
     
-    # Estilos personalizados
-    title_style = ParagraphStyle(
-        'CustomTitle',
-        parent=styles['Heading1'],
-        fontSize=14,
-        textColor=colors.black,
-        spaceAfter=12,
-        alignment=TA_CENTER,
-        fontName='Helvetica-Bold'
-    )
+    # Estilos con tamaños aumentados
+    title_style = ParagraphStyle('Title', fontSize=14, alignment=TA_CENTER, fontName='Helvetica-Bold', spaceAfter=10)
+    header_label = ParagraphStyle('Label', fontSize=11, fontName='Helvetica-Bold', spaceBefore=8, spaceAfter=4)
     
-    header_style = ParagraphStyle(
-        'CustomHeader',
-        parent=styles['Normal'],
-        fontSize=9,
-        textColor=colors.black,
-        spaceAfter=6,
-        fontName='Helvetica-Bold'
-    )
-    
-    # --- ENCABEZADO CON LOGO ---
+    # Estilo de tabla para datos: Letra 10 (Clara y grande)
+    # Usamos fondo beige suave para los encabezados de celda como en tu foto
+    base_style = [
+        ['GRID', (0,0), (-1,-1), 0.7, colors.black],
+        ['FONTSIZE', (0,0), (-1,-1), 10],
+        ['VALIGN', (0,0), (-1,-1), 'MIDDLE'],
+        ['TOPPADDING', (0,0), (-1,-1), 4],
+        ['BOTTOMPADDING', (0,0), (-1,-1), 4],
+    ]
+
+    # --- PÁGINA 1: CARÁTULA COMPLETA ---
     story.append(Paragraph("ZMC TRANSPORTES - ENAP", title_style))
-    story.append(Paragraph(f"INSPECCIÓN {inspeccion.get_tipo_inspeccion_display().upper()}", title_style))
-    story.append(Spacer(1, 0.2*inch))
-    
-    # --- SECCIÓN INFORMACIÓN ---
-    story.append(Paragraph("INFORMACIÓN", header_style))
+    story.append(Paragraph("INSPECCIÓN DUEÑOS CAMIONES TANQUE", title_style))
+
+    # 1. SECCIÓN INFORMACIÓN
+    story.append(Paragraph("INFORMACIÓN", header_label))
     info_data = [
-        ['Fecha Inspección:', datos_autocompletado['fecha_inspeccion'], 'Lugar Inspección:', datos_autocompletado['lugar_inspeccion']],
-        ['Contratista:', datos_autocompletado['contratista'], 'Contrato:', datos_autocompletado['contrato']],
+        ['Fecha Inspección:', inspeccion.fecha_ingreso.strftime('%d/%m/%Y %H:%M'), 'Lugar:', getattr(inspeccion, 'lugar_inspeccion', 'N/A')],
+        ['Contratista:', 'ZENON MACIAS Y CIA. LTDA.', 'Contrato:', 'Transporte de Productos Líquidos']
     ]
-    info_table = Table(info_data, colWidths=[1.5*inch, 2*inch, 1.5*inch, 2*inch])
-    info_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, -1), colors.beige),
-        ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
-        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 0), (-1, -1), 8),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black)
-    ]))
-    story.append(info_table)
-    story.append(Spacer(1, 0.15*inch))
-    
-    # --- SECCIÓN CONDUCTOR ---
-    story.append(Paragraph("CONDUCTOR", header_style))
-    conductor_data = [
-        ['Nombre:', datos_autocompletado['conductor_nombre'], 'Antigüedad:', datos_autocompletado['conductor_antiguedad']],
-        ['Fecha Control:', datos_autocompletado['fecha_control'], '¿Apto para Trabajar?:', 'SI' if inspeccion.es_apto_operar else 'NO'],
+    t1 = Table(info_data, colWidths=[1.3*inch, 2.45*inch, 1.3*inch, 2.45*inch])
+    t1.setStyle(TableStyle(base_style))
+    story.append(t1)
+
+    # 2. SECCIÓN CONDUCTOR
+    story.append(Paragraph("CONDUCTOR", header_label))
+    cond_data = [
+        ['Nombre:', datos_autocompletado.get('conductor_nombre', 'N/A'), 'Antigüedad:', 'N/A'],
+        ['Licencia Clase:', 'A1/A2/D', 'Fecha Control:', datos_autocompletado.get('fecha_control', 'N/A')],
+        ['¿Apto para Trabajar?:  ', 'SÍ' if inspeccion.es_apto_operar else 'NO', 'Observación:', '']
     ]
-    conductor_table = Table(conductor_data, colWidths=[1.2*inch, 2.3*inch, 1.2*inch, 2.3*inch])
-    conductor_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, -1), colors.beige),
-        ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
-        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 0), (-1, -1), 8),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black)
-    ]))
-    story.append(conductor_table)
-    story.append(Spacer(1, 0.15*inch))
-    
-    # --- SECCIÓN CAMIÓN ---
-    story.append(Paragraph("CAMIÓN", header_style))
+    t2 = Table(cond_data, colWidths=[1.8*inch, 1.95*inch, 1.3*inch, 2.45*inch])
+    t2.setStyle(TableStyle(base_style))
+    story.append(t2)
+
+    # 3. SECCIÓN CAMIÓN (6 columnas para que quepa todo el detalle técnico)
+    story.append(Paragraph("CAMIÓN", header_label))
+    c_w = 7.5*inch / 6
     camion_data = [
-        ['Marca:', datos_autocompletado['camion_marca'], 'Modelo:', datos_autocompletado['camion_modelo'], 'Año:', str(datos_autocompletado['camion_anio'])],
-        ['Patente:', datos_autocompletado['camion_patente'], 'Odómetro:', str(inspeccion.km_registro), 'Vto. RT:', datos_autocompletado['camion_vto_rt']],
-        ['Vto. PC:', datos_autocompletado['camion_vto_pc'], 'Vto. SOAP:', datos_autocompletado['camion_vto_soap'], 'Vto. TC8:', datos_autocompletado['camion_vto_tc8']],
+        ['Marca:', datos_autocompletado.get('camion_marca', 'N/A'), 'Modelo:', datos_autocompletado.get('camion_modelo', 'N/A'), 'Año:', str(datos_autocompletado.get('camion_anio', 'N/A'))],
+        ['Patente:', inspeccion.vehiculo.patente, 'Odómetro:', f"{inspeccion.km_registro:,}", 'Vto. RT:', datos_autocompletado.get('camion_vto_rt', 'N/A')],
+        ['Vto. PC:', datos_autocompletado.get('camion_vto_pc', 'N/A'), 'Vto. SOAP:', 'N/A', 'Vto. TC8:', datos_autocompletado.get('camion_vto_tc8', 'N/A')],
     ]
-    camion_table = Table(camion_data, colWidths=[1.3*inch, 1.7*inch, 1.3*inch, 1.7*inch, 1.3*inch, 1.7*inch])
-    camion_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, -1), colors.beige),
-        ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
-        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 0), (-1, -1), 7),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black)
-    ]))
-    story.append(camion_table)
-    story.append(Spacer(1, 0.15*inch))
-    
-    # --- SECCIÓN ESTANQUE (si tiene remolque) ---
-    if datos_autocompletado['tiene_remolque']:
-        story.append(Paragraph("ESTANQUE / REMOLQUE", header_style))
-        estanque_data = [
-            ['Marca:', datos_autocompletado['remolque_marca'], 'Modelo:', datos_autocompletado['remolque_modelo'], 'Año:', str(datos_autocompletado['remolque_anio'])],
-            ['Patente:', datos_autocompletado['remolque_patente'], 'Cap. m³:', datos_autocompletado['remolque_capacidad'], 'Vto. RT:', datos_autocompletado['remolque_vto_rt']],
-            ['Vto. PC:', datos_autocompletado['remolque_vto_pc'], 'Vto. SOAP:', datos_autocompletado['remolque_vto_soap'], 'Vto. TC8:', datos_autocompletado['remolque_vto_tc8']],
-        ]
-        estanque_table = Table(estanque_data, colWidths=[1.3*inch, 1.7*inch, 1.3*inch, 1.7*inch, 1.3*inch, 1.7*inch])
-        estanque_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, -1), colors.beige),
-            ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
-            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-            ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
-            ('FONTSIZE', (0, 0), (-1, -1), 7),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
-            ('GRID', (0, 0), (-1, -1), 1, colors.black)
-        ]))
-        story.append(estanque_table)
-        story.append(Spacer(1, 0.15*inch))
-    
-    # --- SECCIÓN CHECKLIST ---
-    story.append(Paragraph("ITEMS DE INSPECCIÓN", header_style))
+    t3 = Table(camion_data, colWidths=[c_w]*6)
+    t3.setStyle(TableStyle(base_style + [('FONTSIZE', (0,0), (-1,-1), 9)])) # Bajamos a 9 solo aquí para que no se amontone
+    story.append(t3)
+
+    # 4. SECCIÓN ESTANQUE
+    story.append(Paragraph("ESTANQUE / REMOLQUE", header_label))
+    est_data = [
+        ['Marca:', 'N/A', 'Modelo:', 'N/A', 'Año:', 'N/A'],
+        ['Patente:', 'N/A', 'Cap. m³:', '15', 'Vto. RT:', 'N/A'],
+        ['Vto. PC:', 'N/A', 'Vto. TC8:', 'N/A', 'F. Hermeticidad:', 'N/A'],
+    ]
+    t4 = Table(est_data, colWidths=[c_w]*6)
+    t4.setStyle(TableStyle(base_style + [('FONTSIZE', (0,0), (-1,-1), 9)]))
+    story.append(t4)
+
+    # --- SALTO DE PÁGINA ---
+    story.append(PageBreak())
+
+    # --- PÁGINA 2 EN ADELANTE: CHECKLIST ---
+    story.append(Paragraph("DETALLE DE ITEMS DE INSPECCIÓN", title_style))
     
     # Agrupar items por categoría
     items_por_categoria = {}
     for resultado in resultados_items:
-        categoria = resultado.item.categoria.nombre
-        if categoria not in items_por_categoria:
-            items_por_categoria[categoria] = []
-        items_por_categoria[categoria].append(resultado)
-    
-    # Crear tabla para cada categoría
+        cat = resultado.item.categoria.nombre
+        if cat not in items_por_categoria: items_por_categoria[cat] = []
+        items_por_categoria[cat].append(resultado)
+
     for categoria, resultados in items_por_categoria.items():
-        story.append(Paragraph(f"{categoria}", ParagraphStyle(
-            'SubHeader',
-            parent=styles['Normal'],
-            fontSize=8,
-            textColor=colors.black,
-            spaceAfter=4,
-            fontName='Helvetica-Bold'
-        )))
+        story.append(Paragraph(categoria.upper(), header_label))
+        data = [['N°', 'Descripción', 'Estado', 'Observación']]
+        for idx, res in enumerate(resultados, 1):
+            data.append([str(idx), res.item.nombre, res.get_estado_display(), res.observacion or ''])
         
-        checklist_data = [['N°', 'Descripción', 'Respuesta', 'Observación']]
-        for idx, resultado in enumerate(resultados, 1):
-            respuesta_display = resultado.get_estado_display() if hasattr(resultado, 'get_estado_display') else resultado.estado
-            checklist_data.append([
-                str(idx),
-                resultado.item.nombre,
-                respuesta_display,
-                resultado.observacion or ''
-            ])
-        
-        checklist_table = Table(checklist_data, colWidths=[0.4*inch, 3.2*inch, 1*inch, 1.4*inch])
-        checklist_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, -1), 7),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
-            ('GRID', (0, 0), (-1, -1), 1, colors.black),
-            ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.lightgrey])
+        # El checklist tiene letra 10 para máxima claridad
+        t_check = Table(data, colWidths=[0.5*inch, 3.4*inch, 1.2*inch, 2.4*inch])
+        t_check.setStyle(TableStyle([
+            ['GRID', (0,0), (-1,-1), 0.5, colors.black],
+            ['FONTSIZE', (0,0), (-1,-1), 10],
+            ['BACKGROUND', (0,0), (-1,0), colors.lightgrey],
+            ['FONTNAME', (0,0), (-1,0), 'Helvetica-Bold'],
         ]))
-        story.append(checklist_table)
-        story.append(Spacer(1, 0.1*inch))
-    
-    # --- OBSERVACIONES GENERALES ---
-    story.append(Spacer(1, 0.2*inch))
-    story.append(Paragraph("OBSERVACIONES GENERALES", header_style))
-    obs_box = Table([
-        [inspeccion.observaciones or '']
-    ], colWidths=[7.5*inch])
-    obs_box.setStyle(TableStyle([
-        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 0), (-1, -1), 8),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 40),  # Espacio para firma
-        ('GRID', (0, 0), (-1, -1), 1, colors.black)
-    ]))
-    story.append(obs_box)
-    
-    # --- FIRMAS ---
-    story.append(Spacer(1, 0.3*inch))
+        story.append(t_check)
+        story.append(Spacer(1, 10))
+
+    # Firmas
+    story.append(Spacer(1, 40))
     firma_data = [
-        ['_____________________', '_____________________'],
-        ['Firma Responsable', 'Firma Dueño o Representante'],
+        ['_______________________', '_______________________'],
+        [f'Firma: {inspeccion.responsable}', 'Firma: Representante ZMC'],
+        ['Responsable Inspección', 'Control de Flota']
     ]
-    firma_table = Table(firma_data, colWidths=[3.75*inch, 3.75*inch])
-    firma_table.setStyle(TableStyle([
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 0), (-1, -1), 8),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
-    ]))
-    story.append(firma_table)
-    
-    # Construir PDF
+    t_firma = Table(firma_data, colWidths=[3.75*inch, 3.75*inch])
+    t_firma.setStyle(TableStyle([('ALIGN', (0, 0), (-1, -1), 'CENTER'), ('FONTSIZE', (0,0), (-1,-1), 10)]))
+    story.append(t_firma)
+
     doc.build(story)
-    
     return ruta_pdf
