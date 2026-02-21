@@ -136,3 +136,5 @@ class RegistroDiario(models.Model):
     def __str__(self):
         estado = "APTO" if self.es_apto else "NO APTO"
         return f"{self.vehiculo.patente} - {self.fecha.strftime('%d/%m/%Y')} - {estado}"
+    
+    

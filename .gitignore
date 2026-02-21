@@ -29,8 +29,10 @@ wheels/
 db.sqlite3
 db.sqlite3-journal
 media/
-static/
+/static/
 staticfiles/
+# NO ignorar las carpetas static que están dentro de las apps
+!**/static/**
 .env
 .elasticbeanstalk/
 
