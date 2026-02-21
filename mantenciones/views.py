@@ -27,7 +27,7 @@ def crear_inspeccion(request):
                 with transaction.atomic():
                     # 1. Guardamos la Inspección
                     inspeccion = form.save(commit=False)
-                    inspeccion.fecha_ingreso = timezone.now()
+                    inspeccion.fecha_ingreso = timezone.localtime(timezone.now())
                     inspeccion.save()
                     
                     # 2. Procesar resultados del checklist
@@ -49,6 +49,8 @@ def crear_inspeccion(request):
                     # 3. Obtener datos auto-completados
                     datos_autocompletado = obtener_datos_camion_autocompletado(inspeccion.vehiculo)
                     datos_autocompletado['apto_trabajar'] = 'SI' if inspeccion.es_apto_operar else 'NO'
+                    fecha_chile = timezone.localtime(inspeccion.fecha_ingreso)
+                    datos_autocompletado['fecha_inspeccion'] = fecha_chile.strftime('%d/%m/%Y %H:%M')
                     
                     # 4. Generar PDF
                     resultados_items = inspeccion.resultados.all()

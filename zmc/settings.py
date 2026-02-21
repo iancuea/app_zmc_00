@@ -116,7 +116,7 @@ USE_L10N = True
 
 USE_THOUSAND_SEPARATOR = True
 
-TIME_ZONE = "UTC"
+TIME_ZONE = 'America/Santiago'
 
 USE_I18N = True
 

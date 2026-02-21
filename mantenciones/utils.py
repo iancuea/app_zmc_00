@@ -18,7 +18,7 @@ def obtener_datos_camion_autocompletado(camion):
     basado en el camión seleccionado
     """
     datos = {
-        'fecha_inspeccion': timezone.now().strftime('%d/%m/%Y %H:%M'),
+        'fecha_inspeccion': timezone.localtime(timezone.now()).strftime('%d/%m/%Y %H:%M'),
         'lugar_inspeccion': camion.estado_actual.get_base_actual_display() if hasattr(camion, 'estado_actual') else 'N/A',
         'contratista': 'ENAP',
         'contrato': 'Transporte de Productos Líquidos',
@@ -131,10 +131,11 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
     # Usamos fondo beige suave para los encabezados de celda como en tu foto
     base_style = [
         ['GRID', (0,0), (-1,-1), 0.7, colors.black],
-        ['FONTSIZE', (0,0), (-1,-1), 10],
+        ['FONTSIZE', (0,0), (-1,-1), 11], 
         ['VALIGN', (0,0), (-1,-1), 'MIDDLE'],
-        ['TOPPADDING', (0,0), (-1,-1), 4],
-        ['BOTTOMPADDING', (0,0), (-1,-1), 4],
+        ['LEFTPADDING', (0,0), (-1,-1), 10],
+        ['TOPPADDING', (0,0), (-1,-1), 6],
+        ['BOTTOMPADDING', (0,0), (-1,-1), 6],
     ]
 
     # --- PÁGINA 1: CARÁTULA COMPLETA ---
@@ -144,31 +145,43 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
     # 1. SECCIÓN INFORMACIÓN
     story.append(Paragraph("INFORMACIÓN", header_label))
     info_data = [
-        ['Fecha Inspección:', inspeccion.fecha_ingreso.strftime('%d/%m/%Y %H:%M'), 'Lugar:', getattr(inspeccion, 'lugar_inspeccion', 'N/A')],
-        ['Contratista:', 'ZENON MACIAS Y CIA. LTDA.', 'Contrato:', 'Transporte de Productos Líquidos']
+        ['Fecha Inspección:', datos_autocompletado['fecha_inspeccion'], 
+         'Lugar:', datos_autocompletado['lugar_inspeccion']],
+        ['Contratista:', 'ZENON MACIAS Y CIA. LTDA.', 
+         'Contrato:', datos_autocompletado['contrato']],
     ]
     t1 = Table(info_data, colWidths=[1.3*inch, 2.45*inch, 1.3*inch, 2.45*inch])
-    t1.setStyle(TableStyle(base_style))
+    t1.setStyle(TableStyle(base_style + [('FONTSIZE', (0,0), (-1,-1), 9)]))
     story.append(t1)
 
     # 2. SECCIÓN CONDUCTOR
     story.append(Paragraph("CONDUCTOR", header_label))
     cond_data = [
-        ['Nombre:', datos_autocompletado.get('conductor_nombre', 'N/A'), 'Antigüedad:', 'N/A'],
-        ['Licencia Clase:', 'A1/A2/D', 'Fecha Control:', datos_autocompletado.get('fecha_control', 'N/A')],
-        ['¿Apto para Trabajar?:  ', 'SÍ' if inspeccion.es_apto_operar else 'NO', 'Observación:', '']
+        ['Nombre Conductor:', datos_autocompletado['conductor_nombre'], '', ''], # Fila 1
+        ['Antigüedad:', datos_autocompletado.get('conductor_antiguedad', 'N/A'), 'Licencia:', 'A1/A2/D'], # Fila 2
+        ['Fecha Control:', datos_autocompletado['fecha_control'], 'Lugar:', datos_autocompletado['lugar_inspeccion']], # Fila 3
+        ['¿Apto para Trabajar?:', datos_autocompletado['apto_trabajar'], 'Observaciones:', ''], # Fila 4
     ]
     t2 = Table(cond_data, colWidths=[1.8*inch, 1.95*inch, 1.3*inch, 2.45*inch])
-    t2.setStyle(TableStyle(base_style))
+    t2.setStyle(TableStyle([
+        ['GRID', (0,0), (-1,-1), 0.7, colors.black],
+        ['FONTSIZE', (0,0), (-1,-1), 11], 
+        ['VALIGN', (0,0), (-1,-1), 'MIDDLE'],
+        ['LEFTPADDING', (0,0), (-1,-1), 10],
+        ['TOPPADDING', (0,0), (-1,-1), 6],
+        ['BOTTOMPADDING', (0,0), (-1,-1), 6],
+        ['SPAN', (1, 0), (3, 0)], 
+    ]))
     story.append(t2)
+    #story.append(Spacer(1, 15))
 
     # 3. SECCIÓN CAMIÓN (6 columnas para que quepa todo el detalle técnico)
     story.append(Paragraph("CAMIÓN", header_label))
     c_w = 7.5*inch / 6
     camion_data = [
-        ['Marca:', datos_autocompletado.get('camion_marca', 'N/A'), 'Modelo:', datos_autocompletado.get('camion_modelo', 'N/A'), 'Año:', str(datos_autocompletado.get('camion_anio', 'N/A'))],
-        ['Patente:', inspeccion.vehiculo.patente, 'Odómetro:', f"{inspeccion.km_registro:,}", 'Vto. RT:', datos_autocompletado.get('camion_vto_rt', 'N/A')],
-        ['Vto. PC:', datos_autocompletado.get('camion_vto_pc', 'N/A'), 'Vto. SOAP:', 'N/A', 'Vto. TC8:', datos_autocompletado.get('camion_vto_tc8', 'N/A')],
+        ['Marca:', datos_autocompletado['camion_marca'], 'Modelo:', datos_autocompletado['camion_modelo'], 'Año:', datos_autocompletado['camion_anio']],
+        ['Patente:', datos_autocompletado['camion_patente'], 'Odómetro:', f"{inspeccion.km_registro:,}", 'Vto. RT:', datos_autocompletado['camion_vto_rt']],
+        ['Vto. PC:', datos_autocompletado['camion_vto_pc'], 'Vto. SOAP:', datos_autocompletado['camion_vto_soap'], 'Vto. TC8:', datos_autocompletado['camion_vto_tc8']],
     ]
     t3 = Table(camion_data, colWidths=[c_w]*6)
     t3.setStyle(TableStyle(base_style + [('FONTSIZE', (0,0), (-1,-1), 9)])) # Bajamos a 9 solo aquí para que no se amontone
@@ -177,8 +190,8 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
     # 4. SECCIÓN ESTANQUE
     story.append(Paragraph("ESTANQUE / REMOLQUE", header_label))
     est_data = [
-        ['Marca:', 'N/A', 'Modelo:', 'N/A', 'Año:', 'N/A'],
-        ['Patente:', 'N/A', 'Cap. m³:', '15', 'Vto. RT:', 'N/A'],
+        ['Marca:',  datos_autocompletado['remolque_marca'], 'Modelo:', datos_autocompletado['remolque_modelo'], 'Año:', datos_autocompletado['remolque_anio']],
+        ['Patente:', datos_autocompletado['remolque_patente'], 'Cap. m³:', datos_autocompletado['remolque_capacidad'], 'Vto. RT:', 'N/A'],
         ['Vto. PC:', 'N/A', 'Vto. TC8:', 'N/A', 'F. Hermeticidad:', 'N/A'],
     ]
     t4 = Table(est_data, colWidths=[c_w]*6)

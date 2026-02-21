@@ -1,343 +1,113 @@
 {% extends 'mantenciones/base.html' %}
 {% load static %}
 
-{% block title %}Crear Inspección{% endblock %}
+{% block title %}Crear Inspección | ZMC{% endblock %}
 
 {% block content %}
-<div class="container-fluid mt-5">
-    <div class="row">
-        <div class="col-12">
-            <h1>📋 Nueva Inspección</h1>
-            <hr>
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <h3 class="mb-0">📋 Nueva Inspección de Flota</h3>
         </div>
-    </div>
+        <div class="card-body">
+            <form id="inspeccion-form" method="post">
+                {% csrf_token %}
 
-    <!-- FORMULARIO PRINCIPAL -->
-    <form id="inspeccion-form" method="post">
-        {% csrf_token %}
-        
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="id_tipo_inspeccion">Tipo de Inspección *</label>
-                    {{ form.tipo_inspeccion }}
-                    {% if form.tipo_inspeccion.errors %}
-                        <div class="alert alert-danger mt-2">{{ form.tipo_inspeccion.errors }}</div>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="id_vehiculo">Patente Camión *</label>
-                    {{ form.vehiculo }}
-                    {% if form.vehiculo.errors %}
-                        <div class="alert alert-danger mt-2">{{ form.vehiculo.errors }}</div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <!-- DATOS AUTO-COMPLETADOS (OCULTOS) -->
-        <div class="row mb-4" id="datos-autocompletados" style="display: none;">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Lugar de Inspección:</label>
-                    <input type="text" id="lugar-inspeccion" class="form-control" disabled>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Conductor:</label>
-                    <input type="text" id="conductor-nombre" class="form-control" disabled>
-                </div>
-            </div>
-        </div>
-
-        <!-- REMOLQUE (SI APLICA) -->
-        <div class="row mb-4" id="seccion-remolque" style="display: none;">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Patente Remolque (Auto-asignado):</label>
-                    <input type="text" id="remolque-patente" class="form-control" disabled>
-                    {{ form.remolque }}
-                </div>
-            </div>
-        </div>
-
-        <!-- RESPONSABLE Y KM -->
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="id_responsable">Responsable de Inspección *</label>
-                    {{ form.responsable }}
-                    {% if form.responsable.errors %}
-                        <div class="alert alert-danger mt-2">{{ form.responsable.errors }}</div>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="id_km_registro">Kilometraje Actual *</label>
-                    {{ form.km_registro }}
-                    {% if form.km_registro.errors %}
-                        <div class="alert alert-danger mt-2">{{ form.km_registro.errors }}</div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <!-- ESTADO Y OBSERVACIONES -->
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="form-check form-switch">
-                    {{ form.es_apto_operar }}
-                    <label class="form-check-label" for="id_es_apto_operar">
-                        ¿Apto para Operar?
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="form-group">
-                    <label for="id_observaciones">Observaciones Generales</label>
-                    {{ form.observaciones }}
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <!-- CHECKLIST DINÁMICO -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <h3>📝 Checklist de Inspección</h3>
-                <div id="categorias-checklist">
-                    <p class="text-muted">Selecciona tipo de inspección y camión para ver el checklist...</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- BOTONES -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary btn-lg">
-                    <i class="fas fa-save"></i> Guardar Inspección y Generar PDF
-                </button>
-                <a href="{% url 'camion_list' %}" class="btn btn-secondary btn-lg">
-                    <i class="fas fa-times"></i> Cancelar
-                </a>
-            </div>
-        </div>
-
-        <!-- CAMPO OCULTO PARA ENVIAR DATOS DEL CHECKLIST -->
-        <input type="hidden" id="resultados-checklist" name="resultados_checklist" value="[]">
-
-    </form>
-</div>
-
-<!-- JAVASCRIPT PARA FUNCIONAMIENTO DINÁMICO -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const tipoInspeccionSelect = document.getElementById('id_tipo_inspeccion');
-    const vehiculoSelect = document.getElementById('id_vehiculo');
-    const categoriasChecklistDiv = document.getElementById('categorias-checklist');
-    const resultadosChecklistInput = document.getElementById('resultados-checklist');
-    const datosAutocompletadosDiv = document.getElementById('datos-autocompletados');
-    const seccionRemolqueDiv = document.getElementById('seccion-remolque');
-    const lugarInspeccionInput = document.getElementById('lugar-inspeccion');
-    const conductorNombreInput = document.getElementById('conductor-nombre');
-    const remolquePatente = document.getElementById('remolque-patente');
-
-    // Evento cuando cambia el tipo de inspección
-    tipoInspeccionSelect.addEventListener('change', cargarCategorias);
-    
-    // Evento cuando cambia el vehículo
-    vehiculoSelect.addEventListener('change', cargarDatosAutocompletados);
-
-    async function cargarCategorias() {
-        const tipoInspeccion = tipoInspeccionSelect.value;
-        if (!tipoInspeccion) {
-            categoriasChecklistDiv.innerHTML = '<p class="text-muted">Selecciona un tipo de inspección...</p>';
-            return;
-        }
-
-        try {
-            const response = await fetch(`/mantenciones/api/categorias/${tipoInspeccion}/`);
-            const data = await response.json();
-
-            if (data.success) {
-                renderizarCategorias(data.categorias);
-            } else {
-                categoriasChecklistDiv.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
-            }
-        } catch (error) {
-            console.error('Error cargando categorías:', error);
-            categoriasChecklistDiv.innerHTML = '<div class="alert alert-danger">Error al cargar checklist</div>';
-        }
-    }
-
-    async function cargarDatosAutocompletados() {
-        const camionId = vehiculoSelect.value;
-        if (!camionId) {
-            datosAutocompletadosDiv.style.display = 'none';
-            seccionRemolqueDiv.style.display = 'none';
-            return;
-        }
-
-        try {
-            const response = await fetch(`/mantenciones/api/datos-autocompletado/${camionId}/`);
-            const data = await response.json();
-
-            if (data.success) {
-                const datos = data.datos;
-                lugarInspeccionInput.value = datos.lugar_inspeccion;
-                conductorNombreInput.value = datos.conductor_nombre;
-                datosAutocompletadosDiv.style.display = 'flex';
-
-                // Mostrar remolque si existe
-                if (datos.tiene_remolque) {
-                    remolquePatente.value = datos.remolque_patente;
-                    document.getElementById('id_remolque').value = datos.remolque_id || '';
-                    seccionRemolqueDiv.style.display = 'flex';
-                } else {
-                    seccionRemolqueDiv.style.display = 'none';
-                    document.getElementById('id_remolque').value = '';
-                }
-
-                // Recargar categorías si ya hay una seleccionada
-                if (tipoInspeccionSelect.value) {
-                    cargarCategorias();
-                }
-            }
-        } catch (error) {
-            console.error('Error cargando datos:', error);
-        }
-    }
-
-    function renderizarCategorias(categorias) {
-        let html = '';
-
-        categorias.forEach(categoria => {
-            html += `
-                <div class="card mb-3">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">${categoria.nombre}</h5>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Tipo de Inspección *</label>
+                        {{ form.tipo_inspeccion }}
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>N°</th>
-                                        <th>Descripción</th>
-                                        <th colspan="3" class="text-center">Respuesta</th>
-                                        <th>Observación</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-            `;
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Patente Camión *</label>
+                        {{ form.vehiculo }}
+                    </div>
+                </div>
 
-            categoria.items.forEach((item, index) => {
-                html += `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${item.nombre}</td>
-                        <td class="text-center">
-                            <input type="radio" name="estado_${item.id}" value="B" class="form-check-input item-radio" 
-                                   data-item-id="${item.id}"> B
-                        </td>
-                        <td class="text-center">
-                            <input type="radio" name="estado_${item.id}" value="R" class="form-check-input item-radio" 
-                                   data-item-id="${item.id}"> R
-                        </td>
-                        <td class="text-center">
-                            <input type="radio" name="estado_${item.id}" value="M" class="form-check-input item-radio" 
-                                   data-item-id="${item.id}"> M
-                        </td>
-                        <td>
-                            <input type="text" class="form-control form-control-sm item-observacion" 
-                                   data-item-id="${item.id}" placeholder="Obs...">
-                        </td>
-                    </tr>
-                `;
-            });
+                <div id="datos-autocompletados" class="row mb-4 p-3 bg-light border rounded" style="display: none;">
+                    <div class="col-md-4">
+                        <label class="text-muted small">Lugar Actual:</label>
+                        <input type="text" id="lugar-inspeccion" class="form-control form-control-sm" disabled>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-muted small">Conductor Asignado:</label>
+                        <input type="text" id="conductor-nombre" class="form-control form-control-sm" disabled>
+                    </div>
+                    <div id="seccion-remolque" class="col-md-4" style="display: none;">
+                        <label class="text-muted small">Remolque:</label>
+                        <input type="text" id="remolque-patente" class="form-control form-control-sm" disabled>
+                        <input type="hidden" name="remolque" id="id_remolque">
+                    </div>
+                </div>
 
-            html += `
-                                </tbody>
-                            </table>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Kilometraje Actual (Odómetro) *</label>
+                        {{ form.km_registro }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Responsable de Inspección *</label>
+                        {{ form.responsable }}
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-check form-switch custom-switch">
+                            {{ form.es_apto_operar }}
+                            <label class="form-check-label fw-bold" for="id_es_apto_operar">¿Unidad apta para operar?</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check form-switch custom-switch">
+                            {{ form.renovó_aceite }}
+                            <label class="form-check-label fw-bold" for="id_renovó_aceite">¿Se realizó cambio de aceite motor?</label>
                         </div>
                     </div>
                 </div>
-            `;
-        });
 
-        categoriasChecklistDiv.innerHTML = html;
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Observaciones Generales</label>
+                    {{ form.observaciones }}
+                </div>
 
-        // Agregar event listeners a los radios
-        document.querySelectorAll('.item-radio').forEach(radio => {
-            radio.addEventListener('change', actualizarChecklist);
-        });
+                <hr class="my-5">
 
-        // Agregar event listeners a las observaciones
-        document.querySelectorAll('.item-observacion').forEach(input => {
-            input.addEventListener('input', actualizarChecklist);
-        });
-    }
+                <div class="checklist-container">
+                    <h4 class="mb-4">📝 Items de Inspección</h4>
+                    <div id="categorias-checklist">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> Seleccione un camión y tipo de inspección para cargar los puntos de revisión.
+                        </div>
+                    </div>
+                </div>
 
-    function actualizarChecklist() {
-        const resultados = [];
-        
-        document.querySelectorAll('.item-radio:checked').forEach(radio => {
-            const itemId = radio.dataset.itemId;
-            const observacion = document.querySelector(`.item-observacion[data-item-id="${itemId}"]`).value;
-            
-            resultados.push({
-                item_id: itemId,
-                estado: radio.value,
-                observacion: observacion
-            });
-        });
+                <input type="hidden" id="resultados-checklist" name="resultados_checklist" value="[]">
 
-        resultadosChecklistInput.value = JSON.stringify(resultados);
-    }
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-5">
+                    <button type="button" onclick="llenarTodo()" class="btn btn-outline-warning me-md-2">
+                        ⚡ Llenar Rápido (Prueba)
+                    </button>
+                    <a href="{% url 'camion_list' %}" class="btn btn-secondary me-md-2">Cancelar</a>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-save"></i> Guardar y Generar PDF
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
-    // Validar antes de enviar
-    document.getElementById('inspeccion-form').addEventListener('submit', function(e) {
-        const tipoInspeccion = tipoInspeccionSelect.value;
-        const vehiculo = vehiculoSelect.value;
-        const km = document.getElementById('id_km_registro').value;
-        const responsable = document.getElementById('id_responsable').value;
-        const resultados = JSON.parse(resultadosChecklistInput.value || '[]');
+{% block extra_js %}
+<script src="{% static 'mantenciones/js/inspeccion.js' %}"></script>
+{% endblock %}
 
-        if (!tipoInspeccion || !vehiculo || !km || !responsable) {
-            e.preventDefault();
-            alert('Por favor completa todos los campos requeridos');
-            return false;
-        }
-
-        if (resultados.length === 0) {
-            e.preventDefault();
-            alert('Por favor completa el checklist de inspección');
-            return false;
-        }
-    });
-});
-</script>
-
+{% block extra_css %}
 <style>
-.item-radio {
-    cursor: pointer;
-}
-
-.table-responsive {
-    font-size: 0.9rem;
-}
-
-.card-header {
-    background-color: #0056b3 !important;
-}
+    .custom-switch .form-check-input { width: 3em; height: 1.5em; cursor: pointer; }
+    .card-header { border-bottom: 2px solid #ffcc00; } /* Un toque de color ZMC */
+    .item-radio { transform: scale(1.3); cursor: pointer; }
+    .table thead th { background-color: #f8f9fa; text-transform: uppercase; font-size: 0.8rem; }
 </style>
-
 {% endblock %}
