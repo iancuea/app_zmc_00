@@ -7,22 +7,34 @@
     <title>{% block title %}FleetManager Pro{% endblock %}</title>
     
     <link rel="icon" href="https://fav.farm/🚛">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="{% static 'core/css/camiones.css' %}?v=1.1">
+
+    {% block extra_css %}{% endblock %}
+
 </head>
 <body class="app-layout">
 
 <header class="navbar-pro">
     <div class="navbar-container">
         <div class="brand">
-            <span class="brand-icon">🚛</span>
-            <span class="brand-name">Fleet<strong>Manager</strong></span>
+            <span class="brand-name">ZMC <strong>Logística</strong></span>
         </div>
+
         <nav class="main-nav">
-            <a href="/camiones/" class="nav-link active">Panel de Flota</a>
-            <a href="#" class="nav-link">Historial</a>
-            <a href="#" class="nav-link">Reportes</a>
+            <a href="/camiones/" class="nav-link active">
+                <span class="nav-icon">🚚</span> <span class="nav-text">Panel</span>
+            </a>
+            <a href="#" class="nav-link">
+                <span class="nav-icon">📅</span> <span class="nav-text">Historial</span>
+            </a>
+            <a href="#" class="nav-link">
+                <span class="nav-icon">📊</span> <span class="nav-text">Reportes</span>
+            </a>
         </nav>
     </div>
 </header>

@@ -3,95 +3,114 @@
 
 {% block title %}Crear Inspección | ZMC{% endblock %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'mantenciones/css/inspeccion_mobile.css' %}?v=3.0">
+{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <div class="card shadow">
-        <div class="card-header bg-dark text-white">
-            <h3 class="mb-0">📋 Nueva Inspección de Flota</h3>
+<div class="container mt-4 mb-5">
+    <div class="card shadow-sm border-0" style="border-radius: 20px; overflow: hidden;">
+        <div class="card-header bg-dark text-white py-3">
+            <h3 class="mb-0 fs-5 text-center text-uppercase fw-800">📋 Registro de Inspección</h3>
         </div>
-        <div class="card-body">
+        <div class="card-body bg-light">
             <form id="inspeccion-form" method="post">
                 {% csrf_token %}
 
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Tipo de Inspección *</label>
-                        {{ form.tipo_inspeccion }}
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Patente Camión *</label>
-                        {{ form.vehiculo }}
-                    </div>
-                </div>
-
-                <div id="datos-autocompletados" class="row mb-4 p-3 bg-light border rounded" style="display: none;">
-                    <div class="col-md-4">
-                        <label class="text-muted small">Lugar Actual:</label>
-                        <input type="text" id="lugar-inspeccion" class="form-control form-control-sm" disabled>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="text-muted small">Conductor Asignado:</label>
-                        <input type="text" id="conductor-nombre" class="form-control form-control-sm" disabled>
-                    </div>
-                    <div id="seccion-remolque" class="col-md-4" style="display: none;">
-                        <label class="text-muted small">Remolque:</label>
-                        <input type="text" id="remolque-patente" class="form-control form-control-sm" disabled>
-                        <input type="hidden" name="remolque" id="id_remolque">
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Kilometraje Actual (Odómetro) *</label>
-                        {{ form.km_registro }}
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Responsable de Inspección *</label>
-                        {{ form.responsable }}
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <div class="form-check form-switch custom-switch">
-                            {{ form.es_apto_operar }}
-                            <label class="form-check-label fw-bold" for="id_es_apto_operar">¿Unidad apta para operar?</label>
+                <div id="step-1" class="form-step">
+                    <div class="row g-3 mb-4">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-muted">TIPO</label>
+                            {{ form.tipo_inspeccion }}
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-check form-switch custom-switch">
-                            {{ form.renovó_aceite }}
-                            <label class="form-check-label fw-bold" for="id_renovó_aceite">¿Se realizó cambio de aceite motor?</label>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-muted">PATENTE</label>
+                            {{ form.vehiculo }}
                         </div>
                     </div>
                 </div>
 
-                <div class="mb-4">
-                    <label class="form-label fw-bold">Observaciones Generales</label>
-                    {{ form.observaciones }}
+                <div id="step-2" class="form-step" style="display: none;">
+                    <div id="datos-autocompletados" class="row g-2 mb-4 p-3 bg-white rounded shadow-sm border">
+                        <div class="col-6 border-end">
+                            <label class="text-muted d-block" style="font-size: 0.7rem;">LUGAR</label>
+                            <input type="text" id="lugar-inspeccion" class="form-control-plaintext fw-bold p-0" style="font-size: 0.9rem;" readonly>
+                        </div>
+                        <div class="col-6 ps-3">
+                            <label class="text-muted d-block" style="font-size: 0.7rem;">CONDUCTOR</label>
+                            <input type="text" id="conductor-nombre" class="form-control-plaintext fw-bold p-0" style="font-size: 0.9rem;" readonly>
+                        </div>
+                        <div id="seccion-remolque" class="col-12 mt-2 pt-2 border-top" style="display: none;">
+                            <label class="text-muted d-block" style="font-size: 0.7rem;">REMOLQUE ASIGNADO</label>
+                            <input type="text" id="remolque-patente" class="form-control-plaintext fw-bold p-0 text-primary" style="font-size: 0.9rem;" readonly>
+                            <input type="hidden" name="remolque" id="id_remolque">
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted">KM ACTUAL (ODÓMETRO)</label>
+                            {{ form.km_registro }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted">RESPONSABLE</label>
+                            {{ form.responsable }}
+                        </div>
+                    </div>
                 </div>
 
-                <hr class="my-5">
-
-                <div class="checklist-container">
-                    <h4 class="mb-4">📝 Items de Inspección</h4>
-                    <div id="categorias-checklist">
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i> Seleccione un camión y tipo de inspección para cargar los puntos de revisión.
+                <div id="step-3" class="form-step" style="display: none;">
+                    <div class="row mb-4">
+                        <div class="col-12 mb-3">
+                            <div class="form-check form-switch p-0 d-flex justify-content-between align-items-center bg-white p-3 rounded border shadow-sm">
+                                <label class="form-check-label fw-bold" for="id_es_apto_operar">¿APTO PARA OPERAR?</label>
+                                {{ form.es_apto_operar }}
+                            </div>
                         </div>
+                        <div class="col-12">
+                            <div class="form-check form-switch p-0 d-flex justify-content-between align-items-center bg-white p-3 rounded border shadow-sm">
+                                <label class="form-check-label fw-bold text-primary" for="id_renovó_aceite">¿CAMBIO DE ACEITE MOTOR?</label>
+                                {{ form.renovó_aceite }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-muted">OBSERVACIONES GENERALES</label>
+                        {{ form.observaciones }}
+                    </div>
+                </div>
+
+                <div id="step-4" class="form-step" style="display: none;">
+                    <div id="categorias-checklist"></div>
+                </div>
+
+                <div id="categorias-checklist" class="mt-5">
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary mb-2" role="status"></div>
+                        <p class="text-muted">Esperando selección de camión...</p>
                     </div>
                 </div>
 
                 <input type="hidden" id="resultados-checklist" name="resultados_checklist" value="[]">
 
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-5">
-                    <button type="button" onclick="llenarTodo()" class="btn btn-outline-warning me-md-2">
-                        ⚡ Llenar Rápido (Prueba)
-                    </button>
-                    <a href="{% url 'camion_list' %}" class="btn btn-secondary me-md-2">Cancelar</a>
-                    <button type="submit" class="btn btn-primary btn-lg">
-                        <i class="fas fa-save"></i> Guardar y Generar PDF
-                    </button>
+                <div class="content-spacer" style="height: 150px;"></div>
+
+                <div class="sticky-bottom-actions px-3 py-3">
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg fw-800 shadow-sm" style="border-radius: 16px; padding: 15px;">
+                            💾 FINALIZAR Y ENVIAR PDF
+                        </button>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="button" onclick="llenarTodo()" class="btn btn-link text-warning btn-sm fw-bold text-decoration-none w-50">
+                                ⚡ TEST RÁPIDO
+                            </button>
+                            <a href="{% url 'camion_list' %}" class="btn btn-link text-secondary btn-sm fw-bold text-decoration-none w-50">
+                                CANCELAR
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
@@ -100,14 +119,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'mantenciones/js/inspeccion.js' %}"></script>
-{% endblock %}
-
-{% block extra_css %}
-<style>
-    .custom-switch .form-check-input { width: 3em; height: 1.5em; cursor: pointer; }
-    .card-header { border-bottom: 2px solid #ffcc00; } /* Un toque de color ZMC */
-    .item-radio { transform: scale(1.3); cursor: pointer; }
-    .table thead th { background-color: #f8f9fa; text-transform: uppercase; font-size: 0.8rem; }
-</style>
+<script src="{% static 'mantenciones/js/inspeccion.js' %}?v=3.0"></script>
 {% endblock %}

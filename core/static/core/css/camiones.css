@@ -240,3 +240,74 @@ body {
 
 .empty-state-pro { text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 12px; border: 2px dashed #e2e8f0; }
 .empty-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+
+/* NAVBAR BASE (Escritorio) */
+.navbar-pro {
+    background-color: #0f172a; /* Azul muy oscuro tipo ENAP */
+    padding: 12px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 2000;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.brand-name {
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.main-nav {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.nav-link.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* --- AJUSTES PARA CELULAR (Punta Arenas Mobile) --- */
+@media (max-width: 600px) {
+    .navbar-pro {
+        padding: 10px 15px;
+    }
+
+    .brand-name {
+        font-size: 1.2rem; /* Más pequeño en celular */
+    }
+
+    .nav-text {
+        display: none; /* OCULTA EL TEXTO EN CELULAR PARA QUE NO SE AMONTONE */
+    }
+
+    .nav-icon {
+        font-size: 1.3rem; /* Aumenta el icono para que sea fácil de tocar */
+    }
+
+    .main-nav {
+        gap: 8px;
+    }
+
+    .nav-link {
+        padding: 8px 10px;
+    }
+}

@@ -1,190 +1,249 @@
 /**
- * FUNCIONES GLOBALES 
- * (Deben estar fuera para que los botones 'onclick' del HTML funcionen)
+ * FUNCIONES GLOBALES
  */
-
 function marcarCategoriaBuena(catId) {
     const container = document.getElementById(`cat-body-${catId}`);
     if (!container) return;
 
-    // Marcamos todos los radios "B" (Bueno) de esta categoría
-    container.querySelectorAll('input[value="B"]').forEach(radio => {
+    const radiosB = container.querySelectorAll('input[value="B"]');
+    radiosB.forEach(radio => {
         radio.checked = true;
     });
 
-    // Disparamos el evento 'change' manualmente para que el sistema sepa que se actualizó
-    // Esto gatilla la actualización del JSON y de la barra de progreso
-    const event = new Event('change', { bubbles: true });
-    const primerRadio = container.querySelector('input[value="B"]');
-    if (primerRadio) primerRadio.dispatchEvent(event);
+    // Feedback visual rápido
+    container.style.backgroundColor = 'rgba(16, 185, 129, 0.05)';
+    setTimeout(() => container.style.backgroundColor = 'transparent', 500);
 
-    console.log(`Categoría ${catId} completada como OK`);
+    // Disparar evento para actualizar JSON y Barra
+    if (radiosB.length > 0) {
+        const event = new Event('change', { bubbles: true });
+        radiosB[0].dispatchEvent(event);
+    }
+    
+    // Vibración suave (haptic feedback)
+    if (window.navigator.vibrate) window.navigator.vibrate(20);
+
+    actualizarChecklist();
+    actualizarBarra();
 }
 
 /**
- * LÓGICA DE INICIALIZACIÓN
+ * INICIALIZACIÓN
  */
 document.addEventListener('DOMContentLoaded', function() {
-    const tipoInspeccionSelect = document.getElementById('id_tipo_inspeccion');
+    const tipoSelect = document.getElementById('id_tipo_inspeccion');
     const vehiculoSelect = document.getElementById('id_vehiculo');
-    const categoriasChecklistDiv = document.getElementById('categorias-checklist');
-    const resultadosChecklistInput = document.getElementById('resultados-checklist');
-    const datosAutocompletadosDiv = document.getElementById('datos-autocompletados');
-    const seccionRemolqueDiv = document.getElementById('seccion-remolque');
-    const lugarInspeccionInput = document.getElementById('lugar-inspeccion');
-    const conductorNombreInput = document.getElementById('conductor-nombre');
-    const remolquePatenteInput = document.getElementById('remolque-patente');
+    const checklistDiv = document.getElementById('categorias-checklist');
+    const resultadosInput = document.getElementById('resultados-checklist');
 
-    // Escuchar cambios principales
-    if (tipoInspeccionSelect) tipoInspeccionSelect.addEventListener('change', cargarCategorias);
+    if (tipoSelect) tipoSelect.addEventListener('change', cargarCategorias);
     if (vehiculoSelect) vehiculoSelect.addEventListener('change', cargarDatosAutocompletados);
 
-    // Listener Inteligente: Auto-Foco en Observaciones si es R o M
+    // Función para mostrar con animación suave
+    function mostrarPaso(selector) {
+        const el = document.querySelector(selector);
+        if (el && el.style.display === 'none') {
+            el.style.opacity = 0;
+            el.style.display = 'block';
+            setTimeout(() => {
+                el.style.transition = 'opacity 0.5s ease';
+                el.style.opacity = 1;
+            }, 10);
+        }
+    }
+
+    // 1. Escuchar cambios en Patente para mostrar Paso 2
+    document.getElementById('id_vehiculo').addEventListener('change', function() {
+        if (this.value) mostrarPaso('#step-2');
+    });
+
+    // 2. Escuchar cambios en KM para mostrar Paso 3
+    document.getElementById('id_km_registro').addEventListener('input', function() {
+        if (this.value.length >= 3) mostrarPaso('#step-3');
+    });
+
+    // Listener inteligente para Auto-Foco y Colores
     document.addEventListener('change', function(e) {
         if (e.target.classList.contains('item-radio')) {
             const itemId = e.target.dataset.itemId;
-            const obsInput = document.querySelector(`.item-observacion[data-item-id="${itemId}"]`);
+            const row = e.target.closest('.checklist-row');
+            const obsInput = row.querySelector('.item-observacion');
             
+            // Vibrar al tocar
+            if (window.navigator.vibrate) window.navigator.vibrate(10);
+
+            // Si es Malo o Regular, destacar y enfocar
             if (e.target.value === 'M' || e.target.value === 'R') {
-                obsInput.style.border = '2px solid #dc3545';
-                obsInput.focus(); // Salto automático para escribir el problema
+                obsInput.classList.add('border-danger');
+                if(e.target.value === 'M') obsInput.focus();
             } else {
-                obsInput.style.border = '1px solid #ced4da';
+                obsInput.classList.remove('border-danger');
             }
         }
     });
 
     async function cargarCategorias() {
-        const tipo = tipoInspeccionSelect.value;
-        if (!tipo) return;
+        const tipo = tipoSelect.value;
+        const vehiculo = vehiculoSelect.value;
+        
+        // Solo disparamos la carga si ambos campos están llenos
+        if (!tipo || !vehiculo) return; 
+
         try {
             const response = await fetch(`/mantenciones/api/categorias/${tipo}/`);
             const data = await response.json();
             if (data.success) {
                 renderizarCategorias(data.categorias);
+                // Mostramos el paso 4 explícitamente por si acaso
+                document.getElementById('step-4').style.display = 'block';
             }
-        } catch (error) { console.error('Error cargando categorías:', error); }
+        } catch (e) { console.error("Error cargando items", e); }
     }
 
     async function cargarDatosAutocompletados() {
-        const camionId = vehiculoSelect.value;
-        if (!camionId) return;
+        const id = vehiculoSelect.value;
+        if (!id) return;
+        // --- RESETEO DE ESTADOS ---
+        // Escondemos el remolque por defecto antes de verificar el nuevo camión
+        const seccionRemolque = document.getElementById('seccion-remolque');
+        const inputRemolqueId = document.getElementById('id_remolque');
+        const inputRemolquePatente = document.getElementById('remolque-patente');
+        
+        seccionRemolque.style.display = 'none'; 
+        inputRemolqueId.value = ''; // Limpiamos el valor para que no se envíe el remolque anterior
+        inputRemolquePatente.value = '';
         try {
-            const response = await fetch(`/mantenciones/api/datos-autocompletado/${camionId}/`);
+            const response = await fetch(`/mantenciones/api/datos-autocompletado/${id}/`);
             const data = await response.json();
             if (data.success) {
                 const d = data.datos;
-                lugarInspeccionInput.value = d.lugar_inspeccion || 'N/A';
-                conductorNombreInput.value = d.conductor_nombre || 'N/A';
-                datosAutocompletadosDiv.style.display = 'flex';
+                document.getElementById('lugar-inspeccion').value = d.lugar_inspeccion;
+                document.getElementById('conductor-nombre').value = d.conductor_nombre;
+                document.getElementById('datos-autocompletados').style.display = 'flex';
+                // --- LÓGICA CONDICIONAL ---
                 if (d.tiene_remolque) {
-                    remolquePatenteInput.value = d.remolque_patente;
-                    seccionRemolqueDiv.style.display = 'block';
-                } else {
-                    seccionRemolqueDiv.style.display = 'none';
+                    inputRemolquePatente.value = d.remolque_patente;
+                    inputRemolqueId.value = d.remolque_id; // Asegúrate de que la API envíe el ID
+                    seccionRemolque.style.display = 'block';
                 }
-                if (tipoInspeccionSelect.value) cargarCategorias();
-            }
-        } catch (error) { console.error('Error:', error); }
+
+                // Si ya hay un tipo de inspección elegido, recargar las categorías
+                if (tipoSelect.value) cargarCategorias();
+                }
+        } catch (e) { console.error("Error API Datos", e); }
     }
 
-   function renderizarCategorias(categorias) {
-        let html = `
-            <div class="sticky-progress mb-4 rounded-bottom">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold small text-primary">PROGRESO DE REVISIÓN</span>
-                    <span id="porcentaje-txt" class="badge bg-primary">0%</span>
-                </div>
-                <div class="progress" style="height: 10px;">
-                    <div id="checklist-progress" class="progress-bar bg-success progress-bar-striped" role="progressbar" style="width: 0%"></div>
-                </div>
-            </div>
-        `;
+    function renderizarCategorias(categorias) {
+        // 1. DESBLOQUEAR PASO 4: Mostrar el contenedor que estaba oculto
+        const step4 = document.getElementById('step-4');
+        const checklistDiv = document.getElementById('categorias-checklist');
+        
+        if (step4) {
+            step4.style.display = 'block';
+            setTimeout(() => { step4.style.opacity = '1'; }, 10);
+        }
 
-        const totalDeItems = categorias.reduce((acc, c) => acc + c.items.length, 0);
+        // 2. CONSTRUIR EL HTML
+        let html = `
+            <div class="sticky-progress mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-800 text-primary small">ESTADO DE REVISIÓN</span>
+                    <span id="progreso-texto" class="badge rounded-pill bg-primary">0%</span>
+                </div>
+                <div class="progress" style="height: 14px; border-radius: 20px; background: #e2e8f0;">
+                    <div id="checklist-progress" class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
+                        role="progressbar" style="width: 0%; transition: width 0.5s ease;"></div>
+                </div>
+            </div>`;
+
+        const totalItems = categorias.reduce((acc, c) => acc + c.items.length, 0);
 
         categorias.forEach(cat => {
             html += `
-            <div class="card checklist-category-card">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <span class="mb-0">${cat.nombre}</span>
-                    <button type="button" class="btn btn-sm btn-light py-0" onclick="marcarCategoriaBuena('${cat.id}')">✓ TODO OK</button>
+            <div class="card checklist-category-card border-0 mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
+                    <h6 class="mb-0 fw-bold">${cat.nombre}</h6>
+                    <button type="button" class="btn btn-xs btn-light text-primary fw-bold" 
+                            style="font-size: 0.7rem; padding: 2px 8px;"
+                            onclick="marcarCategoriaBuena('${cat.id}')">TODO OK</button>
                 </div>
-                <div id="cat-body-${cat.id}" class="card-body p-0">`;
-                
+                <div id="cat-body-${cat.id}" class="card-body p-2">`;
+            
             cat.items.forEach((item, i) => {
                 html += `
-                <div class="checklist-row">
-                    <div class="item-info text-uppercase">
-                        <span class="text-muted me-2">${i + 1}.</span>${item.nombre}
+                <div class="checklist-row p-3 border-bottom">
+                    <div class="item-info mb-2 fw-bold text-dark" style="font-size: 0.9rem;">
+                        <span class="text-muted small me-1">${i + 1}.</span> ${item.nombre}
                     </div>
-                    
                     <div class="btn-group-mobile">
                         <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="b_${item.id}" value="B" data-item-id="${item.id}">
-                        <label class="btn btn-outline-success" for="b_${item.id}">B</label>
+                        <label class="btn btn-outline-success" for="b_${item.id}">BUENO</label>
                         
                         <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="r_${item.id}" value="R" data-item-id="${item.id}">
-                        <label class="btn btn-outline-warning" for="r_${item.id}">R</label>
+                        <label class="btn btn-outline-warning" for="r_${item.id}">REG.</label>
                         
                         <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="m_${item.id}" value="M" data-item-id="${item.id}">
-                        <label class="btn btn-outline-danger" for="m_${item.id}">M</label>
+                        <label class="btn btn-outline-danger" for="m_${item.id}">MALO</label>
                     </div>
-                    
-                    <input type="text" class="form-control item-observacion" data-item-id="${item.id}" placeholder="Nota si hay falla...">
+                    <input type="text" class="form-control form-control-sm item-observacion mt-2" 
+                        data-item-id="${item.id}" placeholder="Escribe el hallazgo aquí...">
                 </div>`;
             });
             html += `</div></div>`;
         });
 
-        document.getElementById('categorias-checklist').innerHTML = html;
+        // 3. INYECTAR Y AUTO-SCROLL
+        checklistDiv.innerHTML = html;
         
-        // Reconectar listeners
+        // Hace que el celular baje solo hasta donde empezaron los items
+        checklistDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // 4. REASIGNAR LISTENERS
         document.querySelectorAll('.item-radio, .item-observacion').forEach(el => {
             el.addEventListener('change', () => {
                 actualizarChecklist();
-                actualizarBarraProgreso(totalDeItems);
+                actualizarBarra(); // Llamamos a la versión que cuenta todo el DOM
             });
-            if (el.type === 'text') el.addEventListener('input', actualizarChecklist);
+            // Para que guarde mientras escribe en las observaciones
+            if (el.type === 'text') {
+                el.addEventListener('input', actualizarChecklist);
+            }
         });
     }
 
-        categoriasChecklistDiv.innerHTML = html;
-        
-        // Reconectar Listeners
-        document.querySelectorAll('.item-radio, .item-observacion').forEach(el => {
-            el.addEventListener('change', () => {
-                actualizarChecklist();
-                actualizarBarraProgreso(totalDeItems);
-            });
-            if (el.type === 'text') el.addEventListener('input', actualizarChecklist);
-    });
-    
-
-    function actualizarBarraProgreso(totalItems) {
+    function actualizarBarra() {
+        const total = document.querySelectorAll('.btn-group-mobile').length;
         const respondidos = document.querySelectorAll('.item-radio:checked').length;
-        const porcentaje = Math.round((respondidos / totalItems) * 100);
+        
+        if (total === 0) return;
+
+        const perc = Math.round((respondidos / total) * 100);
         const bar = document.getElementById('checklist-progress');
-        const txt = document.getElementById('porcentaje-txt');
-        if (bar) bar.style.width = porcentaje + '%';
-        if (txt) txt.innerText = porcentaje + '%';
+        const texto = document.getElementById('progreso-texto');
+
+        if (bar && texto) {
+            bar.style.width = perc + '%';
+            texto.innerText = perc + '%';
+            
+            // Colores dinámicos
+            if (perc < 40) {
+                bar.className = "progress-bar progress-bar-striped progress-bar-animated bg-danger";
+            } else if (perc < 99) {
+                bar.className = "progress-bar progress-bar-striped progress-bar-animated bg-warning";
+            } else {
+                bar.className = "progress-bar bg-success"; // Verde sólido al terminar
+                if (window.navigator.vibrate) window.navigator.vibrate([30, 50, 30]); // Vibración especial de éxito
+            }
+        }
     }
 
     function actualizarChecklist() {
-        const resultados = [];
-        document.querySelectorAll('.item-radio:checked').forEach(radio => {
-            const itemId = radio.dataset.itemId;
-            const obs = document.querySelector(`.item-observacion[data-item-id="${itemId}"]`).value;
-            resultados.push({ item_id: itemId, estado: radio.value, observacion: obs });
+        const res = [];
+        document.querySelectorAll('.item-radio:checked').forEach(r => {
+            const id = r.dataset.itemId;
+            const obs = document.querySelector(`.item-observacion[data-item-id="${id}"]`).value;
+            res.push({ item_id: id, estado: r.value, observacion: obs });
         });
-        resultadosChecklistInput.value = JSON.stringify(resultados);
+        resultadosInput.value = JSON.stringify(res);
     }
-
-    // Botón Global de Llenado (Solo para desarrollo)
-    window.llenarTodo = function() {
-        document.querySelectorAll('input.item-radio[value="B"]').forEach(radio => radio.checked = true);
-        document.getElementById('id_km_registro').value = "450000";
-        actualizarChecklist();
-        const total = document.querySelectorAll('.item-radio').length / 3;
-        actualizarBarraProgreso(total);
-    };
 });
