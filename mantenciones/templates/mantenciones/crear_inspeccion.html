@@ -17,66 +17,78 @@
             <form id="inspeccion-form" method="post">
                 {% csrf_token %}
 
-                <div id="step-1" class="form-step">
-                    <div class="row g-3 mb-4">
-                        <div class="col-6">
-                            <label class="form-label small fw-bold text-muted">TIPO</label>
-                            {{ form.tipo_inspeccion }}
+                <div class="info-card-modern mb-3">
+                    <div class="info-card-content">
+                        <div class="data-row">
+                            <span class="label">TIPO DE INSPECCIÓN</span>
+                            <div class="d-flex align-items-center justify-content-end" style="width: 60%;">
+                                {{ form.tipo_inspeccion }}
+                            </div>
                         </div>
-                        <div class="col-6">
-                            <label class="form-label small fw-bold text-muted">PATENTE</label>
-                            {{ form.vehiculo }}
+                        
+                        <div class="data-row">
+                            <span class="label">PATENTE / UNIDAD</span>
+                            <div class="d-flex align-items-center justify-content-end" style="width: 60%;">
+                                {{ form.vehiculo }}
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div id="step-2" class="form-step" style="display: none;">
-                    <div id="datos-autocompletados" class="row g-2 mb-4 p-3 bg-white rounded shadow-sm border">
-                        <div class="col-6 border-end">
-                            <label class="text-muted d-block" style="font-size: 0.7rem;">LUGAR</label>
-                            <input type="text" id="lugar-inspeccion" class="form-control-plaintext fw-bold p-0" style="font-size: 0.9rem;" readonly>
-                        </div>
-                        <div class="col-6 ps-3">
-                            <label class="text-muted d-block" style="font-size: 0.7rem;">CONDUCTOR</label>
-                            <input type="text" id="conductor-nombre" class="form-control-plaintext fw-bold p-0" style="font-size: 0.9rem;" readonly>
-                        </div>
-                        <div id="seccion-remolque" class="col-12 mt-2 pt-2 border-top" style="display: none;">
-                            <label class="text-muted d-block" style="font-size: 0.7rem;">REMOLQUE ASIGNADO</label>
-                            <input type="text" id="remolque-patente" class="form-control-plaintext fw-bold p-0 text-primary" style="font-size: 0.9rem;" readonly>
-                            <input type="hidden" name="remolque" id="id_remolque">
+                    <div id="datos-autocompletados" class="info-card-modern mb-4" style="display: none;">
+                        <div class="info-card-content">
+                            <div class="data-row">
+                                <span class="label">LUGAR ACTUAL</span>
+                                <input type="text" id="lugar-inspeccion" class="value-input" readonly>
+                            </div>
+                            
+                            <div class="data-row">
+                                <span class="label">CONDUCTOR</span>
+                                <input type="text" id="conductor-nombre" class="value-input" readonly>
+                            </div>
+
+                            <div id="seccion-remolque" class="data-row-special" style="display: none;">
+                                <div class="d-flex justify-content-between align-items-center w-100">
+                                    <span class="label-special">🚛 REMOLQUE</span>
+                                    <input type="text" id="remolque-patente" class="value-input-special" readonly>
+                                </div>
+                                <input type="hidden" name="remolque" id="id_remolque">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold text-muted">KM ACTUAL (ODÓMETRO)</label>
-                            {{ form.km_registro }}
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold text-muted">RESPONSABLE</label>
-                            {{ form.responsable }}
+                    <div class="info-card-modern">
+                        <div class="info-card-content">
+                            <div class="data-row">
+                                <span class="label">KM ACTUAL (ODÓMETRO)</span>
+                                {{ form.km_registro }} </div>
+                            <div class="data-row">
+                                <span class="label">RESPONSABLE</span>
+                                {{ form.responsable }} </div>
                         </div>
                     </div>
                 </div>
 
-                <div id="step-3" class="form-step" style="display: none;">
-                    <div class="row mb-4">
-                        <div class="col-12 mb-3">
-                            <div class="form-check form-switch p-0 d-flex justify-content-between align-items-center bg-white p-3 rounded border shadow-sm">
-                                <label class="form-check-label fw-bold" for="id_es_apto_operar">¿APTO PARA OPERAR?</label>
+               <div class="info-card-modern mb-4">
+                    <div class="info-card-content">
+                        <div class="data-row">
+                            <span class="label">¿APTO PARA OPERAR?</span>
+                            <div class="form-check form-switch m-0">
                                 {{ form.es_apto_operar }}
                             </div>
                         </div>
-                        <div class="col-12">
-                            <div class="form-check form-switch p-0 d-flex justify-content-between align-items-center bg-white p-3 rounded border shadow-sm">
-                                <label class="form-check-label fw-bold text-primary" for="id_renovó_aceite">¿CAMBIO DE ACEITE MOTOR?</label>
+                        
+                        <div class="data-row">
+                            <span class="label">¿CAMBIO DE ACEITE?</span>
+                            <div class="form-check form-switch m-0">
                                 {{ form.renovó_aceite }}
                             </div>
                         </div>
                     </div>
-
-                    <div class="mb-4">
-                        <label class="form-label small fw-bold text-muted">OBSERVACIONES GENERALES</label>
+                    
+                    <div class="p-3 bg-light border-top">
+                        <span class="label d-block mb-2">OBSERVACIONES GENERALES</span>
                         {{ form.observaciones }}
                     </div>
                 </div>
@@ -94,20 +106,20 @@
 
                 <input type="hidden" id="resultados-checklist" name="resultados_checklist" value="[]">
 
-                <div class="content-spacer" style="height: 150px;"></div>
+                <div class="content-spacer" style="height: 100px;"></div>
 
-                <div class="sticky-bottom-actions px-3 py-3">
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-lg fw-800 shadow-sm" style="border-radius: 16px; padding: 15px;">
-                            💾 FINALIZAR Y ENVIAR PDF
+                <div class="sticky-bottom-actions">
+                    <div class="d-flex flex-column">
+                        <button type="submit" class="btn-finalizar-pro">
+                            <span>💾</span> FINALIZAR Y ENVIAR PDF
                         </button>
                         
                         <div class="d-flex gap-2">
-                            <button type="button" onclick="llenarTodo()" class="btn btn-link text-warning btn-sm fw-bold text-decoration-none w-50">
+                            <button type="button" onclick="llenarTodo()" class="btn-secundario-discreto btn-test-style">
                                 ⚡ TEST RÁPIDO
                             </button>
-                            <a href="{% url 'camion_list' %}" class="btn btn-link text-secondary btn-sm fw-bold text-decoration-none w-50">
-                                CANCELAR
+                            <a href="{% url 'camion_list' %}" class="btn-secundario-discreto">
+                                ✖ CANCELAR
                             </a>
                         </div>
                     </div>

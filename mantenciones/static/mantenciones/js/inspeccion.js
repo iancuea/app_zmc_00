@@ -162,10 +162,12 @@ document.addEventListener('DOMContentLoaded', function() {
             html += `
             <div class="card checklist-category-card border-0 mb-4 shadow-sm">
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
-                    <h6 class="mb-0 fw-bold">${cat.nombre}</h6>
-                    <button type="button" class="btn btn-xs btn-light text-primary fw-bold" 
-                            style="font-size: 0.7rem; padding: 2px 8px;"
-                            onclick="marcarCategoriaBuena('${cat.id}')">TODO OK</button>
+                    <h6 class="mb-0 fw-bold text-white px-2">${cat.nombre}</h6>
+                    <button type="button" class="btn btn-sm btn-light text-primary fw-bold shadow-sm" 
+                            style="border-radius: 8px; font-size: 0.7rem;"
+                            onclick="marcarCategoriaBuena('${cat.id}')">
+                        ✓ TODO OK
+                    </button>
                 </div>
                 <div id="cat-body-${cat.id}" class="card-body p-2">`;
             
