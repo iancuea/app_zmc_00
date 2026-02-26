@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 85vh; padding: 20px;">
+    <div class="info-card-modern" style="width: 100%; max-width: 400px; padding: 35px; border-radius: 20px;">
+        
+        <div class="text-center mb-4">
+            <div class="mb-3" style="font-size: 3rem; color: #0056b3;">
+                <i class="bi bi-truck"></i> 
+            </div>
+            <h2 style="color: #0f172a; font-weight: 800; letter-spacing: -1px; margin-bottom: 5px;">ZMC FLOTA</h2>
+            <p class="text-muted small uppercase fw-bold" style="letter-spacing: 1px;">Gestión de Inspecciones</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="label d-block mb-2">USUARIO</label>
+                {{ form.username }}
+            </div>
+
+            <div class="mb-4">
+                <label class="label d-block mb-2">CONTRASEÑA</label>
+                {{ form.password }}
+            </div>
+
+            {% if form.errors %}
+            <div class="alert alert-danger py-2 px-3 mb-4" style="font-size: 0.8rem; border-radius: 10px;">
+                Usuario o contraseña incorrectos.
+            </div>
+            {% endif %}
+
+            <button type="submit" class="btn-finalizar-pro w-100 shadow-lg">
+                INGRESAR AL SISTEMA
+            </button>
+        </form>
+
+        <div class="text-center mt-4">
+            <p class="text-muted" style="font-size: 0.7rem;">© 2026 ZMC Magallanes</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

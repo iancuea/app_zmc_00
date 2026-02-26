@@ -5,17 +5,16 @@ from django.db import transaction
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-
+from django.contrib.auth.decorators import login_required
 from mantenciones.forms import InspeccionForm
 from .utils import obtener_datos_camion_autocompletado, generar_pdf_enap_diario, generar_pdf_mantencion_tecnica
-
-# Importamos modelos de ambas apps
 from .models import (
     CategoriaChecklist, ItemChecklist, Inspeccion, 
     ResultadoItem, RegistroLubricantes, RegistroDiario
 )
 from core.models import DocumentoMantencion, EstadoCamion, Mantencion, Camion, Remolque, AsignacionTractoRemolque
 
+@login_required
 def crear_inspeccion(request):
     """Vista para crear una nueva inspección con checklist dinámico"""
     

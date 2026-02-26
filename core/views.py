@@ -6,8 +6,9 @@ from django.db.models import Max
 from .utils import estado_mantencion, estado_documento, ESTADO_PRIORIDAD
 from itertools import groupby
 from operator import attrgetter
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def camion_list(request):
     camiones = list(
         Camion.objects.select_related(
@@ -60,6 +61,7 @@ def camion_list(request):
 
     return render(request, "core/camion_list.html", context)
 
+@login_required
 def camion_detail(request, pk):
     # 1. Obtenemos el camión o lanzamos 404
     camion = get_object_or_404(Camion, id_camion=pk)
@@ -119,6 +121,7 @@ def camion_detail(request, pk):
     }
     return render(request, 'core/camion_detail.html', context)
 
+@login_required
 def remolque_detail(request, pk):
     remolque = get_object_or_404(Remolque, id_remolque=pk)
     mantenciones = remolque.mantenciones_remolque.all().order_by('-fecha_mantencion')

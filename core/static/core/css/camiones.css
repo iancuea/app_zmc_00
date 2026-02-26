@@ -311,3 +311,21 @@ body {
         padding: 8px 10px;
     }
 }
+
+/* Ajuste para los inputs del formulario de login de Django */
+#id_username, #id_password {
+    width: 100% !important;
+    padding: 12px 15px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    background-color: #f8fafc !important;
+    margin-bottom: 10px;
+    display: block;
+    box-sizing: border-box; /* Evita que el input se salga de la tarjeta */
+}
+
+#id_username:focus, #id_password:focus {
+    border-color: #0056b3 !important;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+}

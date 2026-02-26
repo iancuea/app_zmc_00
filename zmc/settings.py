@@ -62,7 +62,10 @@ ROOT_URLCONF = "zmc.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        'DIRS': [BASE_DIR / 'core' / 'templates'],
+        'DIRS': [
+            BASE_DIR / 'core' / 'templates',
+            BASE_DIR / 'core' / 'templates' / 'core', # Esto le permite ver base.html
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -109,6 +112,12 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+# Al loguearse, mandarlo directo a la flota
+LOGIN_REDIRECT_URL = '/camiones/'
+
+# Al cerrar sesión, mandarlo al login
+LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 
 # Internationalization
