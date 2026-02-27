@@ -127,6 +127,8 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
     title_style = ParagraphStyle('Title', fontSize=14, alignment=TA_CENTER, fontName='Helvetica-Bold', spaceAfter=10)
     header_label = ParagraphStyle('Label', fontSize=11, fontName='Helvetica-Bold', spaceBefore=8, spaceAfter=4)
     
+    styles = getSampleStyleSheet()
+    
     # Estilo de tabla para datos: Letra 10 (Clara y grande)
     # Usamos fondo beige suave para los encabezados de celda como en tu foto
     base_style = [
@@ -137,10 +139,21 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
         ['TOPPADDING', (0,0), (-1,-1), 6],
         ['BOTTOMPADDING', (0,0), (-1,-1), 6],
     ]
+    patente_text_style = ParagraphStyle(
+        'PatenteSimple',
+        parent=styles['Normal'],
+        fontSize=48,              # Tamaño muy grande
+        leading=54,               # Espaciado entre líneas
+        alignment=1,              # Centrado (0=izq, 1=centro, 2=der)
+        fontName='Helvetica-Bold', # Negrita para que resalte
+    )
+
 
     # --- PÁGINA 1: CARÁTULA COMPLETA ---
     story.append(Paragraph("ZMC TRANSPORTES - ENAP", title_style))
-    story.append(Paragraph("INSPECCIÓN DUEÑOS CAMIONES TANQUE", title_style))
+    patente_camion = datos_autocompletado.get('camion_patente', 'S/P')
+    story.append(Paragraph(patente_camion, patente_text_style))
+    story.append(Spacer(1, 20))
 
     # 1. SECCIÓN INFORMACIÓN
     story.append(Paragraph("INFORMACIÓN", header_label))
