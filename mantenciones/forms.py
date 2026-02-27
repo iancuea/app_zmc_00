@@ -1,5 +1,6 @@
 from django import forms
 from .models import Inspeccion, ResultadoItem, RegistroDiario
+from django.core.exceptions import ObjectDoesNotExist
 
 class InspeccionForm(forms.ModelForm):
     """Formulario para crear inspecciones con filtrado dinámico de categorías"""
@@ -51,6 +52,33 @@ class InspeccionForm(forms.ModelForm):
             'observaciones': 'Observaciones'
         }
 
+    def clean_km_registro(self):
+        km_ingresado = self.cleaned_data.get('km_registro')
+        vehiculo = self.cleaned_data.get('vehiculo')
+
+        if vehiculo and km_ingresado is not None:
+            try:
+                # Accedemos al kilometraje actual a través de la relación que definiste
+                km_actual = vehiculo.estado_actual.kilometraje
+            except (ObjectDoesNotExist, AttributeError):
+                # Si el camión no tiene un 'estado_actual' creado todavía
+                km_actual = 0
+
+            # Validación: No puede ser menor al actual
+            if km_ingresado < km_actual:
+                raise forms.ValidationError(
+                    f"No puedes ingresar un kilometraje menor al actual ({km_actual} km)."
+                )
+
+            # Validación: Salto sospechoso (más de 3000 km)
+            diferencia = km_ingresado - km_actual
+            if diferencia > 3000:
+                raise forms.ValidationError(
+                    f"El salto de kilometraje ({diferencia} km) es muy alto. Verifica si el dato es correcto."
+                )
+        
+        return km_ingresado
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Remolque no es requerido y se auto-llena
