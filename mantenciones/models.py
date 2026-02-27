@@ -58,7 +58,8 @@ class CategoriaChecklist(models.Model):
     )
 
     def __str__(self):
-        return f"{self.nombre} ({self.get_aplica_a_display()})"
+    # Usamos filtro_tipo que es el nombre que quedó en la base de datos
+        return f"{self.nombre} ({self.get_filtro_tipo_display()})"
 
 class ItemChecklist(models.Model):
     """
