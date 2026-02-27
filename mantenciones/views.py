@@ -13,6 +13,8 @@ from .models import (
     ResultadoItem, RegistroLubricantes, RegistroDiario
 )
 from core.models import DocumentoMantencion, EstadoCamion, Mantencion, Camion, Remolque, AsignacionTractoRemolque
+from mantenciones import models
+from django.db.models import Q
 
 @login_required
 def crear_inspeccion(request):
@@ -161,8 +163,9 @@ def api_categorias_por_tipo(request, tipo_inspeccion):
     API que retorna todas las categorías de checklist
     """
     try:
-        # Obtener todas las categorías sin filtrar por tipo
-        categorias = CategoriaChecklist.objects.all().prefetch_related('items').order_by('orden')
+        categorias = CategoriaChecklist.objects.filter(
+            Q(filtro_tipo=tipo_inspeccion) | Q(filtro_tipo='AMBOS')
+        ).prefetch_related('items').order_by('orden')
         
         categorias_con_items = []
         for cat in categorias:
@@ -215,3 +218,4 @@ def api_remolque_asignado(request, camion_id):
             'success': False,
             'error': str(e)
         }, status=400)
+    

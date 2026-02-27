@@ -46,10 +46,19 @@ class CategoriaChecklist(models.Model):
     Categorías del informe: 'CABINA', 'SISTEMA HIDRÁULICO', 'SEGURIDAD', etc.
     """
     nombre = models.CharField(max_length=100) # ej: "KIT DE SEGURIDAD" [cite: 19]
-    orden = models.IntegerField(default=0) # Para que aparezcan en orden en el celular
+    orden = models.IntegerField(default=0) # Para que aparezcan en orden en el celular]
+    filtro_tipo = models.CharField(
+        max_length=20, 
+        choices=[
+            ('DIARIO', 'Solo Checklist Diario'),
+            ('MANTENCION', 'Solo Mantención Técnica'),
+            ('AMBOS', 'Aplica a Ambos'),
+        ], 
+        default='AMBOS'
+    )
 
     def __str__(self):
-        return self.nombre
+        return f"{self.nombre} ({self.get_aplica_a_display()})"
 
 class ItemChecklist(models.Model):
     """
