@@ -164,46 +164,52 @@ function marcarCategoriaBuena(catId) {
      * FUNCIÓN: DIBUJAR EL CHECKLIST EN PANTALLA
      */
     function renderizarCategorias(categorias) {
+        const checklistDiv = document.getElementById('categorias-checklist');
         let html = `
-            <div class="sticky-top bg-white pt-2 pb-3 shadow-sm mb-4 px-2" style="z-index: 1020; top: -1px;">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-primary small">PROGRESO REVISIÓN</span>
+            <div class="sticky-progress">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-800 text-primary small" style="font-weight: 800;">ESTADO DE REVISIÓN</span>
                     <span id="progreso-texto" class="badge rounded-pill bg-primary">0%</span>
                 </div>
-                <div class="progress" style="height: 12px; border-radius: 10px;">
-                    <div id="checklist-progress" class="progress-bar progress-bar-striped progress-bar-animated bg-danger" 
-                         role="progressbar" style="width: 0%;"></div>
+                <div class="progress" style="height: 14px; border-radius: 20px; background: #e2e8f0;">
+                    <div id="checklist-progress" class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
+                        role="progressbar" style="width: 0%; transition: width 0.5s ease;"></div>
                 </div>
             </div>`;
 
         categorias.forEach(cat => {
             html += `
-            <div class="card border-0 mb-4 shadow-sm" style="border-radius: 15px; overflow: hidden;">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
-                    <h6 class="mb-0 fw-bold text-white">${cat.nombre}</h6>
+            <div class="card info-card-modern mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h6>${cat.nombre}</h6>
                     <button type="button" class="btn btn-sm btn-light text-primary fw-bold" 
-                            onclick="marcarCategoriaBuena('${cat.id}')">✓ TODO OK</button>
+                            style="border-radius: 8px; font-size: 0.7rem; padding: 5px 15px;"
+                            onclick="marcarCategoriaBuena('${cat.id}')">
+                        ✓ TODO OK
+                    </button>
                 </div>
-                <div id="cat-body-${cat.id}" class="card-body p-0">`;
+                <div id="cat-body-${cat.id}" class="info-card-content">`;
             
-            cat.items.forEach((item, i) => {
+            cat.items.forEach((item) => {
                 html += `
-                <div class="checklist-row p-3 border-bottom">
-                    <div class="item-info mb-2 fw-bold text-dark" style="font-size: 0.95rem;">
+                <div class="checklist-row">
+                    <div class="item-info">
                         ${item.nombre} ${item.es_critico ? '<span class="text-danger">*</span>' : ''}
                     </div>
-                    <div class="btn-group w-100" role="group">
+                    
+                    <div class="btn-group-mobile">
                         <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="b_${item.id}" value="B" data-item-id="${item.id}">
-                        <label class="btn btn-outline-success py-2" for="b_${item.id}">BUENO</label>
+                        <label class="btn btn-outline-success" for="b_${item.id}">BUENO</label>
                         
                         <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="r_${item.id}" value="R" data-item-id="${item.id}">
-                        <label class="btn btn-outline-warning py-2" for="r_${item.id}">REG.</label>
+                        <label class="btn btn-outline-warning" for="r_${item.id}">REG.</label>
                         
                         <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="m_${item.id}" value="M" data-item-id="${item.id}">
-                        <label class="btn btn-outline-danger py-2" for="m_${item.id}">MALO</label>
+                        <label class="btn btn-outline-danger" for="m_${item.id}">MALO</label>
                     </div>
-                    <input type="text" class="form-control form-control-sm item-observacion mt-2" 
-                           data-item-id="${item.id}" placeholder="Observación (opcional)">
+                    
+                    <input type="text" class="form-control item-observacion" 
+                        data-item-id="${item.id}" placeholder="Escribe el hallazgo aquí...">
                 </div>`;
             });
             html += `</div></div>`;
@@ -211,21 +217,14 @@ function marcarCategoriaBuena(catId) {
 
         checklistDiv.innerHTML = html;
 
-        // Re-asignar eventos a los nuevos elementos creados
+        // 3. Re-vincular eventos para que la barra y el JSON funcionen
         document.querySelectorAll('.item-radio').forEach(radio => {
-            radio.addEventListener('change', (e) => {
+            radio.addEventListener('change', () => {
                 actualizarChecklist();
                 actualizarBarra();
-                if (e.target.value === 'M' || e.target.value === 'R') {
-                    const row = e.target.closest('.checklist-row');
-                    const obs = row.querySelector('.item-observacion');
-                    obs.classList.add('border-danger');
-                    if(e.target.value === 'M') obs.focus();
-                }
-                if (window.navigator.vibrate) window.navigator.vibrate(10);
             });
         });
-
+        
         document.querySelectorAll('.item-observacion').forEach(input => {
             input.addEventListener('input', actualizarChecklist);
         });
