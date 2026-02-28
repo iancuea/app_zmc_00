@@ -151,6 +151,11 @@ document.addEventListener('DOMContentLoaded', function() {
     /**
      * FUNCIÓN: AUTOCOMPLETAR DATOS DEL CAMIÓN Y REMOLQUE
      */
+   let kmMinimoPermitido = 0; 
+
+    /**
+     * FUNCIÓN: AUTOCOMPLETAR DATOS DEL CAMIÓN Y REMOLQUE
+     */
     async function cargarDatosAutocompletados() {
         const id = vehiculoSelect.value;
         if (!id) return;
@@ -158,26 +163,35 @@ document.addEventListener('DOMContentLoaded', function() {
         const seccionRemolque = document.getElementById('seccion-remolque');
         const inputRemolqueId = document.getElementById('id_remolque');
         const inputRemolquePatente = document.getElementById('remolque-patente');
+        const hint = document.getElementById('km-referencia-hint');
         
+        // Reset visual y de valores
         seccionRemolque.style.display = 'none'; 
         inputRemolqueId.value = ''; 
         inputRemolquePatente.value = '';
+        
+        if (hint) {
+            hint.style.color = "#718096";
+            hint.style.fontWeight = "600";
+            kmInput.style.borderColor = "";
+            kmInput.style.backgroundColor = "";
+        }
 
         try {
             const response = await fetch(`/mantenciones/api/datos-autocompletado/${id}/`);
             const data = await response.json();
+            
             if (data.success) {
                 const d = data.datos;
                 document.getElementById('lugar-inspeccion').value = d.lugar_inspeccion;
                 document.getElementById('conductor-nombre').value = d.conductor_nombre;
                 document.getElementById('datos-autocompletados').style.display = 'flex';
                 
-                // ACTUALIZAR RECORDATORIO DE KM (Utilizando km_actual_registrado de utils.py)
-                const kmReferencia = d.km_actual_registrado || 0;
-                const hint = document.getElementById('km-referencia-hint');
+                // ACTUALIZAR LA VARIABLE GLOBAL CON EL KM DEL NUEVO CAMIÓN
+                kmMinimoPermitido = parseInt(d.km_actual_registrado) || 0;
 
                 if (hint) {
-                    const kmFormateado = kmReferencia.toLocaleString('es-CL');
+                    const kmFormateado = kmMinimoPermitido.toLocaleString('es-CL');
                     hint.innerHTML = `📌 EL KM DEBE SER IGUAL O MAYOR A: <span style="color: var(--primary-zmc); font-weight: 800;">${kmFormateado} KM</span>`;
                 }
 
@@ -192,6 +206,33 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (e) { 
             console.error("Error API Datos Autocompletado", e); 
         }
+    }
+
+    // 2. ACTUALIZA TAMBIÉN EL LISTENER DEL KM (Busca esta parte y reemplázala)
+    if (kmInput) {
+        kmInput.addEventListener('input', function() {
+            // Navegación de pasos
+            if (this.value.length >= 3) mostrarPaso('#step-3');
+
+            // VALIDACIÓN DINÁMICA
+            const kmIngresado = parseInt(this.value) || 0;
+            const hint = document.getElementById('km-referencia-hint');
+
+            if (hint && kmMinimoPermitido > 0) {
+                // Comparamos contra la variable global que se actualiza por camión
+                if (kmIngresado > 0 && kmIngresado < kmMinimoPermitido) {
+                    hint.style.color = "#e53e3e"; 
+                    hint.style.fontWeight = "800";
+                    this.style.borderColor = "#e53e3e";
+                    this.style.backgroundColor = "#fff5f5";
+                } else {
+                    hint.style.color = "#718096";
+                    hint.style.fontWeight = "600";
+                    this.style.borderColor = ""; 
+                    this.style.backgroundColor = "";
+                }
+            }
+        });
     }
 
     /**
