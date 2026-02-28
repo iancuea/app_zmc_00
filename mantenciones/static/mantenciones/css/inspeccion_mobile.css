@@ -254,3 +254,23 @@ select#id_vehiculo {
     border: 2px solid var(--danger) !important;
     box-shadow: 0 0 10px rgba(220, 53, 69, 0.2);
 }
+/* Ajustes para que el modal no se vea apretado */
+.modal-dialog-centered {
+    margin: 1rem; /* Espacio mínimo en los bordes de la pantalla */
+}
+
+.modal-content {
+    border-radius: 20px !important;
+    border: none !important;
+}
+
+.alert-danger {
+    padding: 15px !important;
+    font-size: 0.95rem !important;
+    line-height: 1.4;
+}
+
+/* Evitar que el fondo fijo (botones) se vea tan arriba durante el error */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+}
