@@ -250,3 +250,7 @@ select#id_vehiculo {
 .data-row .d-flex {
     overflow: hidden;
 }
+.border-danger-zmc {
+    border: 2px solid var(--danger) !important;
+    box-shadow: 0 0 10px rgba(220, 53, 69, 0.2);
+}

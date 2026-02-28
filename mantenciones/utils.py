@@ -24,18 +24,35 @@ def obtener_datos_camion_autocompletado(camion):
         'lugar_inspeccion': estado.get_base_actual_display() if estado else 'N/A',
         'contratista': 'ENAP',
         'contrato': 'Transporte de Productos Líquidos',
-        'conductor_nombre': estado.conductor.nombre if estado and estado.conductor else '',
-        'conductor_antiguedad': '',
+        'conductor_nombre': estado.conductor.nombre if estado and estado.conductor else 'SIN CONDUCTOR',
+        'conductor_antiguedad': 'N/A',
         'fecha_control': timezone.now().strftime('%d/%m/%Y'),
-        'apto_trabajar': '',
+        'apto_trabajar': 'SÍ',
         'camion_marca': camion.marca or 'N/A',
         'camion_modelo': camion.modelo or 'N/A',
         'camion_patente': camion.patente,
         'camion_anio': camion.anio or 'N/A',
-        # Aquí enviamos el KM real del camión siempre
         'camion_odometro': estado.kilometraje if estado else 0,
         'km_actual_registrado': estado.kilometraje if estado else 0,
+        
+        # Llaves de documentos del camión (Default)
+        'camion_vto_rt': 'N/A',
+        'camion_vto_pc': 'N/A',
+        'camion_vto_soap': 'N/A',
+        'camion_vto_tc8': 'N/A',
+        
+        # Llaves del remolque (Default para evitar el error 'remolque_marca')
         'tiene_remolque': False,
+        'remolque_id': '',
+        'remolque_marca': 'N/A',
+        'remolque_modelo': 'N/A',
+        'remolque_patente': 'N/A',
+        'remolque_anio': 'N/A',
+        'remolque_capacidad': 'N/A',
+        'remolque_vto_rt': 'N/A',
+        'remolque_vto_pc': 'N/A',
+        'remolque_vto_soap': 'N/A',
+        'remolque_vto_tc8': 'N/A',
     }
 
     # 3. Buscar documentos del camión (Vencimientos)

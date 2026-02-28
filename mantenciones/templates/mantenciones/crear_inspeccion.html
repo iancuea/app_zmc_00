@@ -58,24 +58,27 @@
                         </div>
                     </div>
 
-                    <div class="info-card-modern">
+                   <div class="info-card-modern {% if form.km_registro.errors %}border-danger-zmc{% endif %}">
                         <div class="info-card-content">
                             <div class="data-row">
                                 <span class="label">KM ACTUAL (ODÓMETRO)</span>
                                 {{ form.km_registro }}
                             </div>
 
-                            <div style="padding: 0 0 10px 0; margin-top: -5px;">
-                                <small id="km-referencia-hint" style="color: #718096; font-weight: 600; font-size: 0.7rem; display: block; margin-bottom: 2px;">
+                            <div class="status-container" style="padding: 8px 12px; margin: 5px 0 10px 0; border-radius: 8px; background: #f8fafc;">
+                                
+                                <small id="km-referencia-hint" style="color: #718096; font-weight: 600; font-size: 0.7rem; display: block;">
                                     📌 SELECCIONE UN VEHÍCULO PARA VER EL KM ACTUAL.
                                 </small>
 
                                 {% if form.km_registro.errors %}
-                                    {% for error in form.km_registro.errors %}
-                                        <small style="color: var(--danger); font-weight: 800; font-size: 0.7rem; text-transform: uppercase; display: block;">
-                                            ⚠️ {{ error }}
-                                        </small>
-                                    {% endfor %}
+                                    <div class="error-alert-box" style="margin-top: 5px; border-top: 1px solid #fed7d7; padding-top: 5px;">
+                                        {% for error in form.km_registro.errors %}
+                                            <small style="color: #e53e3e; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; display: flex; align-items: center;">
+                                                <i class="bi bi-exclamation-triangle-fill me-1"></i> {{ error }}
+                                            </small>
+                                        {% endfor %}
+                                    </div>
                                 {% endif %}
                             </div>
 
@@ -145,8 +148,67 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalError" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered px-3">
+        <div class="modal-content" style="border-radius: 25px; border: none; box-shadow: 0 15px 50px rgba(0,0,0,0.2);">
+            <div class="modal-body text-center p-4">
+                <div class="mb-3">
+                    <i class="bi bi-exclamation-octagon-fill text-danger" style="font-size: 4.5rem;"></i>
+                </div>
+                <h4 class="fw-bold text-dark mb-2">¡Atención, Tomás!</h4>
+                <p class="text-muted small mb-4">La inspección no pudo guardarse por lo siguiente:</p>
+                <div class="alert alert-danger mb-4" style="border-radius: 15px; border: none; background-color: #fff5f5;">
+                    <ul class="list-unstyled mb-0 text-start">
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li class="fw-bold text-danger d-flex align-items-start mb-1">
+                                    <i class="bi bi-caret-right-fill me-2 mt-1"></i>
+                                    <span>{{ error }}</span>
+                                </li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <button type="button" class="btn btn-danger w-100 py-3" data-bs-dismiss="modal" id="btnCerrarModalError"
+                        style="border-radius: 15px; font-weight: 800; text-transform: uppercase;">
+                    ENTENDIDO, CORREGIR
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'mantenciones/js/inspeccion.js' %}?v=3.0"></script>
+<script src="{% static 'mantenciones/js/inspeccion.js' %}?v=3.1"></script>
+
+{% if form.errors %}
+<script>
+    window.onload = function() {
+        try {
+            var modalElement = document.getElementById('modalError');
+            if (modalElement) {
+                var myModal = new bootstrap.Modal(modalElement);
+                myModal.show();
+
+                // Foco al cerrar para ayudar a Tomás
+                modalElement.addEventListener('hidden.bs.modal', function () {
+                    var kmInput = document.getElementById('id_km_registro');
+                    if (kmInput) {
+                        kmInput.focus();
+                        kmInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                });
+            }
+
+            if (navigator.vibrate) {
+                navigator.vibrate([200, 100, 200]);
+            }
+        } catch (error) {
+            console.error("Error al iniciar el modal:", error);
+        }
+    };
+</script>
+{% endif %}
 {% endblock %}

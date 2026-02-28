@@ -63,9 +63,8 @@ function marcarCategoriaBuena(catId) {
     actualizarBarra();
 }
 
-/**
- * INICIALIZACIÓN
- */document.addEventListener('DOMContentLoaded', function() {
+//INICIALIZACIÓN
+document.addEventListener('DOMContentLoaded', function() {
     // 1. REFERENCIAS A ELEMENTOS DEL FORMULARIO
     const tipoSelect = document.getElementById('id_tipo_inspeccion');
     const vehiculoSelect = document.getElementById('id_vehiculo');
@@ -75,14 +74,44 @@ function marcarCategoriaBuena(catId) {
 
     // 2. LISTENERS DE CAMBIOS (Disparan las funciones)
     if (tipoSelect) tipoSelect.addEventListener('change', cargarCategorias);
-    if (vehiculoSelect) vehiculoSelect.addEventListener('change', function() {
-        cargarDatosAutocompletados();
-        if (this.value) mostrarPaso('#step-2');
-    });
+    
+    if (vehiculoSelect) {
+        vehiculoSelect.addEventListener('change', function() {
+            cargarDatosAutocompletados();
+            if (this.value) mostrarPaso('#step-2');
+        });
+    }
 
-    if (kmInput) kmInput.addEventListener('input', function() {
-        if (this.value.length >= 3) mostrarPaso('#step-3');
-    });
+    // --- VALIDACIÓN DE KM EN TIEMPO REAL ---
+    if (kmInput) {
+        kmInput.addEventListener('input', function() {
+            // Lógica de navegación (mostrar siguiente paso)
+            if (this.value.length >= 3) mostrarPaso('#step-3');
+
+            // Lógica de validación visual
+            const kmIngresado = parseInt(this.value) || 0;
+            const hint = document.getElementById('km-referencia-hint');
+            
+            if (hint) {
+                // Extraemos el número del texto del hint (quita puntos y letras)
+                const kmReferencia = parseInt(hint.innerText.replace(/[^0-9]/g, '')) || 0;
+
+                if (kmIngresado > 0 && kmIngresado < kmReferencia) {
+                    // Si es menor: Rojo y alerta
+                    hint.style.color = "#e53e3e"; 
+                    hint.style.fontWeight = "800";
+                    this.style.borderColor = "#e53e3e";
+                    this.style.backgroundColor = "#fff5f5";
+                } else {
+                    // Si es correcto: Gris original
+                    hint.style.color = "#718096";
+                    hint.style.fontWeight = "600";
+                    this.style.borderColor = ""; 
+                    this.style.backgroundColor = "";
+                }
+            }
+        });
+    }
 
     /**
      * FUNCIÓN: MOSTRAR PASOS CON ANIMACIÓN
@@ -105,11 +134,9 @@ function marcarCategoriaBuena(catId) {
     async function cargarCategorias() {
         const tipo = tipoSelect.value;
         const vehiculo = vehiculoSelect.value;
-        
         if (!tipo || !vehiculo) return; 
 
         try {
-            // Llamamos a la API que arreglamos en pgAdmin/Django
             const response = await fetch(`/mantenciones/api/categorias/${tipo}/`);
             const data = await response.json();
             if (data.success) {
@@ -128,7 +155,6 @@ function marcarCategoriaBuena(catId) {
         const id = vehiculoSelect.value;
         if (!id) return;
 
-        // Reset de sección remolque
         const seccionRemolque = document.getElementById('seccion-remolque');
         const inputRemolqueId = document.getElementById('id_remolque');
         const inputRemolquePatente = document.getElementById('remolque-patente');
@@ -146,7 +172,7 @@ function marcarCategoriaBuena(catId) {
                 document.getElementById('conductor-nombre').value = d.conductor_nombre;
                 document.getElementById('datos-autocompletados').style.display = 'flex';
                 
-                // --- NUEVA LÓGICA: ACTUALIZAR RECORDATORIO DE KM ---
+                // ACTUALIZAR RECORDATORIO DE KM (Utilizando km_actual_registrado de utils.py)
                 const kmReferencia = d.km_actual_registrado || 0;
                 const hint = document.getElementById('km-referencia-hint');
 
@@ -189,7 +215,7 @@ function marcarCategoriaBuena(catId) {
             html += `
             <div class="card info-card-modern mb-4">
                 <div class="card-header bg-primary text-white">
-                    <h6>${cat.nombre}</h6>
+                    <h6 class="mb-0">${cat.nombre}</h6>
                     <button type="button" class="btn btn-sm btn-light text-primary fw-bold" 
                             style="border-radius: 8px; font-size: 0.7rem; padding: 5px 15px;"
                             onclick="marcarCategoriaBuena('${cat.id}')">
@@ -204,18 +230,14 @@ function marcarCategoriaBuena(catId) {
                     <div class="item-info">
                         ${item.nombre} ${item.es_critico ? '<span class="text-danger">*</span>' : ''}
                     </div>
-                    
                     <div class="btn-group-mobile">
                         <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="b_${item.id}" value="B" data-item-id="${item.id}">
                         <label class="btn btn-outline-success" for="b_${item.id}">BUENO</label>
-                        
                         <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="r_${item.id}" value="R" data-item-id="${item.id}">
                         <label class="btn btn-outline-warning" for="r_${item.id}">REG.</label>
-                        
                         <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="m_${item.id}" value="M" data-item-id="${item.id}">
                         <label class="btn btn-outline-danger" for="m_${item.id}">MALO</label>
                     </div>
-                    
                     <input type="text" class="form-control item-observacion" 
                         data-item-id="${item.id}" placeholder="Escribe el hallazgo aquí...">
                 </div>`;
@@ -225,16 +247,17 @@ function marcarCategoriaBuena(catId) {
 
         checklistDiv.innerHTML = html;
 
-        // 3. Re-vincular eventos para que la barra y el JSON funcionen
         document.querySelectorAll('.item-radio').forEach(radio => {
             radio.addEventListener('change', () => {
-                actualizarChecklist();
-                actualizarBarra();
+                if (typeof actualizarChecklist === 'function') actualizarChecklist();
+                if (typeof actualizarBarra === 'function') actualizarBarra();
             });
         });
         
         document.querySelectorAll('.item-observacion').forEach(input => {
-            input.addEventListener('input', actualizarChecklist);
+            input.addEventListener('input', () => {
+                if (typeof actualizarChecklist === 'function') actualizarChecklist();
+            });
         });
     }
 });
