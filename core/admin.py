@@ -12,7 +12,8 @@ from .models import (
     Conductor,
     DocumentacionGeneral,
     HistorialEstadoRemolque,
-    EstadoRemolque
+    EstadoRemolque,
+    Contrato,
 )
 
 admin.site.register(Empresa)
@@ -47,6 +48,11 @@ class HistorialEstadoRemolqueInline(admin.TabularInline):
 
 # --- CONFIGURACIONES PRINCIPALES ---
 
+@admin.register(Contrato)
+class ContratoAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'activo')
+    search_fields = ('nombre',)
+
 @admin.register(Camion)
 class CamionAdmin(admin.ModelAdmin):
     search_fields = ['patente']
@@ -56,9 +62,10 @@ class CamionAdmin(admin.ModelAdmin):
         'rol_operativo',
         'km_restantes',
         'estado_actual_display',
-        'remolque_actual' # Agregamos una columna para ver el remolque enganchado
+        'remolque_actual',
+        'contrato' # Agregamos una columna para ver el remolque enganchado
     )
-    list_filter = ('activo', 'rol_operativo')
+    list_filter = ('activo', 'rol_operativo', 'contrato')
     search_fields = ('patente',)
     # Agregamos AsignacionInline para enganchar/desenganchar remolques desde aquí
     inlines = [AsignacionInline, MantencionInline, HistorialEstadoInline]

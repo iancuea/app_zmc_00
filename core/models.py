@@ -47,6 +47,17 @@ class Empresa(models.Model):
 
 #---------ENTIDADES-------
 
+class Contrato(models.Model):
+    nombre = models.CharField(max_length=100)
+    logo_cliente = models.ImageField(upload_to='logos/contratos/', null=True, blank=True)
+    activo = models.BooleanField(default=True)
+
+    class Meta:
+        db_table = 'core_contrato' # Obligamos a usar el nombre exacto de la tabla
+
+    def __str__(self):
+        return self.nombre
+    
 class Camion(models.Model):
     id_camion = models.AutoField(primary_key=True)
     patente = models.CharField(max_length=10, unique=True)
@@ -54,7 +65,7 @@ class Camion(models.Model):
     marca = models.CharField(max_length=50, blank=True, null=True)
     modelo = models.CharField(max_length=50, blank=True, null=True)
     anio = models.IntegerField(blank=True, null=True)
-
+    contrato = models.ForeignKey(Contrato, on_delete=models.SET_NULL, null=True, blank=True)
     intervalo_mantencion = models.IntegerField(default=25000, help_text="KM entre mantenciones")
 
     tipo_camion = models.CharField(max_length=50)
@@ -153,7 +164,7 @@ class Camion(models.Model):
 
     def __str__(self):
         return self.patente if self.patente else "Camión sin patente"
-
+    
 class Conductor(models.Model):
     nombre = models.CharField(max_length=100)
     rut = models.CharField(max_length=20, unique=True)

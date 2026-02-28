@@ -2,6 +2,7 @@
 Utilidades para reportes y generación de PDFs de inspecciones
 """
 from datetime import datetime
+from django.conf import settings
 from django.utils import timezone
 from core.models import DocumentacionGeneral
 from reportlab.lib.pagesizes import letter
@@ -101,6 +102,11 @@ def obtener_datos_camion_autocompletado(camion):
 def generar_pdf_mantencion_tecnica(inspeccion, resultados_items, datos_autocompletado):
     return 0
 
+import os
+from reportlab.lib.utils import ImageReader
+from reportlab.platypus import Image, Table, TableStyle, Paragraph, Spacer, PageBreak, SimpleDocTemplate
+# ... tus otros imports de reportlab ...
+
 def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
     # Crear directorio
     tipo_insp = inspeccion.get_tipo_inspeccion_display().lower()
@@ -112,20 +118,47 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
     nombre_pdf = f'reporte_{fecha_str}_{patente}.pdf'
     ruta_pdf = os.path.join(directorio, nombre_pdf)
     
-    # Reducimos márgenes para que quepa todo como en la foto
+    # Márgenes originales
     doc = SimpleDocTemplate(ruta_pdf, pagesize=letter,
                             rightMargin=30, leftMargin=30, 
                             topMargin=30, bottomMargin=30)
     story = []
     
-    # Estilos con tamaños aumentados
+    # --- LÓGICA DE LOGOS DINÁMICOS ---
+    # 1. Logo ZMC (Asegúrate que esté en esta ruta)
+    path_logo_zmc = os.path.join(settings.MEDIA_ROOT, 'logos', 'logo-zmc.png')
+    img_zmc = None
+    if os.path.exists(path_logo_zmc):
+        img_zmc = Image(path_logo_zmc, width=1.2*inch, height=0.6*inch)
+        img_zmc.hAlign = 'LEFT'
+
+    # 2. Logo Contrato (Dinámico desde el modelo Camion -> Contrato)
+    img_contrato = None
+    vehiculo = inspeccion.vehiculo
+    if vehiculo.contrato and vehiculo.contrato.logo_cliente:
+        path_logo_contrato = vehiculo.contrato.logo_cliente.path
+        if os.path.exists(path_logo_contrato):
+            img_contrato = Image(path_logo_contrato, width=1.2*inch, height=0.6*inch)
+            img_contrato.hAlign = 'RIGHT'
+
+    # 3. Crear Tabla de Encabezado para los Logos
+    # [ Logo ZMC | Espacio vacío | Logo Contrato ]
+    header_logo_data = [[img_zmc if img_zmc else '', '', img_contrato if img_contrato else '']]
+    t_logos = Table(header_logo_data, colWidths=[2.5*inch, 2.5*inch, 2.5*inch])
+    t_logos.setStyle(TableStyle([
+        ['VALIGN', (0,0), (-1,-1), 'MIDDLE'],
+        ['ALIGN', (0,0), (0,0), 'LEFT'],
+        ['ALIGN', (2,0), (2,0), 'RIGHT'],
+    ]))
+    story.append(t_logos)
+    story.append(Spacer(1, 10))
+    # --- FIN LÓGICA LOGOS ---
+
+    # Estilos originales
     title_style = ParagraphStyle('Title', fontSize=14, alignment=TA_CENTER, fontName='Helvetica-Bold', spaceAfter=10)
     header_label = ParagraphStyle('Label', fontSize=11, fontName='Helvetica-Bold', spaceBefore=8, spaceAfter=4)
-    
     styles = getSampleStyleSheet()
     
-    # Estilo de tabla para datos: Letra 10 (Clara y grande)
-    # Usamos fondo beige suave para los encabezados de celda como en tu foto
     base_style = [
         ['GRID', (0,0), (-1,-1), 0.7, colors.black],
         ['FONTSIZE', (0,0), (-1,-1), 11], 
@@ -137,15 +170,17 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
     patente_text_style = ParagraphStyle(
         'PatenteSimple',
         parent=styles['Normal'],
-        fontSize=48,              # Tamaño muy grande
-        leading=54,               # Espaciado entre líneas
-        alignment=1,              # Centrado (0=izq, 1=centro, 2=der)
-        fontName='Helvetica-Bold', # Negrita para que resalte
+        fontSize=48,
+        leading=54,
+        alignment=1,
+        fontName='Helvetica-Bold',
     )
 
-
     # --- PÁGINA 1: CARÁTULA COMPLETA ---
-    story.append(Paragraph("ZMC TRANSPORTES - ENAP", title_style))
+    # Título dinámico basado en el contrato
+    nombre_contrato = vehiculo.contrato.nombre.upper() if vehiculo.contrato else "GENERAL"
+    story.append(Paragraph(f"ZMC TRANSPORTES - {nombre_contrato}", title_style))
+    
     patente_camion = datos_autocompletado.get('camion_patente', 'S/P')
     story.append(Paragraph(patente_camion, patente_text_style))
     story.append(Spacer(1, 20))
@@ -165,10 +200,10 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
     # 2. SECCIÓN CONDUCTOR
     story.append(Paragraph("CONDUCTOR", header_label))
     cond_data = [
-        ['Nombre Conductor:', datos_autocompletado['conductor_nombre'], '', ''], # Fila 1
-        ['Antigüedad:', datos_autocompletado.get('conductor_antiguedad', 'N/A'), 'Licencia:', 'A1/A2/D'], # Fila 2
-        ['Fecha Control:', datos_autocompletado['fecha_control'], 'Lugar:', datos_autocompletado['lugar_inspeccion']], # Fila 3
-        ['¿Apto para Trabajar?:', datos_autocompletado['apto_trabajar'], 'Observaciones:', ''], # Fila 4
+        ['Nombre Conductor:', datos_autocompletado['conductor_nombre'], '', ''],
+        ['Antigüedad:', datos_autocompletado.get('conductor_antiguedad', 'N/A'), 'Licencia:', 'A1/A2/D'],
+        ['Fecha Control:', datos_autocompletado['fecha_control'], 'Lugar:', datos_autocompletado['lugar_inspeccion']],
+        ['¿Apto para Trabajar?:', datos_autocompletado['apto_trabajar'], 'Observaciones:', ''],
     ]
     t2 = Table(cond_data, colWidths=[1.8*inch, 1.95*inch, 1.3*inch, 2.45*inch])
     t2.setStyle(TableStyle([
@@ -181,9 +216,8 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
         ['SPAN', (1, 0), (3, 0)], 
     ]))
     story.append(t2)
-    #story.append(Spacer(1, 15))
 
-    # 3. SECCIÓN CAMIÓN (6 columnas para que quepa todo el detalle técnico)
+    # 3. SECCIÓN CAMIÓN
     story.append(Paragraph("CAMIÓN", header_label))
     c_w = 7.5*inch / 6
     camion_data = [
@@ -192,7 +226,7 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
         ['Vto. PC:', datos_autocompletado['camion_vto_pc'], 'Vto. SOAP:', datos_autocompletado['camion_vto_soap'], 'Vto. TC8:', datos_autocompletado['camion_vto_tc8']],
     ]
     t3 = Table(camion_data, colWidths=[c_w]*6)
-    t3.setStyle(TableStyle(base_style + [('FONTSIZE', (0,0), (-1,-1), 9)])) # Bajamos a 9 solo aquí para que no se amontone
+    t3.setStyle(TableStyle(base_style + [('FONTSIZE', (0,0), (-1,-1), 9)]))
     story.append(t3)
 
     # 4. SECCIÓN ESTANQUE
@@ -212,7 +246,6 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
     # --- PÁGINA 2 EN ADELANTE: CHECKLIST ---
     story.append(Paragraph("DETALLE DE ITEMS DE INSPECCIÓN", title_style))
     
-    # Agrupar items por categoría
     items_por_categoria = {}
     for resultado in resultados_items:
         cat = resultado.item.categoria.nombre
@@ -225,7 +258,6 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
         for idx, res in enumerate(resultados, 1):
             data.append([str(idx), res.item.nombre, res.get_estado_display(), res.observacion or ''])
         
-        # El checklist tiene letra 10 para máxima claridad
         t_check = Table(data, colWidths=[0.5*inch, 3.4*inch, 1.2*inch, 2.4*inch])
         t_check.setStyle(TableStyle([
             ['GRID', (0,0), (-1,-1), 0.5, colors.black],
