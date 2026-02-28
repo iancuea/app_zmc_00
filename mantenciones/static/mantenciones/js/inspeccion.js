@@ -146,13 +146,21 @@ function marcarCategoriaBuena(catId) {
                 document.getElementById('conductor-nombre').value = d.conductor_nombre;
                 document.getElementById('datos-autocompletados').style.display = 'flex';
                 
+                // --- NUEVA LÓGICA: ACTUALIZAR RECORDATORIO DE KM ---
+                const kmReferencia = d.km_actual_registrado || 0;
+                const hint = document.getElementById('km-referencia-hint');
+
+                if (hint) {
+                    const kmFormateado = kmReferencia.toLocaleString('es-CL');
+                    hint.innerHTML = `📌 EL KM DEBE SER IGUAL O MAYOR A: <span style="color: var(--primary-zmc); font-weight: 800;">${kmFormateado} KM</span>`;
+                }
+
                 if (d.tiene_remolque) {
                     inputRemolquePatente.value = d.remolque_patente;
                     inputRemolqueId.value = d.remolque_id;
                     seccionRemolque.style.display = 'block';
                 }
 
-                // Si ya eligió tipo de inspección antes, recargamos para filtrar
                 if (tipoSelect.value) cargarCategorias();
             }
         } catch (e) { 

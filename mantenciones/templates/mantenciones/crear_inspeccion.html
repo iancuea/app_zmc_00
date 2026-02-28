@@ -62,10 +62,27 @@
                         <div class="info-card-content">
                             <div class="data-row">
                                 <span class="label">KM ACTUAL (ODÓMETRO)</span>
-                                {{ form.km_registro }} </div>
+                                {{ form.km_registro }}
+                            </div>
+
+                            <div style="padding: 0 0 10px 0; margin-top: -5px;">
+                                <small id="km-referencia-hint" style="color: #718096; font-weight: 600; font-size: 0.7rem; display: block; margin-bottom: 2px;">
+                                    📌 SELECCIONE UN VEHÍCULO PARA VER EL KM ACTUAL.
+                                </small>
+
+                                {% if form.km_registro.errors %}
+                                    {% for error in form.km_registro.errors %}
+                                        <small style="color: var(--danger); font-weight: 800; font-size: 0.7rem; text-transform: uppercase; display: block;">
+                                            ⚠️ {{ error }}
+                                        </small>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
                             <div class="data-row">
                                 <span class="label">RESPONSABLE</span>
-                                {{ form.responsable }} </div>
+                                {{ form.responsable }}
+                            </div>
                         </div>
                     </div>
                 </div>

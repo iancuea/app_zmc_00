@@ -17,90 +17,68 @@ def obtener_datos_camion_autocompletado(camion):
     Retorna un diccionario con todos los datos que se auto-llenan 
     basado en el camión seleccionado
     """
+    estado = getattr(camion, 'estado_actual', None)
+    
     datos = {
         'fecha_inspeccion': timezone.localtime(timezone.now()).strftime('%d/%m/%Y %H:%M'),
-        'lugar_inspeccion': camion.estado_actual.get_base_actual_display() if hasattr(camion, 'estado_actual') else 'N/A',
+        'lugar_inspeccion': estado.get_base_actual_display() if estado else 'N/A',
         'contratista': 'ENAP',
         'contrato': 'Transporte de Productos Líquidos',
-        'conductor_nombre': '',
+        'conductor_nombre': estado.conductor.nombre if estado and estado.conductor else '',
         'conductor_antiguedad': '',
-        'fecha_control': '',
+        'fecha_control': timezone.now().strftime('%d/%m/%Y'),
         'apto_trabajar': '',
         'camion_marca': camion.marca or 'N/A',
         'camion_modelo': camion.modelo or 'N/A',
         'camion_patente': camion.patente,
         'camion_anio': camion.anio or 'N/A',
-        'camion_odometro': '',  # Se pasa desde el form (km_registro)
-        'camion_vto_rt': 'N/A',
-        'camion_vto_pc': 'N/A',
-        'camion_vto_soap': 'N/A',
-        'camion_vto_tc8': 'N/A',
-        'remolque_marca': 'N/A',
-        'remolque_modelo': 'N/A',
-        'remolque_anio': 'N/A',
-        'remolque_patente': 'N/A',
-        'remolque_capacidad': 'N/A',
-        'remolque_vto_rt': 'N/A',
-        'remolque_vto_pc': 'N/A',
-        'remolque_vto_soap': 'N/A',
-        'remolque_vto_tc8': 'N/A',
+        # Aquí enviamos el KM real del camión siempre
+        'camion_odometro': estado.kilometraje if estado else 0,
+        'km_actual_registrado': estado.kilometraje if estado else 0,
         'tiene_remolque': False,
     }
-    
-    # Llenar datos del conductor
-    if hasattr(camion, 'estado_actual') and camion.estado_actual.conductor:
-        conductor = camion.estado_actual.conductor
-        datos['conductor_nombre'] = conductor.nombre
-        # NOTA: Si en futuro agregamos campo 'antiguedad' al Conductor, descomentar:
-        # datos['conductor_antiguedad'] = conductor.antiguedad
-        datos['fecha_control'] = timezone.now().strftime('%d/%m/%Y')
-    
-    # Buscar documentos del camión
-    docs_camion = DocumentacionGeneral.objects.filter(
-        camion=camion,
-        tipo_entidad='CAMION'
-    )
+
+    # 3. Buscar documentos del camión (Vencimientos)
+    docs_camion = DocumentacionGeneral.objects.filter(camion=camion, tipo_entidad='CAMION')
     for doc in docs_camion:
-        if doc.categoria == 'REVISION_TECNICA':
-            datos['camion_vto_rt'] = doc.fecha_vencimiento.strftime('%d/%m/%Y') if doc.fecha_vencimiento else 'N/A'
-        elif doc.categoria == 'PERMISO_CIRCULACION':
-            datos['camion_vto_pc'] = doc.fecha_vencimiento.strftime('%d/%m/%Y') if doc.fecha_vencimiento else 'N/A'
-        elif doc.categoria == 'SOAP':
-            datos['camion_vto_soap'] = doc.fecha_vencimiento.strftime('%d/%m/%Y') if doc.fecha_vencimiento else 'N/A'
-        elif doc.categoria == 'TC8':
-            datos['camion_vto_tc8'] = doc.fecha_vencimiento.strftime('%d/%m/%Y') if doc.fecha_vencimiento else 'N/A'
-    
-    # Verificar si tiene remolque asignado
+        key = f"camion_vto_{doc.categoria.lower().replace('REVISION_TECNICA', 'rt').replace('PERMISO_CIRCULACION', 'pc')}"
+        # Mapeo manual para asegurar que coincida con tus llaves
+        mapa_docs = {
+            'REVISION_TECNICA': 'camion_vto_rt',
+            'PERMISO_CIRCULACION': 'camion_vto_pc',
+            'SOAP': 'camion_vto_soap',
+            'TC8': 'camion_vto_tc8'
+        }
+        if doc.categoria in mapa_docs:
+            datos[mapa_docs[doc.categoria]] = doc.fecha_vencimiento.strftime('%d/%m/%Y') if doc.fecha_vencimiento else 'N/A'
+
+    # 4. Lógica de Remolque Asignado
     from core.models import AsignacionTractoRemolque
-    asignacion = AsignacionTractoRemolque.objects.filter(
-        camion=camion,
-        activo=True
-    ).first()
+    asignacion = AsignacionTractoRemolque.objects.filter(camion=camion, activo=True).first()
     
     if asignacion:
-        remolque = asignacion.remolque
-        datos['tiene_remolque'] = True
-        datos['remolque_marca'] = remolque.marca or 'N/A'
-        datos['remolque_modelo'] = remolque.modelo or 'N/A'
-        datos['remolque_anio'] = remolque.anio or 'N/A'
-        datos['remolque_patente'] = remolque.patente
-        datos['remolque_capacidad'] = str(remolque.capacidad_carga) if remolque.capacidad_carga else 'N/A'
-        
-        # Buscar documentos del remolque
-        docs_remolque = DocumentacionGeneral.objects.filter(
-            remolque=remolque,
-            tipo_entidad='REMOLQUE'
-        )
-        for doc in docs_remolque:
-            if doc.categoria == 'REVISION_TECNICA':
-                datos['remolque_vto_rt'] = doc.fecha_vencimiento.strftime('%d/%m/%Y') if doc.fecha_vencimiento else 'N/A'
-            elif doc.categoria == 'PERMISO_CIRCULACION':
-                datos['remolque_vto_pc'] = doc.fecha_vencimiento.strftime('%d/%m/%Y') if doc.fecha_vencimiento else 'N/A'
-            elif doc.categoria == 'SOAP':
-                datos['remolque_vto_soap'] = doc.fecha_vencimiento.strftime('%d/%m/%Y') if doc.fecha_vencimiento else 'N/A'
-            elif doc.categoria == 'TC8':
-                datos['remolque_vto_tc8'] = doc.fecha_vencimiento.strftime('%d/%m/%Y') if doc.fecha_vencimiento else 'N/A'
-    
+        rem = asignacion.remolque
+        datos.update({
+            'tiene_remolque': True,
+            'remolque_id': rem.id_remolque,
+            'remolque_marca': rem.marca or 'N/A',
+            'remolque_modelo': rem.modelo or 'N/A',
+            'remolque_patente': rem.patente,
+            'remolque_capacidad': str(rem.capacidad_carga) if rem.capacidad_carga else 'N/A',
+        })
+
+        # Documentos del Remolque
+        docs_rem = DocumentacionGeneral.objects.filter(remolque=rem, tipo_entidad='REMOLQUE')
+        mapa_rem = {
+            'REVISION_TECNICA': 'remolque_vto_rt',
+            'PERMISO_CIRCULACION': 'remolque_vto_pc',
+            'SOAP': 'remolque_vto_soap',
+            'TC8': 'remolque_vto_tc8'
+        }
+        for doc in docs_rem:
+            if doc.categoria in mapa_rem:
+                datos[mapa_rem[doc.categoria]] = doc.fecha_vencimiento.strftime('%d/%m/%Y') if doc.fecha_vencimiento else 'N/A'
+
     return datos
 
 def generar_pdf_mantencion_tecnica(inspeccion, resultados_items, datos_autocompletado):
