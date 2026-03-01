@@ -2,8 +2,18 @@
  * FUNCIONES GLOBALES
  */
 function actualizarBarra() {
-    const total = document.querySelectorAll('.btn-group-mobile').length;
-    const respondidos = document.querySelectorAll('.item-radio:checked').length;
+    const total = document.querySelectorAll('.checklist-row').length;
+    let respondidos = 0;
+
+    document.querySelectorAll('.checklist-row').forEach(row => {
+        const radioMarcado = row.querySelector('.item-radio:checked');
+        const switchAplica = row.querySelector('.switch-aplica');
+
+        // Un ítem está "listo" si tiene un radio marcado O si el switch está apagado (N/A)
+        if (radioMarcado || (switchAplica && !switchAplica.checked)) {
+            respondidos++;
+        }
+    });
     
     if (total === 0) return;
 
@@ -15,7 +25,6 @@ function actualizarBarra() {
         bar.style.width = perc + '%';
         texto.innerText = perc + '%';
         
-        // Colores dinámicos según avance
         if (perc < 40) {
             bar.className = "progress-bar progress-bar-striped progress-bar-animated bg-danger";
         } else if (perc < 99) {
@@ -31,15 +40,36 @@ function actualizarChecklist() {
     const res = [];
     const resultadosInput = document.getElementById('resultados-checklist');
     
-    document.querySelectorAll('.item-radio:checked').forEach(r => {
-        const id = r.dataset.itemId;
-        const obsInput = document.querySelector(`.item-observacion[data-item-id="${id}"]`);
-        const obs = obsInput ? obsInput.value : '';
-        res.push({ item_id: id, estado: r.value, observacion: obs });
+    // IMPORTANTE: Buscamos todas las filas, no solo los seleccionados
+    document.querySelectorAll('.checklist-row').forEach(row => {
+        const radioMarcado = row.querySelector('.item-radio:checked');
+        const switchAplica = row.querySelector('.switch-aplica');
+        const obsInput = row.querySelector('.item-observacion');
+        
+        // Buscamos el ID del item de cualquier radio en la fila
+        const primerRadio = row.querySelector('.item-radio');
+        if (!primerRadio) return;
+        const id = primerRadio.dataset.itemId;
+
+        let estado = "";
+        
+        // SI EL SWITCH ESTÁ APAGADO -> FORZAMOS "NA"
+        if (switchAplica && !switchAplica.checked) {
+            estado = "X"; 
+        } else if (radioMarcado) {
+            estado = radioMarcado.value;
+        }
+
+        res.push({ 
+            item_id: id, 
+            estado: estado, 
+            observacion: obsInput ? obsInput.value : '' 
+        });
     });
     
     if (resultadosInput) {
         resultadosInput.value = JSON.stringify(res);
+        console.log("JSON a enviar:", resultadosInput.value); // Mira esto en la consola del navegador (F12)
     }
 }
 
@@ -274,11 +304,9 @@ function renderizarCategorias(categorias) {
             <div id="cat-body-${cat.id}" class="info-card-content">`;
         
         cat.items.forEach((item) => {
-            // --- LÓGICA DE BOTONES DINÁMICOS ---
+            // 1. DEFINICIÓN DE BOTONES SEGÚN TIPO_RESPUESTA
             let botonesHtml = "";
-            
             if (item.tipo_respuesta === 'BINARIO') {
-                // Genera solo 2 botones para items tipo SI/NO
                 botonesHtml = `
                     <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="s_${item.id}" value="S" data-item-id="${item.id}">
                     <label class="btn btn-outline-success" for="s_${item.id}">SÍ</label>
@@ -286,7 +314,6 @@ function renderizarCategorias(categorias) {
                     <label class="btn btn-outline-danger" for="n_${item.id}">NO</label>
                 `;
             } else {
-                // Genera los 3 botones estándar (B/R/M)
                 botonesHtml = `
                     <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="b_${item.id}" value="B" data-item-id="${item.id}">
                     <label class="btn btn-outline-success" for="b_${item.id}">BUENO</label>
@@ -297,16 +324,38 @@ function renderizarCategorias(categorias) {
                 `;
             }
 
+            // 2. DEFINICIÓN DEL SWITCH SI EL ÍTEM ES OPCIONAL
+            let switchHtml = "";
+            if (item.es_opcional) {
+                switchHtml = `
+                    <div class="form-check form-switch mb-2 mt-1">
+                        <input class="form-check-input switch-aplica" type="checkbox" 
+                               id="sw_${item.id}" data-item-id="${item.id}" checked>
+                        <label class="form-check-label small text-muted fw-bold" for="sw_${item.id}" style="font-size: 0.75rem;">
+                            ESTE EQUIPO CUENTA CON ESTE COMPONENTE
+                        </label>
+                    </div>
+                `;
+            }
+
+            // 3. CONSTRUCCIÓN DEL HTML FINAL DEL ÍTEM
             html += `
-            <div class="checklist-row">
-                <div class="item-info">
+            <div class="checklist-row px-2 py-3 border-bottom" id="row_${item.id}">
+                <div class="item-info mb-1" style="font-weight: 700; color: #2d3748;">
                     ${item.nombre} ${item.es_critico ? '<span class="text-danger">*</span>' : ''}
                 </div>
-                <div class="btn-group-mobile">
+
+                ${switchHtml}
+
+                <div class="btn-group-mobile" id="cont_botones_${item.id}" style="transition: opacity 0.3s ease;">
                     ${botonesHtml}
                 </div>
-                <input type="text" class="form-control item-observacion" 
-                    data-item-id="${item.id}" placeholder="Escribe el hallazgo aquí...">
+                
+                <input type="text" class="form-control item-observacion mt-2" 
+                    id="obs_${item.id}" 
+                    data-item-id="${item.id}" 
+                    placeholder="Escribe el hallazgo aquí..."
+                    style="border-radius: 8px; font-size: 0.85rem;">
             </div>`;
         });
         html += `</div></div>`;
@@ -315,6 +364,7 @@ function renderizarCategorias(categorias) {
     checklistDiv.innerHTML = html;
 
     // RE-VINCULAR EVENTOS
+// 1. LISTENERS PARA RADIOS (BUENO/REG/MAL o SÍ/NO)
     document.querySelectorAll('.item-radio').forEach(radio => {
         radio.addEventListener('change', () => {
             if (typeof actualizarChecklist === 'function') actualizarChecklist();
@@ -322,9 +372,52 @@ function renderizarCategorias(categorias) {
         });
     });
     
+    // 2. LISTENERS PARA OBSERVACIONES (HALLAZGOS)
     document.querySelectorAll('.item-observacion').forEach(input => {
         input.addEventListener('input', () => {
             if (typeof actualizarChecklist === 'function') actualizarChecklist();
+        });
+    });
+
+    // 3. LISTENERS PARA SWITCHES (APLICA / NO APLICA)
+    document.querySelectorAll('.switch-aplica').forEach(sw => {
+        sw.addEventListener('change', function() {
+            const itemId = this.dataset.itemId;
+            const contBotones = document.getElementById(`cont_botones_${itemId}`);
+            const inputObs = document.getElementById(`obs_${itemId}`);
+            
+            if (!this.checked) {
+                // ESTADO: NO APLICA
+                if (contBotones) {
+                    contBotones.style.opacity = "0.3";
+                    contBotones.style.pointerEvents = "none";
+                }
+                if (inputObs) {
+                    inputObs.value = "N/A - El equipo no cuenta con este componente";
+                    inputObs.readOnly = true;
+                    inputObs.style.backgroundColor = "#f7fafc"; // Gris claro para indicar bloqueo
+                }
+                
+                // Desmarcar cualquier opción seleccionada anteriormente
+                document.querySelectorAll(`input[name="item_${itemId}"]`).forEach(r => {
+                    r.checked = false;
+                });
+            } else {
+                // ESTADO: APLICA (Vuelve a la normalidad)
+                if (contBotones) {
+                    contBotones.style.opacity = "1";
+                    contBotones.style.pointerEvents = "auto";
+                }
+                if (inputObs) {
+                    inputObs.value = "";
+                    inputObs.readOnly = false;
+                    inputObs.style.backgroundColor = "#ffffff";
+                }
+            }
+            
+            // Forzamos actualización para que la barra de progreso y el JSON de resultados se enteren
+            if (typeof actualizarChecklist === 'function') actualizarChecklist();
+            if (typeof actualizarBarra === 'function') actualizarBarra();
         });
     });
 }

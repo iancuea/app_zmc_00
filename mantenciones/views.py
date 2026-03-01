@@ -36,6 +36,7 @@ def crear_inspeccion(request):
                     resultados_data = json.loads(resultados_raw)
                     
                     for data in resultados_data:
+                        print(f"DEBUG: Guardando Item ID {data['item_id']} - Estado: '{data['estado']}'") # <--- AGREGA ESTO
                         try:
                             item = ItemChecklist.objects.get(id=data['item_id'])
                             ResultadoItem.objects.create(
@@ -54,9 +55,9 @@ def crear_inspeccion(request):
                     datos_autocompletado['fecha_inspeccion'] = fecha_chile.strftime('%d/%m/%Y %H:%M')
                     
                     # 4. Generar PDF
-                    resultados_items = inspeccion.resultados.all()
+                    resultados_items = inspeccion.resultados.all().select_related('item')
                     if inspeccion.tipo_inspeccion == 'DIARIO':
-                        ruta_pdf = generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado)
+                        ruta_pdf = generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado)                    
                     else:
                         ruta_pdf = generar_pdf_mantencion_tecnica(inspeccion, resultados_items, datos_autocompletado)
 
@@ -169,7 +170,13 @@ def api_categorias_por_tipo(request, tipo_inspeccion):
         
         categorias_con_items = []
         for cat in categorias:
-            items = ItemChecklist.objects.filter(categoria=cat).values('id', 'nombre', 'es_critico', 'tipo_respuesta')
+            items = ItemChecklist.objects.filter(categoria=cat).values(
+                'id', 
+                'nombre', 
+                'es_critico', 
+                'tipo_respuesta',
+                'es_opcional'  # <-- AGREGAR ESTO
+            )            
             cat_data = {
                 'id': cat.id,
                 'nombre': cat.nombre,

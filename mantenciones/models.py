@@ -75,6 +75,11 @@ class ItemChecklist(models.Model):
         default='ESCALA',
         verbose_name="Tipo de Selección"
     )
+    es_opcional = models.BooleanField(
+        default=False, 
+        verbose_name="¿Es opcional?",
+        help_text="Si se marca, permitirá al usuario indicar que el ítem 'No Aplica' (N/A)"
+    )   
     def __str__(self):
         return f"{self.categoria.nombre} - {self.nombre}"
 
