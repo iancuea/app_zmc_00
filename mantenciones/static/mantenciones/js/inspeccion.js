@@ -274,18 +274,36 @@ function renderizarCategorias(categorias) {
             <div id="cat-body-${cat.id}" class="info-card-content">`;
         
         cat.items.forEach((item) => {
-            html += `
-            <div class="checklist-row">
-                <div class="item-info">
-                    ${item.nombre} ${item.es_critico ? '<span class="text-danger">*</span>' : ''}
-                </div>
-                <div class="btn-group-mobile">
+            // --- LÓGICA DE BOTONES DINÁMICOS ---
+            let botonesHtml = "";
+            
+            if (item.tipo_respuesta === 'BINARIO') {
+                // Genera solo 2 botones para items tipo SI/NO
+                botonesHtml = `
+                    <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="s_${item.id}" value="S" data-item-id="${item.id}">
+                    <label class="btn btn-outline-success" for="s_${item.id}">SÍ</label>
+                    <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="n_${item.id}" value="N" data-item-id="${item.id}">
+                    <label class="btn btn-outline-danger" for="n_${item.id}">NO</label>
+                `;
+            } else {
+                // Genera los 3 botones estándar (B/R/M)
+                botonesHtml = `
                     <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="b_${item.id}" value="B" data-item-id="${item.id}">
                     <label class="btn btn-outline-success" for="b_${item.id}">BUENO</label>
                     <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="r_${item.id}" value="R" data-item-id="${item.id}">
                     <label class="btn btn-outline-warning" for="r_${item.id}">REG.</label>
                     <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="m_${item.id}" value="M" data-item-id="${item.id}">
                     <label class="btn btn-outline-danger" for="m_${item.id}">MALO</label>
+                `;
+            }
+
+            html += `
+            <div class="checklist-row">
+                <div class="item-info">
+                    ${item.nombre} ${item.es_critico ? '<span class="text-danger">*</span>' : ''}
+                </div>
+                <div class="btn-group-mobile">
+                    ${botonesHtml}
                 </div>
                 <input type="text" class="form-control item-observacion" 
                     data-item-id="${item.id}" placeholder="Escribe el hallazgo aquí...">

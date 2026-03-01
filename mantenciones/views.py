@@ -169,7 +169,7 @@ def api_categorias_por_tipo(request, tipo_inspeccion):
         
         categorias_con_items = []
         for cat in categorias:
-            items = ItemChecklist.objects.filter(categoria=cat).values('id', 'nombre', 'es_critico')
+            items = ItemChecklist.objects.filter(categoria=cat).values('id', 'nombre', 'es_critico', 'tipo_respuesta')
             cat_data = {
                 'id': cat.id,
                 'nombre': cat.nombre,

@@ -62,13 +62,19 @@ class CategoriaChecklist(models.Model):
         return f"{self.nombre} ({self.get_filtro_tipo_display()})"
 
 class ItemChecklist(models.Model):
-    """
-    Los ítems específicos: 'Extintores', 'Bombas', 'Plumillas'.
-    """
+    TIPO_CHOICES = [
+        ('ESCALA', 'Bien / Regular / Malo'),
+        ('BINARIO', 'Sí / No'),
+    ]
     categoria = models.ForeignKey(CategoriaChecklist, on_delete=models.CASCADE, related_name='items')
     nombre = models.CharField(max_length=100) # ej: "EXTINTORES" [cite: 21]
     es_critico = models.BooleanField(default=False) # Si está Malo, el camión no sale
-
+    tipo_respuesta = models.CharField(
+        max_length=20, 
+        choices=TIPO_CHOICES, 
+        default='ESCALA',
+        verbose_name="Tipo de Selección"
+    )
     def __str__(self):
         return f"{self.categoria.nombre} - {self.nombre}"
 
