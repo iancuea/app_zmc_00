@@ -168,17 +168,50 @@ class Camion(models.Model):
 class Conductor(models.Model):
     nombre = models.CharField(max_length=100)
     rut = models.CharField(max_length=20, unique=True)
-    telefono = models.CharField(max_length=20, blank=True, null=True)
-    correo = models.EmailField(blank=True, null=True)
+    # Dejamos solo correo y celular como campos de contacto principales
+    correo = models.EmailField(max_length=254, null=True, blank=True)
+    celular = models.CharField(max_length=50, null=True, blank=True)
+    
     activo = models.BooleanField(default=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
+    
+    # Datos específicos del CSV
+    contratista = models.CharField(max_length=100, null=True, blank=True)
+    antiguedad = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    inicio_contrato = models.DateField(null=True, blank=True)
+    
+    # Ampliamos a 100 para evitar el error de "valor demasiado largo"
+    clase_licencia = models.CharField(max_length=100, null=True, blank=True)
+    
+    # Para guardar la URL de la foto de AppSheet o local
+    foto_url = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name = "Conductor"
         verbose_name_plural = "Conductores"
+        # Asegúrate de que el db_table coincida con el nombre en tu SQL
+        db_table = 'core_conductor'
 
     def __str__(self):
-        return f"{self.nombre} ({self.rut})" 
+        return f"{self.nombre} ({self.rut})"
+
+class AsignacionPermanente(models.Model):
+    camion = models.ForeignKey(Camion, on_delete=models.CASCADE, related_name='conductores_asignados')
+    conductor = models.ForeignKey(Conductor, on_delete=models.CASCADE)
+    TURNO_CHOICES = [
+        ('TITULAR', 'Titular'),
+        ('RELEVO', 'Relevo/Backup'),
+    ]
+    tipo_turno = models.CharField(max_length=20, choices=TURNO_CHOICES, blank=True, null=True)
+    
+    class Meta:
+        db_table = 'core_asignacion_permanente'
+        verbose_name = "Asignación de Conductor"
+        # Esto permite que un conductor no se repita en el mismo camión
+        unique_together = ('camion', 'conductor') 
+
+    def __str__(self):
+        return f"{self.camion.patente} -> {self.conductor.nombre}"
 
 class Remolque(models.Model):
     # Opciones para el estado operativo

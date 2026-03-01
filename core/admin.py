@@ -14,6 +14,7 @@ from .models import (
     HistorialEstadoRemolque,
     EstadoRemolque,
     Contrato,
+    AsignacionPermanente
 )
 
 admin.site.register(Empresa)
@@ -46,6 +47,9 @@ class HistorialEstadoRemolqueInline(admin.TabularInline):
     extra = 0
     readonly_fields = ('fecha_evento',)
 
+class AsignacionPermanenteInline(admin.TabularInline):
+    model = AsignacionPermanente
+    extra = 2 # Esto muestra 2 espacios vacíos listos para llenar (tus duplas)
 # --- CONFIGURACIONES PRINCIPALES ---
 
 @admin.register(Contrato)
@@ -68,7 +72,7 @@ class CamionAdmin(admin.ModelAdmin):
     list_filter = ('activo', 'rol_operativo', 'contrato')
     search_fields = ('patente',)
     # Agregamos AsignacionInline para enganchar/desenganchar remolques desde aquí
-    inlines = [AsignacionInline, MantencionInline, HistorialEstadoInline]
+    inlines = [AsignacionInline, MantencionInline, HistorialEstadoInline, AsignacionPermanenteInline]
 
     def estado_actual_display(self, obj):
         return getattr(obj.estado_actual, 'estado_operativo', 'SIN ESTADO')
@@ -92,9 +96,35 @@ class RemolqueAdmin(admin.ModelAdmin):
 
 @admin.register(Conductor)
 class ConductorAdmin(admin.ModelAdmin):
-    search_fields = ['patente']
-    list_display = ('nombre', 'rut', 'activo')
-    search_fields = ('nombre', 'rut')
+    # Columnas que se verán en el listado principal
+    list_display = ('nombre', 'rut', 'celular', 'contratista', 'activo')
+    
+    # Filtros laterales
+    list_filter = ('activo', 'contratista', 'clase_licencia')
+    
+    # Buscador (muy importante para cuando tengas muchos choferes)
+    search_fields = ('nombre', 'rut', 'correo')
+    
+    # Orden por defecto
+    ordering = ('nombre',)
+    
+    # Organización de los campos al editar
+    fieldsets = (
+        ('Información Personal', {
+            'fields': ('nombre', 'rut', 'foto_url')
+        }),
+        ('Contacto', {
+            'fields': ('correo', 'celular')
+        }),
+        ('Datos Laborales', {
+            'fields': ('contratista', 'inicio_contrato', 'antiguedad', 'clase_licencia', 'activo')
+        }),
+    )
+
+@admin.register(AsignacionPermanente)
+class AsignacionPermanenteAdmin(admin.ModelAdmin):
+    list_display = ('camion', 'conductor', 'tipo_turno')
+    list_filter = ('camion', 'tipo_turno')
 
 @admin.register(AsignacionTractoRemolque)
 class AsignacionTractoRemolqueAdmin(admin.ModelAdmin):
