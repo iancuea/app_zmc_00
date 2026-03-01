@@ -243,30 +243,36 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
         data = [['N°', 'Descripción', 'Estado', 'Observación']]
         
         for idx, res in enumerate(resultados, 1):
-            valor_db = res.estado  # Ahora recibirá 'NA' desde el JS
+            valor_db = res.estado 
             observacion_texto = res.observacion or ''
-            
-            # Si el valor es 'NA', el mapeo ya lo traduce a "N/A"
-            estado_visual = mapeo_nombres.get(valor_db)
+            estado_visual = mapeo_nombres.get(valor_db, "-")
 
-            # --- RESCATE TOTAL ---
-            if not estado_visual or valor_db == 'NA':
-                # Si el JS mandó NA, o la observación dice N/A, o el modelo dice que es opcional
-                if valor_db == 'NA' or "N/A" in observacion_texto.upper() or res.item.es_opcional:
-                    estado_visual = "N/A"
-                else:
-                    estado_visual = "-"
+            # --- LA SOLUCIÓN AL TEXTO LARGO ---
+            # Creamos un estilo específico para el texto dentro de la tabla
+            estilo_celda = ParagraphStyle(
+                'CeldaTexto',
+                parent=styles['Normal'],
+                fontSize=9,      # Un poco más pequeño para que quepa mejor
+                leading=10,      # Espacio entre líneas (el "enter")
+                alignment=TA_LEFT # Alineado a la izquierda
+            )
 
-            data.append([str(idx), res.item.nombre, estado_visual, observacion_texto])
+            # Envolvemos el nombre del ítem y la observación en un Paragraph
+            # Esto obliga a ReportLab a calcular los saltos de línea
+            nombre_item_p = Paragraph(res.item.nombre, estilo_celda)
+            observacion_p = Paragraph(observacion_texto, estilo_celda)
+
+            # Agregamos los objetos Paragraph en lugar de texto plano
+            data.append([str(idx), nombre_item_p, estado_visual, observacion_p])
         
+        # Al definir la tabla, ReportLab ajustará el alto de la fila automáticamente
         t_check = Table(data, colWidths=[0.5*inch, 3.4*inch, 1.2*inch, 2.4*inch])
         t_check.setStyle(TableStyle([
             ['GRID', (0,0), (-1,-1), 0.5, colors.black],
-            ['FONTSIZE', (0,0), (-1,-1), 10],
+            ['VALIGN', (0,0), (-1,-1), 'MIDDLE'], # Centra el contenido verticalmente
+            ['TOPPADDING', (0,0), (-1,-1), 4],
+            ['BOTTOMPADDING', (0,0), (-1,-1), 4],
             ['BACKGROUND', (0,0), (-1,0), colors.lightgrey],
-            ['FONTNAME', (0,0), (-1,0), 'Helvetica-Bold'],
-            ['ALIGN', (2,0), (2,-1), 'CENTER'],
-            ['VALIGN', (0,0), (-1,-1), 'MIDDLE'],
         ]))
         story.append(t_check)
         story.append(Spacer(1, 10))
