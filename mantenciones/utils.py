@@ -272,15 +272,37 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
         story.append(Spacer(1, 10))
 
     # Firmas
-    story.append(Spacer(1, 40))
+    # --- SECCIÓN DE FIRMAS CON IMAGEN ---
+    story.append(Spacer(1, 20))
+    
+    # Intentar cargar la firma del representante desde media/logos/
+    path_firma_zmc = os.path.join(settings.MEDIA_ROOT, 'logos', 'firma-zmc.png')
+    img_firma = ''
+    if os.path.exists(path_firma_zmc):
+        # Ajustamos el tamaño para que quepa bien sobre la línea (aprox 1.5 x 0.7 pulgadas)
+        img_firma = Image(path_firma_zmc, width=1.5*inch, height=0.7*inch)
+
+    # Tabla de firmas: 
+    # Fila 1: Las imágenes (o espacio vacío)
+    # Fila 2: Las líneas de puntos
+    # Fila 3: Los nombres
+    # Fila 4: Los cargos
     firma_data = [
+        ['', img_firma], # Aquí va la firma digital a la derecha
         ['_______________________', '_______________________'],
         [f'Firma: {inspeccion.responsable}', 'Firma: Representante ZMC'],
         ['Responsable Inspección', 'Control de Flota']
     ]
+    
     t_firma = Table(firma_data, colWidths=[3.75*inch, 3.75*inch])
-    t_firma.setStyle(TableStyle([('ALIGN', (0, 0), (-1, -1), 'CENTER'), ('FONTSIZE', (0,0), (-1,-1), 10)]))
+    t_firma.setStyle(TableStyle([
+        ['ALIGN', (0, 0), (-1, -1), 'CENTER'],
+        ['VALIGN', (0, 0), (-1, -1), 'BOTTOM'], # La firma "descansa" sobre la línea
+        ['FONTSIZE', (0, 0), (-1, -1), 10],
+        ['BOTTOMPADDING', (0, 1), (1, 1), 0], # Pegamos la imagen a la línea
+    ]))
     story.append(t_firma)
 
+    # Generar el documento
     doc.build(story)
     return ruta_pdf
