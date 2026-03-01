@@ -154,9 +154,26 @@ class MantencionAdmin(admin.ModelAdmin):
 
 @admin.register(EstadoCamion)
 class EstadoCamionAdmin(admin.ModelAdmin):
-    list_display = ('camion', 'estado_operativo', 'kilometraje', 'fecha_actualizacion', 'conductor')
-    list_filter = ('estado_operativo',)
+    list_display = ('camion', 'get_conductor_actual', 'kilometraje', 'estado_operativo', 'fecha_actualizacion')
+    list_filter = ('estado_operativo', 'base_actual')
+    
+    def get_conductor_actual(self, obj):
+        return obj.conductor.nombre if obj.conductor else "Sin conductor"
+    get_conductor_actual.short_description = 'Conductor Actual'
 
+    # ESTA ES LA MAGIA: Filtra los conductores según el camión seleccionado
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "conductor":
+            # Si estamos editando un registro existente
+            obj_id = request.resolver_match.kwargs.get('object_id')
+            if obj_id:
+                estado = self.get_object(request, obj_id)
+                # Solo mostramos los conductores que están en AsignacionPermanente para este camión
+                kwargs["queryset"] = Conductor.objects.filter(
+                    asignacionpermanente__camion=estado.camion
+                )
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
 @admin.register(EstadoRemolque)
 class EstadoRemolqueAdmin(admin.ModelAdmin):
     list_display = ('remolque', 'estado_operativo', 'get_base_actual', 'fecha_actualizacion')
