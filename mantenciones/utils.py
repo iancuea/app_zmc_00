@@ -4,7 +4,7 @@ Utilidades para reportes y generación de PDFs de inspecciones
 from datetime import datetime
 from django.conf import settings
 from django.utils import timezone
-from core.models import DocumentacionGeneral
+from core.models import Conductor, DocumentacionGeneral
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
@@ -26,6 +26,7 @@ def obtener_datos_camion_autocompletado(camion):
         'contratista': 'ENAP',
         'contrato': 'Transporte de Productos Líquidos',
         'conductor_nombre': estado.conductor.nombre if estado and estado.conductor else 'SIN CONDUCTOR',
+        'conductor_nombre_corto': estado.conductor.nombre_corto if estado and estado.conductor else 'SIN CONDUCTOR',      
         'conductor_antiguedad': 'N/A',
         'fecha_control': timezone.now().strftime('%d/%m/%Y'),
         'apto_trabajar': 'SÍ',

@@ -247,7 +247,7 @@ async function cargarDatosAutocompletados() {
         if (data.success) {
             const d = data.datos;
             document.getElementById('lugar-inspeccion').value = d.lugar_inspeccion;
-            document.getElementById('conductor-nombre').value = d.conductor_nombre;
+            document.getElementById('conductor-nombre').value = d.conductor_nombre_corto || d.conductor_nombre;
             document.getElementById('datos-autocompletados').style.display = 'flex';
             
             kmMinimoPermitido = parseInt(d.km_actual_registrado) || 0;

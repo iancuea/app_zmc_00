@@ -186,6 +186,19 @@ class Conductor(models.Model):
     # Para guardar la URL de la foto de AppSheet o local
     foto_url = models.TextField(null=True, blank=True)
 
+    @property
+    def nombre_corto(self):
+        """Retorna 'Primer Nombre + Primer Apellido'"""
+        partes = self.nombre.split()
+        if len(partes) >= 3:
+            # Si tiene 4 nombres (común en Chile), el índice 2 suele ser el primer apellido
+            # Ejemplo: [0]Alejandro [1]Javier [2]Raín [3]Kogler -> Alejandro Raín
+            return f"{partes[0]} {partes[2]}"
+        elif len(partes) == 2:
+            # Ejemplo: [0]Juan [1]Perez -> Juan Perez
+            return f"{partes[0]} {partes[1]}"
+        return self.nombre # Si es solo un nombre, lo devuelve tal cual
+
     class Meta:
         verbose_name = "Conductor"
         verbose_name_plural = "Conductores"
