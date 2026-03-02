@@ -15,6 +15,9 @@ from .models import (
 from core.models import DocumentoMantencion, EstadoCamion, Mantencion, Camion, Remolque, AsignacionTractoRemolque
 from mantenciones import models
 from django.db.models import Q
+from django.core.mail import EmailMessage
+from django.conf import settings
+import os
 
 @login_required
 def crear_inspeccion(request):
@@ -36,7 +39,7 @@ def crear_inspeccion(request):
                     resultados_data = json.loads(resultados_raw)
                     
                     for data in resultados_data:
-                        print(f"DEBUG: Guardando Item ID {data['item_id']} - Estado: '{data['estado']}'") # <--- AGREGA ESTO
+                        print(f"DEBUG: Guardando Item ID {data['item_id']} - Estado: '{data['estado']}'")
                         try:
                             item = ItemChecklist.objects.get(id=data['item_id'])
                             ResultadoItem.objects.create(
@@ -74,7 +77,6 @@ def crear_inspeccion(request):
                     )
                     
                     # 6. Crear la Mantención "Cabecera" siempre (necesaria para el documento)
-                    # Calculamos la meta de kilómetros
                     nueva_meta = inspeccion.km_registro
                     if inspeccion.renovó_aceite:
                         nueva_meta = inspeccion.km_registro + inspeccion.vehiculo.intervalo_mantencion
@@ -85,11 +87,11 @@ def crear_inspeccion(request):
                         fecha_mantencion=timezone.now().date(),
                         km_mantencion=inspeccion.km_registro,
                         km_proxima_mantencion=nueva_meta,
-                        observaciones=f"Checklist ENAP realizado por {inspeccion.responsable}.",
+                        observaciones=f"Checklist realizado por {inspeccion.responsable}.",
                         fecha_creacion=timezone.now()
                     )
 
-                    # 7. Guardar el registro del PDF en DocumentoMantencion (SIEMPRE que haya PDF)
+                    # 7. Guardar el registro del PDF en DocumentoMantencion
                     if ruta_pdf:
                         DocumentoMantencion.objects.create(
                             mantencion=nueva_mantencion,
@@ -107,14 +109,46 @@ def crear_inspeccion(request):
                             renovado=True,
                             proximo_cambio_km=nueva_meta
                         )
-                    # 7. Actualizar estado actual del camión
+
+                    # 9. Actualizar estado actual del camión
                     if hasattr(inspeccion.vehiculo, 'estado_actual'):
                         inspeccion.vehiculo.estado_actual.kilometraje = inspeccion.km_registro
                         inspeccion.vehiculo.estado_actual.save()
-                    
+
+                    # --- NUEVO: ENVÍO DE CORREO AUTOMÁTICO CON EL PDF ---
+                    if ruta_pdf and os.path.exists(ruta_pdf):
+                        try:
+                            destinatarios = ['iancuevas7321@gmail.com', 'gestion.flota.zmc@gmail.com']
+                            sujeto = f"📝 NUEVO CHECKLIST: {inspeccion.vehiculo.patente} - {inspeccion.tipo_inspeccion}"
+                            cuerpo = (
+                                f"Se ha registrado una nueva inspección.\n\n"
+                                f"Unidad: {inspeccion.vehiculo.patente}\n"
+                                f"Responsable: {inspeccion.responsable}\n"
+                                f"Kilometraje: {inspeccion.km_registro}\n"
+                                f"Apto para operar: {'SÍ' if inspeccion.es_apto_operar else 'NO'}\n"
+                                f"Fecha: {datos_autocompletado['fecha_inspeccion']}\n\n"
+                                f"Se adjunta el informe PDF."
+                            )
+
+                            email = EmailMessage(
+                                subject=sujeto,
+                                body=cuerpo,
+                                from_email=settings.DEFAULT_FROM_EMAIL,
+                                to=destinatarios,
+                            )
+
+                            with open(ruta_pdf, 'rb') as f:
+                                email.attach(f"Checklist_{inspeccion.vehiculo.patente}.pdf", f.read(), 'application/pdf')
+
+                            email.send()
+                            print(f"DEBUG: Correo enviado con éxito para {inspeccion.vehiculo.patente}")
+                        except Exception as e_mail:
+                            print(f"ERROR al enviar correo: {e_mail}")
+                    # --- FIN BLOQUE CORREO ---
+
                     messages.success(
                         request, 
-                        f"¡Inspección de {inspeccion.vehiculo.patente} completada! PDF generado: {ruta_pdf}"
+                        f"¡Inspección de {inspeccion.vehiculo.patente} completada! PDF generado."
                     )
                     return redirect('camion_list')
                     
@@ -127,16 +161,12 @@ def crear_inspeccion(request):
     else:
         form = InspeccionForm()
     
-    # Obtener categorías para mostrar en el formulario
     categorias = CategoriaChecklist.objects.all().order_by('orden')
-    
     context = {
         'form': form,
         'categorias': categorias
     }
-    
     return render(request, 'mantenciones/crear_inspeccion.html', context)
-
 
 @require_http_methods(["GET"])
 def api_datos_autocompletado(request, camion_id):
