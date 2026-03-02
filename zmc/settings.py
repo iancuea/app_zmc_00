@@ -119,6 +119,22 @@ LOGIN_REDIRECT_URL = '/camiones/'
 # Al cerrar sesión, mandarlo al login
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
+# Motor de envío
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# Configuración del servidor de Gmail
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# Tu nueva cuenta formal
+EMAIL_HOST_USER = 'gestion.flota.zmc@gmail.com'
+
+# PEGA AQUÍ LAS 16 LETRAS (sin espacios)
+EMAIL_HOST_PASSWORD = 'osnw heaf ybws oarr'
+
+# Nombre que verán los jefes al recibir el correo
+DEFAULT_FROM_EMAIL = 'Gestión de Flota ZMC <gestion.flota.zmc@gmail.com>'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
