@@ -2,14 +2,24 @@
  * Renderiza la lista de motivos o un check de éxito si no hay alertas.
  */
 function renderizarMotivos(lista) {
-    // Si la lista es null o vacía, mostramos que todo está al día
     if (!lista || lista.length === 0) {
-        return '<span style="color: #10b981; font-size: 0.8rem; font-weight: 600;">✅ Sin alertas pendientes</span>';
+        return '<span style="color: #10b981; font-size: 0.8rem; font-weight: 600;">✅ Sin alertas</span>';
     }
-    // Si hay motivos, los listamos con viñetas
-    return `<ul style="margin:0; padding-left:15px; font-size: 0.82rem; line-height: 1.2;">
-        ${lista.map(m => `<li>${m}</li>`).join("")}
-    </ul>`;
+
+    // Si hay más de 2 motivos, preparamos el botón "Ver más"
+    const necesitaBoton = lista.length > 2;
+    
+    let html = `<div class="motivos-container" id="cont-${Math.random().toString(36).substr(2, 9)}">
+                    <ul style="margin:0; padding-left:15px; font-size: 0.82rem; line-height: 1.4;">
+                        ${lista.map(m => `<li>${m}</li>`).join("")}
+                    </ul>
+                </div>`;
+    
+    if (necesitaBoton) {
+        html += `<button class="btn-ver-alertas" onclick="toggleAlertas(this)">Ver todas (${lista.length})</button>`;
+    }
+    
+    return html;
 }
 
 /**
@@ -68,3 +78,25 @@ fetch("/api/camiones/estado/")
         console.error("Error API:", err);
         document.querySelectorAll(".loader-dots").forEach(el => el.innerText = "⚠️ Error");
     });
+
+window.toggleAlertas = function(btn) {
+    console.log("Botón presionado"); // Si ves esto en la consola, el JS cargó bien
+    
+    const celda = btn.closest('td');
+    const container = celda.querySelector('.motivos-container');
+    const fila = btn.closest('tr');
+    
+    if (container && fila) {
+        const isExpanded = container.classList.toggle('expanded');
+        fila.classList.toggle('expanded');
+        
+        btn.innerText = isExpanded ? 'VER MENOS' : `VER TODAS (${container.querySelectorAll('li').length})`;
+        
+        // Ajuste de scroll suave si la lista es muy larga
+        if (isExpanded) {
+            btn.style.bottom = "10px";
+        } else {
+            btn.style.bottom = "5px";
+        }
+    }
+};

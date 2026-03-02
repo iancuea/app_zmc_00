@@ -9,7 +9,7 @@ from operator import attrgetter
 from django.contrib.auth.decorators import login_required
 
 
-@login_required
+
 @login_required
 def camion_list(request):
     # 1. Traemos todo optimizado (Asegúrate de incluir 'mantenciones')

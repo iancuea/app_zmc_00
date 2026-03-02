@@ -52,7 +52,7 @@
                 {% for camion in grupo.camiones %}
                     {% with estado_t=camion.salud_calculada asignacion=camion.asignacion_actual %}
                     
-                    <tr class="unit-row {{ estado_t.css }}" data-camion-id="{{ camion.id_camion }}">
+                   <tr class="unit-row {{ camion.salud_calculada.css }}" data-camion-id="{{ camion.id_camion }}">
                         <td class="col-patente">
                             <a href="{% url 'camion_detail' camion.id_camion %}" class="patente-pill">
                                 {{ camion.patente }}
@@ -61,7 +61,9 @@
                         <td>
                             <div class="unit-specs">
                                 <span class="spec-type">{{ camion.tipo_camion }}</span>
-                                <span class="spec-rol">{{ camion.get_rol_operativo_display }}</span>
+                                <span class="spec-rol" style="display:block; font-size:0.7rem; color:var(--text-muted);">
+                                    {{ camion.get_rol_operativo_display }}
+                                </span>
                             </div>
                         </td>
                         <td class="col-base">{{ grupo.base }}</td>
@@ -72,19 +74,25 @@
                         </td>
                         <td class="col-health">
                             <div class="health-indicator">
-                                <span class="health-dot"></span>
-                                <strong>{{ estado_t.label }}</strong>
+                                <strong>{{ camion.salud_calculada.label }}</strong>
                             </div>
                         </td>
                         <td class="motivos">
-                            {% if estado_t.motivos %}
-                                <ul style="margin:0; padding-left:15px; font-size: 0.85rem;">
-                                    {% for motivo in estado_t.motivos %}
-                                        <li>{{ motivo }}</li>
-                                    {% endfor %}
+                            <div class="motivos-container">
+                                <ul style="margin:0; padding-left:1.2rem; font-size: 0.8rem; line-height: 1.4;">
+                                    {% if camion.salud_calculada.motivos %}
+                                        {% for m in camion.salud_calculada.motivos %}
+                                            <li>{{ m }}</li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <li style="list-style:none; margin-left:-1.2rem;">✅ Sin alertas</li>
+                                    {% endif %}
                                 </ul>
-                            {% else %}
-                                <span class="loader-dots">Analizando alertas...</span>
+                            </div>
+                            {% if camion.salud_calculada.motivos|length > 2 %}
+                                <button type="button" class="btn-ver-alertas" onclick="toggleAlertas(this)">
+                                    Ver todas ({{ camion.salud_calculada.motivos|length }})
+                                </button>
                             {% endif %}
                         </td>
                     </tr>
@@ -92,22 +100,50 @@
                    {% if camion.remolque_vinculado %}
                         {% with remolque=camion.remolque_vinculado %}
                         <tr class="trailer-row {{ remolque.salud_calculada.css }}" data-remolque-id="{{ remolque.id_remolque }}">
-                            <td class="trailer-patente">
-                                <span class="connector-line"></span>
-                                <a href="{% url 'remolque_detail' remolque.id_remolque %}">{{ remolque.patente }}</a>
+                            <td class="connector-parent">
+                                <div class="connector-line"></div>
+                                <a href="{% url 'remolque_detail' remolque.id_remolque %}" class="patente-pill" style="background: #475569;">
+                                    {{ remolque.patente }}
+                                </a>
                             </td>
-                            <td colspan="2">Remolque: {{ remolque.modelo|default:"S/D" }}</td>
-                            <td>{{ remolque.estado_actual.get_estado_operativo_display|default:"OPERATIVO" }}</td>
+
+                            <td colspan="2">
+                                <span style="font-size: 0.7rem; color: var(--text-muted); display: block; text-transform: uppercase;">
+                                    Remolque Vinculado
+                                </span>
+                                <strong style="font-size: 0.85rem;">{{ remolque.modelo|default:"Unidad Estándar" }}</strong>
+                            </td>
+
+                            <td>
+                                <span class="badge-op-status">
+                                    {{ remolque.estado_actual.get_estado_operativo_display|default:"OPERATIVO" }}
+                                </span>
+                            </td>
+
                             <td class="col-health">
-                                <strong class="estado-mantencion-texto-rem">{{ remolque.salud_calculada.label }}</strong>
+                                <strong class="estado-mantencion-texto-rem">
+                                    {{ remolque.salud_calculada.label }}
+                                </strong>
                             </td>
+
                             <td class="motivos-remolque">
-                                {% if remolque.salud_calculada.motivos %}
-                                    <ul style="margin:0; padding-left:15px; font-size: 0.82rem;">
-                                        {% for m in remolque.salud_calculada.motivos %}<li>{{ m }}</li>{% endfor %}
+                                <div class="motivos-container">
+                                    <ul style="margin:0; padding-left:1.2rem; font-size: 0.8rem; line-height: 1.4;">
+                                        {% if remolque.salud_calculada.motivos %}
+                                            {% for m in remolque.salud_calculada.motivos %}
+                                                <li>{{ m }}</li>
+                                            {% endfor %}
+                                        {% else %}
+                                            <li style="list-style:none; margin-left:-1.2rem; color: var(--success);">✅ Al día</li>
+                                        {% endif %}
                                     </ul>
-                                {% else %}
-                                    <span style="color: #10b981; font-size: 0.8rem;">✅ Al día</span>
+                                </div>
+                                
+                                {# Botón de expansión #}
+                                {% if remolque.salud_calculada.motivos|length > 2 %}
+                                    <button type="button" class="btn-ver-alertas" onclick="toggleAlertas(this)">
+                                        VER TODAS ({{ remolque.salud_calculada.motivos|length }})
+                                    </button>
                                 {% endif %}
                             </td>
                         </tr>
