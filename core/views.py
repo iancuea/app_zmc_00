@@ -2,167 +2,139 @@ from datetime import date
 from django.shortcuts import render, get_object_or_404
 from .models import Camion, EstadoCamion, Mantencion, DocumentacionGeneral, Remolque, AsignacionTractoRemolque
 from django.http import JsonResponse
-from django.db.models import Max
-from .utils import estado_mantencion, estado_documento, ESTADO_PRIORIDAD
+from django.db.models import Max, Prefetch
+from .utils import evaluar_salud_entidad
 from itertools import groupby
 from operator import attrgetter
 from django.contrib.auth.decorators import login_required
 
 @login_required
 def camion_list(request):
-    camiones = list(
-        Camion.objects.select_related(
-            "estado_actual",
-            "estado_actual__conductor"
-        )
+    # OPTIMIZACIÓN: Traemos documentos y estados de una sola vez
+    # Evitamos el error N+1
+    queryset = Camion.objects.filter(activo=True).select_related(
+        "estado_actual"
+    ).prefetch_related(
+        "documentos_general",
+        "asignaciontractoremolque_set__remolque__documentos_general"
     )
 
-    # --- FILTRO POR ESTADO DE MANTENCIÓN ---
-    estado = request.GET.get("estado")
-    if estado:
-        camiones = [
-            c for c in camiones
-            if c.estado_mantencion()["codigo"] == estado
-        ]
+    # Procesamos la salud de cada camión una sola vez para no repetir cálculos
+    camiones_data = []
+    for c in queryset:
+        salud = evaluar_salud_entidad(c)
+        # Añadimos la salud al objeto temporalmente
+        c.salud_calculada = salud 
+        camiones_data.append(c)
 
-    # --- ORDENAR POR URGENCIA ---
+    # --- FILTRO ---
+    estado_filtro = request.GET.get("estado")
+    if estado_filtro:
+        camiones_data = [c for c in camiones_data if c.salud_calculada["codigo"] == estado_filtro]
+
+    # --- ORDENAMIENTO COMPUESTO ---
     ordenar = request.GET.get("orden")
-    if ordenar == "urgencia":
-        camiones.sort(key=lambda c: c.prioridad_mantencion())
+    
+    def sort_logic(c):
+        base = c.estado_actual.base_actual if c.estado_actual else "ZZZ"
+        prioridad = c.salud_calculada["prioridad"]
+        
+        if ordenar == "urgencia":
+            # Prioridad manda, Base es secundario
+            return (prioridad, base)
+        # Base manda, Prioridad es secundario
+        return (base, prioridad)
 
-    # --- ORDEN BASE (SIEMPRE, para agrupar bien) ---
-    camiones.sort(
-        key=lambda c: (
-            c.estado_actual.base_actual if c.estado_actual else "ZZZ",
-            c.prioridad_mantencion()
-        )
-    )
+    camiones_data.sort(key=sort_logic)
 
-    # --- AGRUPAR POR BASE ---
+    # --- AGRUPAR ---
     camiones_por_base = []
-    for base, grupo in groupby(
-        camiones,
-        key=lambda c: (
-            c.estado_actual.get_base_actual_display()
-            if c.estado_actual
-            else "SIN BASE"
-        )
-    ):
+    for base_code, grupo in groupby(camiones_data, key=lambda c: c.estado_actual.base_actual if c.estado_actual else "SIN BASE"):
+        lista_grupo = list(grupo)
+        # Obtenemos el nombre "bonito" de la base del primer camión del grupo
+        base_display = lista_grupo[0].estado_actual.get_base_actual_display() if lista_grupo[0].estado_actual else "SIN BASE"
+        
         camiones_por_base.append({
-            "base": base,
-            "camiones": list(grupo)
+            "base": base_display,
+            "camiones": lista_grupo
         })
 
     context = {
         "camiones_por_base": camiones_por_base,
-        "estado_seleccionado": estado,
+        "estado_seleccionado": estado_filtro,
         "orden": ordenar,
     }
-
     return render(request, "core/camion_list.html", context)
 
 @login_required
 def camion_detail(request, pk):
-    # 1. Obtenemos el camión o lanzamos 404
-    camion = get_object_or_404(Camion, id_camion=pk)
+    # 1. Definimos el prefetch ordenado para que la salud tome SIEMPRE la última mantención
+    prefetch_mants = Prefetch(
+        'mantenciones', 
+        queryset=Mantencion.objects.order_by('-fecha_mantencion')
+    )
+
+    # 2. Obtenemos el camión con sus relaciones optimizadas
+    camion = get_object_or_404(
+        Camion.objects.select_related('estado_actual').prefetch_related(
+            prefetch_mants, 
+            'documentos_general'
+        ), 
+        id_camion=pk
+    )
     
-    # 2. Traemos las mantenciones ordenadas por fecha (usando related_name 'mantenciones')
-    mantenciones = camion.mantenciones.all().order_by('-fecha_mantencion')
+    # 3. Datos para las tablas (ya vienen en el objeto gracias al prefetch)
+    mantenciones = camion.mantenciones.all() 
+    documentos = camion.documentos_general.all()
     
-    # 3. Traemos la documentación vinculada (usando related_name 'documentos_general')
-    # Esto evita usar id_referencia manualmente y es más seguro
-    documentos = camion.documentos_general.all().order_by('fecha_vencimiento')
-    
-    # 4. Buscamos si tiene un remolque asignado actualmente
-    asignacion = AsignacionTractoRemolque.objects.filter(camion=camion, activo=True).first()
+    # 4. Remolque vinculado
+    asignacion = camion.asignaciontractoremolque_set.filter(activo=True).first()
     remolque_vinculado = asignacion.remolque if asignacion else None
 
-    # 5. Lógica de Semáforo (Salud del Camión)
-    prioridad_global = 1
-    estado_final = "OK"
-    motivos = []
-
-    # --- Chequeo de Mantención (Kilometraje) ---
-    ultima_m = mantenciones.first()
-    km_actual = camion.estado_actual.kilometraje if hasattr(camion, 'estado_actual') else 0
-    
-    if ultima_m and ultima_m.km_proxima_mantencion:
-        # Usamos tu función de negocio estado_mantencion
-        est, motivo = estado_mantencion(km_actual, ultima_m.km_proxima_mantencion)
-        if ESTADO_PRIORIDAD[est] > prioridad_global:
-            estado_final = est
-            prioridad_global = ESTADO_PRIORIDAD[est]
-        if motivo:
-            motivos.append(f"Mecánica: {motivo}")
-
-    # --- Chequeo de Documentos (Fechas) ---
-    for doc in documentos:
-        # Usamos tu función estado_documento (la que ya maneja None para el Padrón)
-        est_d, motivo_d = estado_documento(doc.fecha_vencimiento)
-        
-        if ESTADO_PRIORIDAD[est_d] > prioridad_global:
-            estado_final = est_d
-            prioridad_global = ESTADO_PRIORIDAD[est_d]
-        
-        if motivo_d:
-            motivos.append(f"{doc.get_categoria_display()}: {motivo_d}")
+    # 5. ¡AQUÍ ESTÁ LA MAGIA! 
+    # Llamamos a la función de utils con el camión ya cargado
+    salud = evaluar_salud_entidad(camion)
 
     context = {
         'camion': camion,
         'mantenciones': mantenciones,
         'documentos': documentos,
         'remolque_vinculado': remolque_vinculado,
-        'estado_mant': {
-            'codigo': estado_final,
-            'label': estado_final,
-            'css': f"estado-{estado_final.lower()}",
-            'motivos': motivos
-        }
+        'estado_mant': salud  # <-- Esto es lo que pinta el HTML
     }
     return render(request, 'core/camion_detail.html', context)
 
 @login_required
 def remolque_detail(request, pk):
-    remolque = get_object_or_404(Remolque, id_remolque=pk)
+    # 1. Obtenemos el remolque optimizado
+    # Traemos de un golpe documentos y mantenciones para que la salud no dispare más queries
+    remolque = get_object_or_404(
+        Remolque.objects.prefetch_related(
+            'mantenciones_remolque', 
+            'documentos_general'
+        ), 
+        id_remolque=pk
+    )
+    
+    # 2. Datos para las tablas del template
     mantenciones = remolque.mantenciones_remolque.all().order_by('-fecha_mantencion')
-    asignacion = AsignacionTractoRemolque.objects.filter(remolque=remolque, activo=True).first()
+    documentos = remolque.documentos_general.all().order_by('fecha_vencimiento')
+    
+    # 3. Camión vinculado (usando la relación inversa de tu modelo)
+    # AsignacionTractoRemolque tiene un ForeignKey a Remolque con related_name por defecto o el que definiste
+    asignacion = remolque.asignaciontractoremolque_set.filter(activo=True).first()
     camion_vinculado = asignacion.camion if asignacion else None
 
-    prioridad_global = 1
-    estado_final = "OK"
-    motivos = []
-
-    # 🔧 Chequeo de última mantención
-    ultima_m = mantenciones.first()
-    if ultima_m and ultima_m.km_proxima_mantencion:
-        km_actual = float(remolque.kilometraje_acumulado)
-        est, motivo = estado_mantencion(km_actual, ultima_m.km_proxima_mantencion)
-        if ESTADO_PRIORIDAD[est] > prioridad_global:
-            estado_final = est
-            prioridad_global = ESTADO_PRIORIDAD[est]
-        if motivo: motivos.append(f"Mecánica: {motivo}")
-
-    # 📄 Chequeo de documentos (CORREGIDO) ---
-    # Obtenemos todos los documentos vinculados a este remolque
-    documentos = remolque.documentos_general.all()
-    for doc in documentos:
-        est_d, motivo_d = estado_documento(doc.fecha_vencimiento)
-        if ESTADO_PRIORIDAD[est_d] > prioridad_global:
-            estado_final = est_d
-            prioridad_global = ESTADO_PRIORIDAD[est_d]
-        if motivo_d: motivos.append(f"{doc.get_categoria_display()}: {motivo_d}")
+    # 4. LA MAGIA: Usamos la "Única Verdad"
+    # Esta función detectará que es un Remolque y aplicará sus reglas específicas
+    salud = evaluar_salud_entidad(remolque)
 
     context = {
         'remolque': remolque,
         'mantenciones': mantenciones,
-        'documentos': documentos, # ¡Agregado para el HTML!
+        'documentos': documentos,
         'camion_vinculado': camion_vinculado,
-        'estado_mant': {
-            'codigo': estado_final,
-            'label': estado_final,
-            'css': f"estado-{estado_final.lower()}",
-            'motivos': motivos
-        }
+        'estado_mant': salud  # Contiene: codigo, label, css, prioridad y motivos
     }
     return render(request, 'core/remolque_detail.html', context)
 
@@ -187,85 +159,76 @@ def api_camion_detalle(request, camion_id):
     })
 
 def api_estado_camiones(request):
+    """
+    API principal que alimenta la lista en tiempo real.
+    Analiza Tracto y Remolque usando la lógica centralizada de utils.py
+    """
     resultado = []
-    camiones = Camion.objects.filter(activo=True).select_related("estado_actual")
+    
+    # 1. Traemos todo de un solo golpe (Optimization)
+    camiones = Camion.objects.filter(activo=True).select_related(
+        "estado_actual"
+    ).prefetch_related(
+        "documentos_general",
+        "mantenciones",
+        "asignaciontractoremolque_set__remolque__documentos_general",
+        "asignaciontractoremolque_set__remolque__mantenciones_remolque"
+    )
 
     for camion in camiones:
-        prioridad_global = ESTADO_PRIORIDAD["OK"]
-        estado_global = "OK"
-        motivos_tracto = []
+        # --- A. SALUD DEL TRACTO ---
+        salud_tracto = evaluar_salud_entidad(camion)
         
-        estado_actual = getattr(camion, "estado_actual", None)
-        km_actual = estado_actual.kilometraje if estado_actual else 0
-
-        # --- 🚜 Mantención Tracto ---
-        ultima_m = camion.mantenciones.order_by("-fecha_mantencion").first()
-        if ultima_m:
-            est, motivo = estado_mantencion(km_actual, ultima_m.km_proxima_mantencion)
-            if ESTADO_PRIORIDAD[est] > prioridad_global:
-                estado_global = est
-                prioridad_global = ESTADO_PRIORIDAD[est]
-            if motivo: motivos_tracto.append(f"Tracto: {motivo}")
-
-        # --- 📄 Documentos Tracto (CORREGIDO) ---
-        # Usamos el related_name 'documentos_general'
-        for doc in camion.documentos_general.all():
-            est, motivo = estado_documento(doc.fecha_vencimiento)
-            if ESTADO_PRIORIDAD[est] > prioridad_global:
-                estado_global = est
-                prioridad_global = ESTADO_PRIORIDAD[est]
-            if motivo: motivos_tracto.append(f"Doc Tracto ({doc.get_categoria_display()}): {motivo}")
-
-        # --- 🚛 DATOS REMOLQUE ASIGNADO ---
+        # --- B. DATOS DEL REMOLQUE ---
         motivos_remolque = []
         id_remolque = None
         estado_rem_css = "estado-ok"
         
-        asignacion = camion.asignacion_actual 
-
+        asignacion = camion.asignacion_actual # Property del modelo
         if asignacion:
             rem = asignacion.remolque
             id_remolque = rem.id_remolque
             
-            # 🔧 Mantención Remolque
-            ultima_m_r = rem.mantenciones_remolque.order_by("-fecha_mantencion").first()
-            if ultima_m_r:
-                est, motivo = estado_mantencion(float(rem.kilometraje_acumulado), ultima_m_r.km_proxima_mantencion)
-                if ESTADO_PRIORIDAD[est] > 1:
-                    estado_rem_css = f"estado-{est.lower()}"
-                if motivo: motivos_remolque.append(f"Remolque: {motivo}")
+            # Usamos la misma lógica centralizada para el remolque
+            salud_rem = evaluar_salud_entidad(rem)
+            motivos_remolque = salud_rem["motivos"]
+            estado_rem_css = salud_rem["css"]
 
-            # 📄 Documentos Remolque (CORREGIDO) ---
-            # Usamos el related_name del remolque
-            for doc in rem.documentos_general.all():
-                est, motivo = estado_documento(doc.fecha_vencimiento)
-                if ESTADO_PRIORIDAD[est] > 1:
-                    estado_rem_css = f"estado-{est.lower()}"
-                if motivo: motivos_remolque.append(f"Doc Remolque ({doc.get_categoria_display()}): {motivo}")
-
+        # --- C. CONSTRUIR RESPUESTA ---
         resultado.append({
             "id_camion": camion.id_camion,
             "id_remolque": id_remolque,
-            "estado": estado_global,
-            "motivos": motivos_tracto,
-            "motivos_remolque": motivos_remolque,
-            "estado_remolque_css": estado_rem_css
+            "estado": salud_tracto["codigo"],         # Ej: "VENCIDA"
+            "css": salud_tracto["css"],               # Ej: "estado-vencida"
+            "motivos": salud_tracto["motivos"],       # Lista de alertas tracto
+            "motivos_remolque": motivos_remolque,     # Lista de alertas remolque
+            "estado_remolque_css": estado_rem_css      # Clase CSS para el remolque
         })
+
     return JsonResponse(resultado, safe=False)
 
 def api_remolque_detalle(request, remolque_id):
-    rem = get_object_or_404(Remolque, id_remolque=remolque_id)
+    """
+    Retorna los datos técnicos y de salud de un remolque para modales o detalles rápidos.
+    """
+    # 1. Traemos el remolque optimizado
+    rem = get_object_or_404(
+        Remolque.objects.prefetch_related('mantenciones_remolque', 'documentos_general'), 
+        id_remolque=remolque_id
+    )
     
-    # Buscamos la última mantención usando el related_name que definiste
-    ultima_m = rem.mantenciones_remolque.order_by("-fecha_mantencion").first()
+    # 2. Obtenemos el veredicto de salud centralizado
+    salud = evaluar_salud_entidad(rem)
+    
+    # 3. Datos técnicos específicos
+    ultima_m = rem.mantenciones_remolque.all().first() # Ya viene ordenado si usas el prefetch de la view anterior
     km_proxima = ultima_m.km_proxima_mantencion if ultima_m else 0
-    
-    # Cálculo de km restantes
     km_actual = float(rem.kilometraje_acumulado)
+    
+    # Calculamos km_restantes de forma consistente
     km_restantes = km_proxima - km_actual if km_proxima > 0 else 0
 
-    docs_vencidos = rem.documentos_general.filter(fecha_vencimiento__lt=date.today()).count()
-
+    # 4. Construimos la respuesta unificada
     return JsonResponse({
         "id_remolque": rem.id_remolque,
         "patente": rem.patente,
@@ -273,65 +236,33 @@ def api_remolque_detalle(request, remolque_id):
         "kilometraje_acumulado": km_actual,
         "km_restantes": km_restantes,
         "proxima_km": km_proxima,
-        "alertas_documentos": docs_vencidos,
+        # Salud centralizada
+        "estado_salud": salud["codigo"],
+        "css_salud": salud["css"],
+        "motivos": salud["motivos"],
+        # Cantidad de alertas (filtrando de la lista de motivos de salud)
+        "total_alertas": len(salud["motivos"]),
     })
 
 def api_estado_salud_remolque(request, remolque_id):
     """
-    Evalúa mantenciones y documentos solo para un remolque específico.
+    Evalúa mantenciones y documentos usando la lógica centralizada
+    para mantener consistencia en todo el sistema.
     """
-    rem = get_object_or_404(Remolque, id_remolque=remolque_id)
-    prioridad_global = 1 # OK
-    estado_final = "OK"
-    motivos = []
+    # 1. Traemos el remolque con sus documentos y mantenciones de una vez (Optimizado)
+    rem = get_object_or_404(
+        Remolque.objects.prefetch_related('documentos_general', 'mantenciones_remolque'), 
+        id_remolque=remolque_id
+    )
 
-    # 1. Chequeo de Mantención
-    ultima_m = rem.mantenciones_remolque.order_by("-fecha_mantencion").first()
-    if ultima_m:
-        # Usamos tus funciones auxiliares estado_mantencion
-        est, motivo = estado_mantencion(float(rem.kilometraje_acumulado), ultima_m.km_proxima_mantencion)
-        if ESTADO_PRIORIDAD[est] > prioridad_global:
-            estado_final = est
-            prioridad_global = ESTADO_PRIORIDAD[est]
-        if motivo: motivos.append(f"Mecánica: {motivo}")
+    # 2. Llamamos a la "Única Verdad" en utils.py
+    # Pasamos el objeto y la lógica centralizada decide el color y los motivos
+    salud = evaluar_salud_entidad(rem)
 
-    # 2. Chequeo de Documentos
-    docs = rem.documentos_general.all()    
-    
-    for doc in docs:
-        if doc.fecha_vencimiento is None:
-            est = "OK"
-            motivo = None
-        else:
-            # 2. Llamada a tu función de negocio corregida
-            est, motivo = estado_documento(doc.fecha_vencimiento)
-
-        # 3. Mapeo de Prioridades para el Semáforo Global
-        # Ajustamos tus etiquetas a los niveles de prioridad (OK=1, PROXIMO=2, CRITICO/VENCIDO=3)
-        prioridad_doc = 1
-        if est == "VENCIDO" or est == "CRITICO":
-            prioridad_doc = 3
-            # Mapeamos a "CRITICO" para que el CSS pinte de rojo
-            est_para_css = "CRITICO" 
-        elif est == "PROXIMO":
-            prioridad_doc = 2
-            est_para_css = "WARNING"
-        else:
-            est_para_css = "OK"
-
-        # 4. Actualización del estado global de la entidad (Camión/Remolque)
-        if prioridad_doc > prioridad_global:
-            estado_final = est_para_css
-            prioridad_global = prioridad_doc
-
-        # 5. Registro del motivo para mostrar en el tooltip o lista
-        if motivo:
-            motivos.append(f"{doc.get_categoria_display()}: {motivo}")
-
+    # 3. Retornamos el JSON que el JavaScript ya conoce
     return JsonResponse({
-        "estado": estado_final,
-        "css": f"estado-{estado_final.lower()}",
-        "label": estado_final,
-        "motivos": motivos
+        "estado": salud["codigo"],
+        "css": salud["css"],
+        "label": salud["label"],
+        "motivos": salud["motivos"]
     })
-

@@ -153,35 +153,33 @@ body {
     box-shadow: 0 15px 30px rgba(0,0,0,0.1);
 }
 
-/* Colores de Salud (Sincronizados con Consola) */
-.card-hero-pro.estado-vencida, .card-hero-pro.estado-vencido, 
-.card-hero-pro.VENCIDA, .card-hero-pro.VENCIDO, 
-.card-hero-pro.estado-danger {
+/* --- LÓGICA DE COLORES BLINDADA --- */
+
+/* ROJO: Vencida / Peligro */
+.card-hero-pro.estado-vencida, .card-hero-pro.VENCIDA, .card-hero-pro.estado-danger {
     background: linear-gradient(135deg, #e11d48, #9f1239) !important;
 }
 
-.card-hero-pro.estado-critica, .card-hero-pro.estado-critico, 
-.card-hero-pro.CRITICA, .card-hero-pro.CRITICO, 
-.card-hero-pro.estado-warning {
+/* AMARILLO: Crítica / Advertencia */
+.card-hero-pro.estado-critica, .card-hero-pro.CRITICA, .card-hero-pro.estado-warning {
     background: linear-gradient(135deg, #f59e0b, #b45309) !important;
     color: #1e293b !important;
 }
 
+/* VERDE: OK / Operativo */
 .card-hero-pro.estado-ok, .card-hero-pro.OK {
     background: linear-gradient(135deg, #10b981, #065f46) !important;
 }
 
-.card-hero-pro.estado-muted, .card-hero-pro.SIN_DATOS {
+/* GRIS: Sin datos */
+.card-hero-pro.estado-muted, 
+.card-hero-pro.SIN_DATOS {
     background: linear-gradient(135deg, #94a3b8, #475569) !important;
 }
 
-.hero-status-text { font-size: 3.5rem; font-weight: 900; margin: 0.5rem 0; text-transform: uppercase; letter-spacing: -2px; }
-.hero-motivos-list { list-style: none; padding: 0; margin-top: 1rem; opacity: 0.9; font-weight: 500; }
-
-.hero-stats-grid { display: grid; gap: 1.5rem; text-align: right; }
-.hero-stat-box { background: rgba(255, 255, 255, 0.15); padding: 1.5rem; border-radius: 12px; backdrop-filter: blur(4px); }
-.stat-label { display: block; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; opacity: 0.8; }
-.stat-value { font-size: 1.5rem; font-weight: 800; }
+/* Ajustes de texto dentro de la tarjeta */
+.hero-status-text { font-size: 3.5rem; font-weight: 900; margin: 0.5rem 0; text-transform: uppercase; letter-spacing: -2px; color: inherit; }
+.hero-motivos-list { list-style: none; padding: 0; margin-top: 1rem; font-weight: 600; font-size: 1.1rem; }
 
 /* --- 8. GRIDS Y TARJETAS DE DATOS --- */
 .grid-layout-pro { display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; margin-bottom: 2.5rem; }

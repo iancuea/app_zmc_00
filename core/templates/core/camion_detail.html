@@ -17,6 +17,8 @@
         <h1 class="detail-title">Unidad Tracto <span class="patente-hero">{{ camion.patente }}</span></h1>
     </div>
 
+    {# --- EL SEMÁFORO GIGANTE (CARD HERO) --- #}
+    {# Agregamos estado_mant.css para el degradado y estado_mant.codigo para asegurar compatibilidad #}
     <div class="card-hero-pro {{ estado_mant.css }} {{ estado_mant.codigo }}">
         <div class="hero-main-info">
             <span class="hero-badge-label">Estado Técnico Tracto</span>
@@ -24,7 +26,7 @@
             
             <ul class="hero-motivos-list">
                 {% for motivo in estado_mant.motivos %}
-                    <li>{{ motivo }}</li>
+                    <li>⚠️ {{ motivo }}</li>
                 {% empty %}
                     <li>✅ Unidad operativa sin alertas pendientes</li>
                 {% endfor %}
@@ -34,19 +36,21 @@
         <div class="hero-stats-grid">
             <div class="hero-stat-box">
                 <span class="stat-label">Kilometraje Actual</span>
+                {# Usamos el dato directo del estado_actual #}
                 <span class="stat-value">{{ camion.estado_actual.kilometraje|default:0|intcomma }} <small>km</small></span>
             </div>
             {% if mantenciones %}
             <div class="hero-stat-box">
-                <span class="stat-label">Última Mantención</span>
-                <span class="stat-value">{{ mantenciones.0.fecha_mantencion|date:"d M Y" }}</span>
+                <span class="stat-label">Próxima Mantención</span>
+                {# Mostramos la meta que el camión excedió #}
+                <span class="stat-value">{{ mantenciones.0.km_proxima_mantencion|default:0|intcomma }} <small>km</small></span>
             </div>
             {% endif %}
         </div>
     </div>
 
     <div class="grid-layout-pro">
-        
+        {# --- COLUMNA IZQUIERDA: DATOS OPERATIVOS --- #}
         <div class="card-pro">
             <div class="card-header-pro">
                 <h3>Situación Operativa</h3>
@@ -54,7 +58,7 @@
             <div class="card-body-pro">
                 <div class="data-row">
                     <span class="data-label">Estado:</span>
-                    <span class="badge-status {% if camion.estado_actual.estado_operativo == 'OPERATIVO' %}bg-success{% else %}bg-danger{% endif %}">
+                    <span class="badge-op-status">
                         {{ camion.estado_actual.get_estado_operativo_display|default:"SIN DATOS" }}
                     </span>
                 </div>
@@ -63,26 +67,27 @@
                     <span class="data-value">{{ camion.estado_actual.get_base_actual_display|default:"No asignada" }}</span>
                 </div>
                 <div class="data-row">
-                    <span class="data-label">Conductor:</span>
+                    <span class="data-label">Conductor Asignado:</span>
                     <span class="data-value">
                         {% if camion.estado_actual.conductor %}
-                            {{ camion.estado_actual.conductor.nombre }} {{ camion.estado_actual.conductor.apellido }}
+                            {{ camion.estado_actual.conductor.nombre }}
                         {% else %}
                             <span class="text-muted">Sin asignar</span>
                         {% endif %}
                     </span>
                 </div>
                 <div class="data-row">
-                    <span class="data-label">Rol Flota:</span>
-                    <span class="badge-outline">{{ camion.get_rol_operativo_display }}</span>
+                    <span class="data-label">Rol en Flota:</span>
+                    <span class="data-value">{{ camion.get_rol_operativo_display }}</span>
                 </div>
                 <div class="data-row">
-                    <span class="data-label">Marca / Modelo:</span>
+                    <span class="data-label">Especificaciones:</span>
                     <span class="data-value">{{ camion.marca|default:"" }} {{ camion.modelo|default:"S/D" }} ({{ camion.anio }})</span>
                 </div>
             </div>
         </div>
 
+        {# --- COLUMNA DERECHA: REMOLQUE --- #}
         <div class="card-pro">
             <div class="card-header-pro">
                 <h3>Remolque Vinculado</h3>
@@ -96,9 +101,12 @@
                             <span class="trailer-type">{{ remolque_vinculado.tipo_remolque|default:"Semirremolque" }}</span>
                         </div>
                     </div>
-                    <a href="{% url 'remolque_detail' remolque_vinculado.id_remolque %}" class="btn-link-pro">Ver ficha técnica →</a>
+                    <div style="margin-top: 1rem;">
+                        <a href="{% url 'remolque_detail' remolque_vinculado.id_remolque %}" class="btn-secondary-pro" style="font-size: 0.8rem;">Ver ficha técnica remolque →</a>
+                    </div>
                 {% else %}
                     <div class="empty-state-pro">
+                        <div class="empty-icon">⚪</div>
                         <p>No tiene remolque asignado actualmente.</p>
                     </div>
                 {% endif %}
@@ -106,9 +114,10 @@
         </div>
     </div>
 
+    {# --- SECCIÓN INFERIOR: DOCUMENTOS --- #}
     <div class="card-pro section-margin">
         <div class="card-header-pro">
-            <h3>Documentación Legal</h3>
+            <h3>Documentación General del Tracto</h3>
         </div>
         <div class="table-container-minimal">
             <table class="table-minimal">
@@ -117,22 +126,33 @@
                         <th>Documento</th>
                         <th>Vencimiento</th>
                         <th>Estado</th>
-                        <th>Acción</th>
+                        <th>Archivo</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for doc in documentos %}
-                    <tr class="doc-row state-{{ doc.estado|lower }}">
+                    <tr>
                         <td><strong>{{ doc.get_categoria_display }}</strong></td>
                         <td>{{ doc.fecha_vencimiento|default:"Indefinido" }}</td>
-                        <td><span class="status-dot-label {{ doc.estado|lower }}">{{ doc.estado }}</span></td>
+                        <td>
+                            {# Usamos la lógica de colores de puntos que tienes en el CSS #}
+                            {% with d_estado=doc.estado|lower %}
+                            <span class="status-dot-label {% if d_estado == 'vencido' %}vencido{% elif d_estado == 'vigente' %}ok{% else %}proximo{% endif %}">
+                                {{ doc.estado }}
+                            </span>
+                            {% endwith %}
+                        </td>
                         <td>
                             {% if doc.archivo %}
-                                <a href="{{ doc.archivo.url }}" target="_blank" class="btn-action-small">Abrir PDF</a>
+                                <a href="{{ doc.archivo.url }}" target="_blank" class="btn-action-small">Ver PDF</a>
                             {% else %}
-                                <span class="text-muted">No cargado</span>
+                                <span class="text-muted" style="font-size: 0.8rem;">No disponible</span>
                             {% endif %}
                         </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="empty-table-msg">No hay documentos registrados para este camión.</td>
                     </tr>
                     {% endfor %}
                 </tbody>

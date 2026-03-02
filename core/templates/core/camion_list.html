@@ -50,7 +50,8 @@
                 </tr>
 
                 {% for camion in grupo.camiones %}
-                    {% with estado_t=camion.get_salud_completa asignacion=camion.asignacion_actual %}
+                    {# Usamos salud_calculada que viene desde la View #}
+                    {% with estado_t=camion.salud_calculada asignacion=camion.asignacion_actual %}
                     <tr class="unit-row {{ estado_t.css }}" data-camion-id="{{ camion.id_camion }}">
                         <td class="col-patente">
                             <a href="{% url 'camion_detail' camion.id_camion %}" class="patente-pill">
@@ -60,7 +61,7 @@
                         <td>
                             <div class="unit-specs">
                                 <span class="spec-type">{{ camion.tipo_camion }}</span>
-                                <span class="spec-rol">{{ camion.rol_operativo }}</span>
+                                <span class="spec-rol">{{ camion.get_rol_operativo_display }}</span>
                             </div>
                         </td>
                         <td class="col-base">{{ grupo.base }}</td>
@@ -76,11 +77,22 @@
                             </div>
                         </td>
                         <td class="motivos">
-                            <span class="loader-dots">Cargando detalles...</span>
+                            {# Mostramos los motivos iniciales de la base de datos para evitar el salto visual #}
+                            {% if estado_t.motivos %}
+                                <ul style="margin:0; padding-left:15px; font-size: 0.85rem;">
+                                    {% for motivo in estado_t.motivos %}
+                                        <li>{{ motivo }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <span class="loader-dots">Analizando alertas...</span>
+                            {% endif %}
                         </td>
                     </tr>
+                    
                     {% if asignacion %}
                         {% with remolque=asignacion.remolque %}
+                        {# Nota: El remolque también podría tener su salud pre-calculada si ajustamos la View #}
                         <tr class="trailer-row" data-remolque-id="{{ remolque.id_remolque }}">
                             <td class="trailer-patente">
                                 <span class="connector-line"></span>
@@ -88,10 +100,12 @@
                                     {{ remolque.patente }}
                                 </a>
                             </td>
-                            <td colspan="2" class="trailer-label">Remolque Vinculado</td>
+                            <td colspan="2" class="trailer-label">Remolque Vinculado ({{ remolque.modelo|default:"Genérico" }})</td>
                             <td>{{ remolque.estado_actual.get_estado_operativo_display|default:"OPERATIVO" }}</td>
                             <td class="estado-mantencion-texto-rem">OK</td>
-                            <td class="motivos-remolque">Cargando...</td>
+                            <td class="motivos-remolque">
+                                <span class="loader-dots">Cargando...</span>
+                            </td>
                         </tr>
                         {% endwith %}
                     {% endif %}
@@ -101,6 +115,8 @@
         </tbody>
     </table>
 </div>
+{% endblock %}
 
-<script src="{% static 'core/js/camiones.js' %}"></script>
+{% block extra_js %}
+    <script src="{% static 'core/js/camiones.js' %}?v={% now 'U' %}"></script>
 {% endblock %}
