@@ -8,52 +8,65 @@ from itertools import groupby
 from operator import attrgetter
 from django.contrib.auth.decorators import login_required
 
+
+@login_required
 @login_required
 def camion_list(request):
-    # OPTIMIZACIÓN: Traemos documentos y estados de una sola vez
-    # Evitamos el error N+1
+    # 1. Traemos todo optimizado (Asegúrate de incluir 'mantenciones')
     queryset = Camion.objects.filter(activo=True).select_related(
         "estado_actual"
     ).prefetch_related(
         "documentos_general",
-        "asignaciontractoremolque_set__remolque__documentos_general"
+        "mantenciones",
+        "asignaciontractoremolque_set__remolque__documentos_general",
+        "asignaciontractoremolque_set__remolque__mantenciones_remolque",
+        "asignaciontractoremolque_set__remolque__estado_actual"
     )
 
-    # Procesamos la salud de cada camión una sola vez para no repetir cálculos
     camiones_data = []
     for c in queryset:
-        salud = evaluar_salud_entidad(c)
-        # Añadimos la salud al objeto temporalmente
-        c.salud_calculada = salud 
+        # SALUD TRACTO
+        c.salud_calculada = evaluar_salud_entidad(c)
+        
+        # SALUD REMOLQUE (Para que no salgan en blanco)
+        asignacion = c.asignacion_actual # Usando tu property del modelo
+        if asignacion and asignacion.remolque:
+            asignacion.remolque.salud_calculada = evaluar_salud_entidad(asignacion.remolque)
+            c.remolque_vinculado = asignacion.remolque # Atajo para el HTML
+        
         camiones_data.append(c)
 
-    # --- FILTRO ---
+    # 2. FILTROS
     estado_filtro = request.GET.get("estado")
     if estado_filtro:
         camiones_data = [c for c in camiones_data if c.salud_calculada["codigo"] == estado_filtro]
 
-    # --- ORDENAMIENTO COMPUESTO ---
+    # 3. ORDENAMIENTO (Crucial para que groupby no falle)
     ordenar = request.GET.get("orden")
     
-    def sort_logic(c):
-        base = c.estado_actual.base_actual if c.estado_actual else "ZZZ"
-        prioridad = c.salud_calculada["prioridad"]
+    def obtener_llave_orden(c):
+        # Si no tiene estado_actual o base, usamos un string vacío para que no tire error
+        base_id = c.estado_actual.base_actual if (c.estado_actual and c.estado_actual.base_actual) else "ZZZ"
+        prioridad = c.salud_calculada.get("prioridad", 3)
         
         if ordenar == "urgencia":
-            # Prioridad manda, Base es secundario
-            return (prioridad, base)
-        # Base manda, Prioridad es secundario
-        return (base, prioridad)
+            return (prioridad, base_id)
+        return (base_id, prioridad)
 
-    camiones_data.sort(key=sort_logic)
+    camiones_data.sort(key=obtener_llave_orden)
 
-    # --- AGRUPAR ---
+    # 4. AGRUPAMIENTO (Aquí estaba el error)
     camiones_por_base = []
-    for base_code, grupo in groupby(camiones_data, key=lambda c: c.estado_actual.base_actual if c.estado_actual else "SIN BASE"):
+    # Usamos la misma lógica de la llave de ordenamiento para agrupar
+    for base_code, grupo in groupby(camiones_data, key=lambda c: c.estado_actual.base_actual if (c.estado_actual and c.estado_actual.base_actual) else "SIN_BASE"):
         lista_grupo = list(grupo)
-        # Obtenemos el nombre "bonito" de la base del primer camión del grupo
-        base_display = lista_grupo[0].estado_actual.get_base_actual_display() if lista_grupo[0].estado_actual else "SIN BASE"
         
+        # Buscamos el nombre bonito de la base
+        if base_code != "SIN_BASE":
+            base_display = lista_grupo[0].estado_actual.get_base_actual_display()
+        else:
+            base_display = "Unidades sin Base Asignada"
+
         camiones_por_base.append({
             "base": base_display,
             "camiones": lista_grupo

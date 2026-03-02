@@ -327,3 +327,16 @@ body {
     outline: none;
     box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
 }
+/* Esto pintará el fondo de toda la fila cuando esté vencida */
+.unit-row.estado-vencida td {
+    background-color: #fef2f2 !important; /* Rojo muy tenue */
+    border-top: 1px solid #fee2e2;
+    border-bottom: 1px solid #fee2e2;
+}
+
+/* Y esto para las críticas */
+.unit-row.estado-critica td {
+    background-color: #fffbeb !important; /* Amarillo tenue */
+    border-top: 1px solid #fef3c7;
+    border-bottom: 1px solid #fef3c7;
+}

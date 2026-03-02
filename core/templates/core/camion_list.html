@@ -43,15 +43,15 @@
                 <th>Motivos y Alertas</th>
             </tr>
         </thead>
-        <tbody>
+       <tbody>
             {% for grupo in camiones_por_base %}
                 <tr class="base-row-divider">
                     <td colspan="6">Base Actual: <strong>{{ grupo.base }}</strong></td>
                 </tr>
 
                 {% for camion in grupo.camiones %}
-                    {# Usamos salud_calculada que viene desde la View #}
                     {% with estado_t=camion.salud_calculada asignacion=camion.asignacion_actual %}
+                    
                     <tr class="unit-row {{ estado_t.css }}" data-camion-id="{{ camion.id_camion }}">
                         <td class="col-patente">
                             <a href="{% url 'camion_detail' camion.id_camion %}" class="patente-pill">
@@ -77,7 +77,6 @@
                             </div>
                         </td>
                         <td class="motivos">
-                            {# Mostramos los motivos iniciales de la base de datos para evitar el salto visual #}
                             {% if estado_t.motivos %}
                                 <ul style="margin:0; padding-left:15px; font-size: 0.85rem;">
                                     {% for motivo in estado_t.motivos %}
@@ -90,25 +89,31 @@
                         </td>
                     </tr>
                     
-                    {% if asignacion %}
-                        {% with remolque=asignacion.remolque %}
-                        {# Nota: El remolque también podría tener su salud pre-calculada si ajustamos la View #}
-                        <tr class="trailer-row" data-remolque-id="{{ remolque.id_remolque }}">
+                   {% if camion.remolque_vinculado %}
+                        {% with remolque=camion.remolque_vinculado %}
+                        <tr class="trailer-row {{ remolque.salud_calculada.css }}" data-remolque-id="{{ remolque.id_remolque }}">
                             <td class="trailer-patente">
                                 <span class="connector-line"></span>
-                                <a href="{% url 'remolque_detail' remolque.id_remolque %}">
-                                    {{ remolque.patente }}
-                                </a>
+                                <a href="{% url 'remolque_detail' remolque.id_remolque %}">{{ remolque.patente }}</a>
                             </td>
-                            <td colspan="2" class="trailer-label">Remolque Vinculado ({{ remolque.modelo|default:"Genérico" }})</td>
+                            <td colspan="2">Remolque: {{ remolque.modelo|default:"S/D" }}</td>
                             <td>{{ remolque.estado_actual.get_estado_operativo_display|default:"OPERATIVO" }}</td>
-                            <td class="estado-mantencion-texto-rem">OK</td>
+                            <td class="col-health">
+                                <strong class="estado-mantencion-texto-rem">{{ remolque.salud_calculada.label }}</strong>
+                            </td>
                             <td class="motivos-remolque">
-                                <span class="loader-dots">Cargando...</span>
+                                {% if remolque.salud_calculada.motivos %}
+                                    <ul style="margin:0; padding-left:15px; font-size: 0.82rem;">
+                                        {% for m in remolque.salud_calculada.motivos %}<li>{{ m }}</li>{% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <span style="color: #10b981; font-size: 0.8rem;">✅ Al día</span>
+                                {% endif %}
                             </td>
                         </tr>
                         {% endwith %}
                     {% endif %}
+
                     {% endwith %}
                 {% endfor %}
             {% endfor %}
