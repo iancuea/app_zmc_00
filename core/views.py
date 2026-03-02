@@ -12,30 +12,46 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def camion_list(request):
-    # 1. Traemos todo optimizado (Asegúrate de incluir 'mantenciones')
+    # 1. Prefetch ordenado para las mantenciones del CAMIÓN
+    # Usamos related_name='mantenciones' definido en tu modelo Mantencion
+    prefetch_mants_camion = Prefetch(
+        'mantenciones', 
+        queryset=Mantencion.objects.order_by('-fecha_mantencion')
+    )
+
+    # 2. Prefetch ordenado para las mantenciones del REMOLQUE
+    # Viajamos: Camion -> Asignacion -> Remolque -> Mantenciones
+    # Usamos related_name='mantenciones_remolque' definido en tu modelo Mantencion
+    prefetch_mants_remolque = Prefetch(
+        'asignaciontractoremolque_set__remolque__mantenciones_remolque',
+        queryset=Mantencion.objects.order_by('-fecha_mantencion')
+    )
+
+    # 3. Queryset Maestro
     queryset = Camion.objects.filter(activo=True).select_related(
         "estado_actual"
     ).prefetch_related(
         "documentos_general",
-        "mantenciones",
+        prefetch_mants_camion,
         "asignaciontractoremolque_set__remolque__documentos_general",
-        "asignaciontractoremolque_set__remolque__mantenciones_remolque",
+        prefetch_mants_remolque,
         "asignaciontractoremolque_set__remolque__estado_actual"
     )
 
     camiones_data = []
     for c in queryset:
-        # SALUD TRACTO
+        # SALUD TRACTO (Ahora verá la última mantención primero)
         c.salud_calculada = evaluar_salud_entidad(c)
         
-        # SALUD REMOLQUE (Para que no salgan en blanco)
-        asignacion = c.asignacion_actual # Usando tu property del modelo
+        # SALUD REMOLQUE
+        # Buscamos la asignación activa en el prefetch
+        asignacion = c.asignaciontractoremolque_set.filter(activo=True).first()
         if asignacion and asignacion.remolque:
             asignacion.remolque.salud_calculada = evaluar_salud_entidad(asignacion.remolque)
-            c.remolque_vinculado = asignacion.remolque # Atajo para el HTML
+            c.remolque_vinculado = asignacion.remolque
         
         camiones_data.append(c)
-
+        
     # 2. FILTROS
     estado_filtro = request.GET.get("estado")
     if estado_filtro:
