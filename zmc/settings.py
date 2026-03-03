@@ -120,7 +120,8 @@ LOGIN_REDIRECT_URL = '/camiones/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 # Motor de envío
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Configuración del servidor de Gmail
 EMAIL_HOST = 'smtp.gmail.com'

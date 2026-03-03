@@ -10,7 +10,7 @@
     
     <form method="get" class="filter-card">
         <div class="filter-group">
-            <label>Estado de Salud</label>
+            <label>Estado de Operativo</label>
             <select name="estado" class="pro-input">
                 <option value="">Todos los estados</option>
                 <option value="VENCIDA" {% if request.GET.estado == 'VENCIDA' %}selected{% endif %}>🔴 Vencida</option>

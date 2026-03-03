@@ -40,13 +40,14 @@ def camion_list(request):
 
     camiones_data = []
     for c in queryset:
-        # SALUD TRACTO (Ahora verá la última mantención primero)
-        c.salud_calculada = evaluar_salud_entidad(c)
+        c.ultima_m = c.mantenciones.all()[0] if c.mantenciones.all() else None
+        c.salud_calculada = evaluar_salud_entidad(c)    
         
         # SALUD REMOLQUE
         # Buscamos la asignación activa en el prefetch
         asignacion = c.asignaciontractoremolque_set.filter(activo=True).first()
         if asignacion and asignacion.remolque:
+            asignacion.remolque.ultima_m = asignacion.remolque.mantenciones_remolque.all()[0] if asignacion.remolque.mantenciones_remolque.all() else None
             asignacion.remolque.salud_calculada = evaluar_salud_entidad(asignacion.remolque)
             c.remolque_vinculado = asignacion.remolque
         

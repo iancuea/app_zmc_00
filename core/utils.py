@@ -24,16 +24,20 @@ def evaluar_salud_entidad(entidad):
     if es_camion:
         ultima_m = entidad.mantenciones.all().first()
         km_actual = entidad.estado_actual.kilometraje if entidad.estado_actual else 0
+        intervalo = entidad.intervalo_mantencion  # Sacamos el dato del modelo Camion
     else:
         ultima_m = entidad.mantenciones_remolque.all().first()
         km_actual = float(getattr(entidad, 'kilometraje_acumulado', 0))
+        intervalo = 0 # O el intervalo que definas para remolques
 
-    # Si hay registro en la tabla Mantenciones, usamos esa meta
-    if ultima_m and ultima_m.km_proxima_mantencion:
-        km_restantes = ultima_m.km_proxima_mantencion - km_actual
-    # Si no hay, y es camión, intentamos con la lógica de aceite del modelo
-    elif es_camion and hasattr(entidad, 'km_restantes'):
-        km_restantes = entidad.km_restantes()
+    if ultima_m:
+        # SI EL CAMPO MANUAL TIENE DATO, USA ESE (Prioridad manual)
+        if ultima_m.km_proxima_mantencion:
+            km_restantes = ultima_m.km_proxima_mantencion - km_actual
+        # SI ESTÁ VACÍO, CALCULA AUTOMÁTICAMENTE: (KM Salida Taller + Intervalo Camión)
+        elif ultima_m.km_mantencion:
+            meta_automatica = ultima_m.km_mantencion + intervalo
+            km_restantes = meta_automatica - km_actual
 
     # Evaluar semáforo mecánico
     if km_restantes is not None:
