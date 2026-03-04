@@ -1,25 +1,39 @@
 /**
  * Renderiza la lista de motivos o un check de éxito si no hay alertas.
  */
-function renderizarMotivos(lista) {
+function renderizarMotivos(lista, documentos = []) {
+    let htmlContent = "";
+
+    // 1. Renderizar Alertas/Motivos
     if (!lista || lista.length === 0) {
-        return '<span style="color: #10b981; font-size: 0.8rem; font-weight: 600;">✅ Sin alertas</span>';
+        htmlContent += '<span style="color: #10b981; font-size: 0.8rem; font-weight: 600;">✅ Sin alertas</span>';
+    } else {
+        htmlContent += `<ul style="margin:0; padding-left:15px; font-size: 0.82rem; line-height: 1.4;">
+                            ${lista.map(m => `<li>${m}</li>`).join("")}
+                        </ul>`;
     }
 
-    // Si hay más de 2 motivos, preparamos el botón "Ver más"
-    const necesitaBoton = lista.length > 2;
-    
-    let html = `<div class="motivos-container" id="cont-${Math.random().toString(36).substr(2, 9)}">
-                    <ul style="margin:0; padding-left:15px; font-size: 0.82rem; line-height: 1.4;">
-                        ${lista.map(m => `<li>${m}</li>`).join("")}
-                    </ul>
-                </div>`;
+    // 2. NUEVO: Renderizar Documentos de Drive
+    if (documentos && documentos.length > 0) {
+        htmlContent += `<div class="drive-docs-container" style="margin-top: 8px; border-top: 1px dotted #ccc; padding-top: 5px;">`;
+        documentos.forEach(doc => {
+            htmlContent += `
+                <a href="${doc.ruta}" target="_blank" title="Ver ${doc.nombre}"
+                   style="font-size: 0.75rem; color: #004a99; text-decoration: none; display: flex; align-items: center; gap: 5px; margin-bottom: 4px; font-weight: bold;">
+                    <span style="font-size: 1rem;">📄</span> ${doc.nombre}
+                </a>`;
+        });
+        htmlContent += `</div>`;
+    }
+
+    const necesitaBoton = lista && lista.length > 2;
+    let finalHtml = `<div class="motivos-container">${htmlContent}</div>`;
     
     if (necesitaBoton) {
-        html += `<button class="btn-ver-alertas" onclick="toggleAlertas(this)">Ver todas (${lista.length})</button>`;
+        finalHtml += `<button class="btn-ver-alertas" onclick="toggleAlertas(this)">Ver todas (${lista.length})</button>`;
     }
     
-    return html;
+    return finalHtml;
 }
 
 /**
@@ -45,7 +59,7 @@ fetch("/api/camiones/estado/")
 
                 // Inyectar Motivos del Tracto
                 const tdMot = filaCamion.querySelector(".motivos");
-                if (tdMot) tdMot.innerHTML = renderizarMotivos(item.motivos);
+                if (tdMot) tdMot.innerHTML = renderizarMotivos(item.motivos, item.documentos);
             }
 
             // --- 2. PROCESAR REMOLQUE VINCULADO ---
@@ -67,7 +81,7 @@ fetch("/api/camiones/estado/")
                     const tdMotRem = filaRem.querySelector(".motivos-remolque");
                     if (tdMotRem) {
                         // Forzamos el renderizado de la lista que viene en 'motivos_remolque'
-                        tdMotRem.innerHTML = renderizarMotivos(item.motivos_remolque);
+                        tdMotRem.innerHTML = renderizarMotivos(item.motivos_remolque, item.documentos_remolque);
                     }
                 }
             }

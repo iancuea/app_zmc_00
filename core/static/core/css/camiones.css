@@ -425,3 +425,61 @@ body {
 .btn-ver-alertas:hover {
     color: var(--primary-dark);
 }
+/* Estilo para los links de Google Drive */
+.drive-docs-container {
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid #e2e8f0; /* Línea sutil divisoria */
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.drive-doc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f8fafc;
+    color: #1e293b;
+    border: 1px solid #cbd5e1;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.drive-doc-link:hover {
+    background-color: #eff6ff;
+    border-color: #3b82f6;
+    color: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.drive-doc-icon {
+    font-size: 1rem;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+}   
+
+/* Ajuste del contenedor de motivos para expansión suave */
+.motivos-container {
+    max-height: 120px;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    position: relative;
+}
+
+.motivos-container.expanded {
+    max-height: 1000px;
+}
+
+/* Badge de fecha debajo de OK/VENCIDA */
+.fecha-um, .fecha-um-rem {
+    font-family: 'Courier New', Courier, monospace;
+    background: #f8fafc;
+    padding: 2px 4px;
+    border-radius: 3px;
+    border: 1px solid #f1f5f9;
+}

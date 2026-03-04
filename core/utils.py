@@ -47,7 +47,10 @@ def evaluar_salud_entidad(entidad):
         elif km_restantes <= 1000:
             if peor_estado == "OK": peor_estado = "CRITICA"
             motivos.append(f"Mecánica Crítica ({int(km_restantes)} km)")
-
+    # Si no hay mantención en tabla Mantenciones, intentamos con la de aceite (tu lógica actual)
+    elif es_camion and hasattr(entidad, 'km_restantes'):
+        km_restantes = entidad.km_restantes()
+        
     # 3. LÓGICA DOCUMENTACIÓN
     docs = entidad.documentos_general.all()
     hoy = date.today()

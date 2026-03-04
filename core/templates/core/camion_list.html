@@ -43,16 +43,16 @@
                 <th>Motivos y Alertas</th>
             </tr>
         </thead>
-       <tbody>
+        <tbody>
             {% for grupo in camiones_por_base %}
                 <tr class="base-row-divider">
                     <td colspan="6">Base Actual: <strong>{{ grupo.base }}</strong></td>
                 </tr>
 
                 {% for camion in grupo.camiones %}
-                    {% with estado_t=camion.salud_calculada asignacion=camion.asignacion_actual %}
+                    {% with estado_t=camion.salud_calculada %}
                     
-                   <tr class="unit-row {{ camion.salud_calculada.css }}" data-camion-id="{{ camion.id_camion }}">
+                    <tr class="unit-row {{ camion.salud_calculada.css }}" data-camion-id="{{ camion.id_camion }}">
                         <td class="col-patente">
                             <a href="{% url 'camion_detail' camion.id_camion %}" class="patente-pill">
                                 {{ camion.patente }}
@@ -75,6 +75,9 @@
                         <td class="col-health">
                             <div class="health-indicator">
                                 <strong>{{ camion.salud_calculada.label }}</strong>
+                                <span class="fecha-um">
+                                    {% if camion.ultima_m %}📅 U.M: {{ camion.ultima_m.fecha_mantencion|date:"d/m/y" }}{% else %}---{% endif %}
+                                </span>
                             </div>
                         </td>
                         <td class="motivos">
@@ -88,16 +91,21 @@
                                         <li style="list-style:none; margin-left:-1.2rem;">✅ Sin alertas</li>
                                     {% endif %}
                                 </ul>
+
+                                {% if camion.docs_drive %}
+                                <div class="drive-docs-container">
+                                    {% for doc in camion.docs_drive %}
+                                        <a href="{{ doc.ruta_archivo }}" target="_blank" class="drive-doc-link">
+                                            <span class="drive-doc-icon">📄</span> {{ doc.nombre_archivo|default:"Ver Documento" }}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
                             </div>
-                            {% if camion.salud_calculada.motivos|length > 2 %}
-                                <button type="button" class="btn-ver-alertas" onclick="toggleAlertas(this)">
-                                    Ver todas ({{ camion.salud_calculada.motivos|length }})
-                                </button>
-                            {% endif %}
                         </td>
                     </tr>
                     
-                   {% if camion.remolque_vinculado %}
+                    {% if camion.remolque_vinculado %}
                         {% with remolque=camion.remolque_vinculado %}
                         <tr class="trailer-row {{ remolque.salud_calculada.css }}" data-remolque-id="{{ remolque.id_remolque }}">
                             <td class="connector-parent">
@@ -106,26 +114,25 @@
                                     {{ remolque.patente }}
                                 </a>
                             </td>
-
                             <td colspan="2">
                                 <span style="font-size: 0.7rem; color: var(--text-muted); display: block; text-transform: uppercase;">
                                     Remolque Vinculado
                                 </span>
                                 <strong style="font-size: 0.85rem;">{{ remolque.modelo|default:"Unidad Estándar" }}</strong>
                             </td>
-
                             <td>
                                 <span class="badge-op-status">
                                     {{ remolque.estado_actual.get_estado_operativo_display|default:"OPERATIVO" }}
                                 </span>
                             </td>
-
                             <td class="col-health">
-                                <strong class="estado-mantencion-texto-rem">
-                                    {{ remolque.salud_calculada.label }}
-                                </strong>
+                                <div class="health-indicator">
+                                    <strong class="estado-mantencion-texto-rem">{{ remolque.salud_calculada.label }}</strong>
+                                    <span class="fecha-um-rem">
+                                        {% if remolque.ultima_m %}📅 U.M: {{ remolque.ultima_m.fecha_mantencion|date:"d/m/y" }}{% endif %}
+                                    </span>
+                                </div>
                             </td>
-
                             <td class="motivos-remolque">
                                 <div class="motivos-container">
                                     <ul style="margin:0; padding-left:1.2rem; font-size: 0.8rem; line-height: 1.4;">
@@ -137,14 +144,17 @@
                                             <li style="list-style:none; margin-left:-1.2rem; color: var(--success);">✅ Al día</li>
                                         {% endif %}
                                     </ul>
+
+                                    {% if remolque.docs_drive %}
+                                    <div class="drive-docs-container">
+                                        {% for dr in remolque.docs_drive %}
+                                            <a href="{{ dr.ruta_archivo }}" target="_blank" class="drive-doc-link">
+                                                <span class="drive-doc-icon">📄</span> {{ dr.nombre_archivo|default:"Ver Doc" }}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
                                 </div>
-                                
-                                {# Botón de expansión #}
-                                {% if remolque.salud_calculada.motivos|length > 2 %}
-                                    <button type="button" class="btn-ver-alertas" onclick="toggleAlertas(this)">
-                                        VER TODAS ({{ remolque.salud_calculada.motivos|length }})
-                                    </button>
-                                {% endif %}
                             </td>
                         </tr>
                         {% endwith %}

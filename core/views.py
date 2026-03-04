@@ -12,44 +12,55 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def camion_list(request):
-    # 1. Prefetch ordenado para las mantenciones del CAMIÓN
-    # Usamos related_name='mantenciones' definido en tu modelo Mantencion
+    # 1. Prefetch para TRACTO: Excluimos DIARIAS y ordenamos (2026 arriba)
     prefetch_mants_camion = Prefetch(
         'mantenciones', 
-        queryset=Mantencion.objects.order_by('-fecha_mantencion')
+        queryset=Mantencion.objects.exclude(tipo_mantencion='DIARIA').order_by('-fecha_mantencion').prefetch_related('documentos'),
+        to_attr='mantenciones_reales'
     )
 
-    # 2. Prefetch ordenado para las mantenciones del REMOLQUE
-    # Viajamos: Camion -> Asignacion -> Remolque -> Mantenciones
-    # Usamos related_name='mantenciones_remolque' definido en tu modelo Mantencion
+    # 2. Prefetch para REMOLQUE: Lo mismo
     prefetch_mants_remolque = Prefetch(
-        'asignaciontractoremolque_set__remolque__mantenciones_remolque',
-        queryset=Mantencion.objects.order_by('-fecha_mantencion')
+    'asignaciontractoremolque_set__remolque__mantenciones_remolque',
+    queryset=Mantencion.objects.exclude(tipo_mantencion='DIARIA').order_by('-fecha_mantencion').prefetch_related('documentos'),
+    to_attr='mants_reales_rem'
     )
 
     # 3. Queryset Maestro
     queryset = Camion.objects.filter(activo=True).select_related(
         "estado_actual"
     ).prefetch_related(
-        "documentos_general",
         prefetch_mants_camion,
-        "asignaciontractoremolque_set__remolque__documentos_general",
         prefetch_mants_remolque,
         "asignaciontractoremolque_set__remolque__estado_actual"
     )
 
     camiones_data = []
     for c in queryset:
-        c.ultima_m = c.mantenciones.all()[0] if c.mantenciones.all() else None
+        # Ahora c.mantenciones_reales[0] será SÍ O SÍ la del 10/01/26
+        c.ultima_m = c.mantenciones_reales[0] if c.mantenciones_reales else None
+        c.docs_drive = []
+        if c.mantenciones_reales:
+            for m in c.mantenciones_reales:
+                for d in m.documentos.all():
+                    if d.ruta_archivo and 'http' in d.ruta_archivo:
+                        c.docs_drive.append(d)
+
         c.salud_calculada = evaluar_salud_entidad(c)    
         
-        # SALUD REMOLQUE
-        # Buscamos la asignación activa en el prefetch
+        # Lógica de Remolque
         asignacion = c.asignaciontractoremolque_set.filter(activo=True).first()
         if asignacion and asignacion.remolque:
-            asignacion.remolque.ultima_m = asignacion.remolque.mantenciones_remolque.all()[0] if asignacion.remolque.mantenciones_remolque.all() else None
-            asignacion.remolque.salud_calculada = evaluar_salud_entidad(asignacion.remolque)
-            c.remolque_vinculado = asignacion.remolque
+            rem = asignacion.remolque
+            m_rem = getattr(rem, 'mants_reales_rem', [])
+            rem.ultima_m = m_rem[0] if m_rem else None
+            rem.docs_drive = []
+            for mr in m_rem:
+                for dr in mr.documentos.all():
+                    if dr.ruta_archivo and 'http' in dr.ruta_archivo:
+                        rem.docs_drive.append(dr)
+            rem.salud_calculada = evaluar_salud_entidad(rem)
+            c.remolque_vinculado = rem
         
         camiones_data.append(c)
         
@@ -190,49 +201,76 @@ def api_camion_detalle(request, camion_id):
 
 def api_estado_camiones(request):
     """
-    API principal que alimenta la lista en tiempo real.
-    Analiza Tracto y Remolque usando la lógica centralizada de utils.py
+    API Corregida: Filtra DIARIAS y ordena por fecha descendente.
     """
     resultado = []
     
-    # 1. Traemos todo de un solo golpe (Optimization)
     camiones = Camion.objects.filter(activo=True).select_related(
         "estado_actual"
     ).prefetch_related(
-        "documentos_general",
-        "mantenciones",
-        "asignaciontractoremolque_set__remolque__documentos_general",
-        "asignaciontractoremolque_set__remolque__mantenciones_remolque"
+        "mantenciones__documentos",
+        "asignaciontractoremolque_set__remolque__mantenciones_remolque__documentos"
     )
 
     for camion in camiones:
-        # --- A. SALUD DEL TRACTO ---
         salud_tracto = evaluar_salud_entidad(camion)
         
-        # --- B. DATOS DEL REMOLQUE ---
+        # --- B. DOCUMENTOS Y FECHA TRACTO (FILTRADO Y ORDENADO) ---
+        docs_tracto = []
+        # Excluimos las diarias y ponemos la más reciente (2026) arriba
+        m_reales = camion.mantenciones.exclude(tipo_mantencion='DIARIA').order_by('-fecha_mantencion')
+        
+        u_m_t = m_reales.first()
+        fecha_um_t = u_m_t.fecha_mantencion.strftime('%d/%m/%y') if u_m_t and u_m_t.fecha_mantencion else ""
+        
+        for m in m_reales:
+            for d in m.documentos.all():
+                if d.ruta_archivo and 'http' in d.ruta_archivo:
+                    docs_tracto.append({
+                        "nombre": d.nombre_archivo or "Ver Mantención",
+                        "ruta": d.ruta_archivo
+                    })
+
+        # --- C. DATOS DEL REMOLQUE (FILTRADO Y ORDENADO) ---
         motivos_remolque = []
+        docs_remolque = []
+        fecha_um_r = ""
         id_remolque = None
         estado_rem_css = "estado-ok"
         
-        asignacion = camion.asignacion_actual # Property del modelo
+        asignacion = camion.asignacion_actual 
         if asignacion:
             rem = asignacion.remolque
             id_remolque = rem.id_remolque
-            
-            # Usamos la misma lógica centralizada para el remolque
             salud_rem = evaluar_salud_entidad(rem)
             motivos_remolque = salud_rem["motivos"]
             estado_rem_css = salud_rem["css"]
+            
+            # Filtro igual para el remolque
+            m_reales_rem = rem.mantenciones_remolque.exclude(tipo_mantencion='DIARIA').order_by('-fecha_mantencion')
+            u_m_r = m_reales_rem.first()
+            fecha_um_r = u_m_r.fecha_mantencion.strftime('%d/%m/%y') if u_m_r and u_m_r.fecha_mantencion else ""
+            
+            for mr in m_reales_rem:
+                for dr in mr.documentos.all():
+                    if dr.ruta_archivo and 'http' in dr.ruta_archivo:
+                        docs_remolque.append({
+                            "nombre": dr.nombre_archivo or "Ver Doc",
+                            "ruta": dr.ruta_archivo
+                        })
 
-        # --- C. CONSTRUIR RESPUESTA ---
         resultado.append({
             "id_camion": camion.id_camion,
             "id_remolque": id_remolque,
-            "estado": salud_tracto["codigo"],         # Ej: "VENCIDA"
-            "css": salud_tracto["css"],               # Ej: "estado-vencida"
-            "motivos": salud_tracto["motivos"],       # Lista de alertas tracto
-            "motivos_remolque": motivos_remolque,     # Lista de alertas remolque
-            "estado_remolque_css": estado_rem_css      # Clase CSS para el remolque
+            "estado": salud_tracto["codigo"],
+            "css": salud_tracto["css"],
+            "motivos": salud_tracto["motivos"],
+            "documentos": docs_tracto,
+            "fecha_um": fecha_um_t,
+            "motivos_remolque": motivos_remolque,
+            "documentos_remolque": docs_remolque,
+            "fecha_um_remolque": fecha_um_r,
+            "estado_remolque_css": estado_rem_css
         })
 
     return JsonResponse(resultado, safe=False)

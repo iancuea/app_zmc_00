@@ -40,8 +40,12 @@ class HistorialEstadoInline(admin.TabularInline):
 
 class DocumentoMantencionInline(admin.TabularInline):
     model = DocumentoMantencion
-    extra = 0
-
+    extra = 1  # Te muestra un espacio vacío para el primer link de Drive
+    fields = ('tipo_documento', 'nombre_archivo', 'ruta_archivo')
+    # Ajustamos para que se vea bien en el admin
+    verbose_name = "Documento / Link de Drive"
+    verbose_name_plural = "Documentos / Links de Drive"
+    
 class HistorialEstadoRemolqueInline(admin.TabularInline):
     model = HistorialEstadoRemolque
     extra = 0
@@ -132,25 +136,40 @@ class AsignacionTractoRemolqueAdmin(admin.ModelAdmin):
 
 @admin.register(Mantencion)
 class MantencionAdmin(admin.ModelAdmin):
-    list_display = ('id_mantencion', 'get_unidad', 'fecha_mantencion', 'taller', 'km_proxima_mantencion')
+    list_display = ('id_mantencion', 'get_unidad', 'fecha_mantencion', 'taller', 'km_mantencion', 'km_proxima_mantencion')
     list_filter = ('taller', 'fecha_mantencion')
-    # Ayuda a que los selects no sean lentos si tienes muchos camiones
     raw_id_fields = ('camion', 'remolque') 
+    
+    # Esto organiza los campos en el formulario de carga
+    fieldsets = (
+        ('Información de la Unidad', {
+            'fields': (('camion', 'remolque'),)
+        }),
+        ('Detalles del Trabajo', {
+            'fields': (('fecha_mantencion', 'taller'), 'km_mantencion', 'km_proxima_mantencion'),
+            'description': "<i>Nota: Si dejas <b>km proxima mantencion</b> vacío, el sistema sumará automáticamente el intervalo del camión al kilometraje de salida.</i>"
+        }),
+        ('Notas adicionales', {
+            'fields': ('observaciones',),
+            'classes': ('collapse',), # Esto lo oculta por defecto para que no estorbe
+        }),
+    )
+
     inlines = [DocumentoMantencionInline]
 
     def get_unidad(self, obj):
-        # Usamos getattr para evitar el AttributeError si obj.camion es None
         camion = getattr(obj, 'camion', None)
         remolque = getattr(obj, 'remolque', None)
 
         if camion:
-            return format_html('🚜 <b>{}</b>', camion.patente)
+            return format_html('<span style="color: #004a99;">🚜</span> <b>{}</b>', camion.patente)
         if remolque:
-            return format_html('🚛 <b>{}</b>', remolque.patente)
+            return format_html('<span style="color: #475569;">🚛</span> <b>{}</b>', remolque.patente)
         
         return "Nueva Mantención"
 
     get_unidad.short_description = 'Unidad'
+    get_unidad.admin_order_field = 'camion__patente'
 
 @admin.register(EstadoCamion)
 class EstadoCamionAdmin(admin.ModelAdmin):

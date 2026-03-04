@@ -268,6 +268,18 @@ class Remolque(models.Model):
         return self.patente if self.patente else "Remolque sin patente"
 
 class Mantencion(models.Model):
+    TIPOS_CHOICES = [
+        ('TALLER', 'Mantención de Taller / Preventiva'),
+        ('DIARIA', 'Checklist Diario (Operador)'),
+        ('EMERGENCIA', 'Mantención de Emergencia'),
+    ]
+    
+    # Agregamos el campo para filtrar
+    tipo_mantencion = models.CharField(
+        max_length=20, 
+        choices=TIPOS_CHOICES, 
+        default='TALLER'
+    )
     # 1. Definir la llave primaria exacta
     id_mantencion = models.AutoField(
         primary_key=True, 
@@ -300,8 +312,7 @@ class Mantencion(models.Model):
     km_restantes = models.IntegerField(blank=True, null=True)
     dias_revision_tecnica = models.IntegerField(blank=True, null=True)
     observaciones = models.TextField(blank=True, null=True)
-    fecha_creacion = models.DateTimeField()
-
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
     class Meta:
         managed = False
         db_table = 'mantenciones'
@@ -531,7 +542,7 @@ class DocumentoMantencion(models.Model):
     nombre_archivo = models.CharField(max_length=255)
     ruta_archivo = models.TextField()
     tipo_documento = models.CharField(max_length=50, blank=True, null=True)
-    fecha_subida = models.DateTimeField()
+    fecha_subida = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False
