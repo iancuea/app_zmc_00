@@ -109,31 +109,34 @@ def camion_list(request):
 
 @login_required
 def camion_detail(request, pk):
-    # 1. Definimos el prefetch ordenado para que la salud tome SIEMPRE la última mantención
-    prefetch_mants = Prefetch(
+    # 1. Prefetch filtrado: Solo mantenciones reales para el historial técnico
+    # Así el usuario ve reparaciones, no checklists infinitos
+    prefetch_reales = Prefetch(
         'mantenciones', 
-        queryset=Mantencion.objects.order_by('-fecha_mantencion')
+        queryset=Mantencion.objects.exclude(tipo_mantencion='DIARIA').order_by('-fecha_mantencion'),
+        to_attr='historial_tecnico'
     )
 
-    # 2. Obtenemos el camión con sus relaciones optimizadas
+    # 2. Obtenemos el camión
     camion = get_object_or_404(
         Camion.objects.select_related('estado_actual').prefetch_related(
-            prefetch_mants, 
+            prefetch_reales, 
+            'mantenciones__documentos', # Necesitamos los docs de todas para el historial
             'documentos_general'
         ), 
         id_camion=pk
     )
     
-    # 3. Datos para las tablas (ya vienen en el objeto gracias al prefetch)
-    mantenciones = camion.mantenciones.all() 
+    # 3. Datos para el contexto
+    # Usamos el atributo 'historial_tecnico' que creamos en el prefetch
+    mantenciones = camion.historial_tecnico 
     documentos = camion.documentos_general.all()
     
     # 4. Remolque vinculado
     asignacion = camion.asignaciontractoremolque_set.filter(activo=True).first()
     remolque_vinculado = asignacion.remolque if asignacion else None
 
-    # 5. ¡AQUÍ ESTÁ LA MAGIA! 
-    # Llamamos a la función de utils con el camión ya cargado
+    # 5. Calculamos salud (evaluar_salud_entidad ya debería usar el filtro interno)
     salud = evaluar_salud_entidad(camion)
 
     context = {
@@ -141,7 +144,7 @@ def camion_detail(request, pk):
         'mantenciones': mantenciones,
         'documentos': documentos,
         'remolque_vinculado': remolque_vinculado,
-        'estado_mant': salud  # <-- Esto es lo que pinta el HTML
+        'estado_mant': salud 
     }
     return render(request, 'core/camion_detail.html', context)
 
@@ -180,23 +183,36 @@ def remolque_detail(request, pk):
     return render(request, 'core/remolque_detail.html', context)
 
 def api_camion_detalle(request, camion_id):
-    camion = get_object_or_404(Camion, id_camion=camion_id)
+    # Traemos con prefetch para los documentos
+    camion = get_object_or_404(
+        Camion.objects.prefetch_related('mantenciones__documentos'), 
+        id_camion=camion_id
+    )
 
-    estado = None
-    kilometraje = None
+    estado = camion.estado_actual.estado_operativo if hasattr(camion, 'estado_actual') else None
+    kilometraje = camion.estado_actual.kilometraje if hasattr(camion, 'estado_actual') else None
 
-    if hasattr(camion, 'estado_actual'):
-        estado = camion.estado_actual.estado_operativo
-        kilometraje = camion.estado_actual.kilometraje
-
-    km_restantes = camion.km_restantes()
+    # Buscamos la última real para la fecha
+    m_reales = camion.mantenciones.exclude(tipo_mantencion='DIARIA').order_by('-fecha_mantencion')
+    u_m = m_reales.first()
+    
+    docs_drive = []
+    for m in m_reales:
+        for d in m.documentos.all():
+            if d.ruta_archivo and 'http' in d.ruta_archivo:
+                docs_drive.append({
+                    "nombre": d.nombre_archivo or "Documento",
+                    "ruta": d.ruta_archivo
+                })
 
     return JsonResponse({
         "id_camion": camion.id_camion,
         "patente": camion.patente,
         "estado_operativo": estado,
         "kilometraje_actual": kilometraje,
-        "km_restantes": km_restantes,
+        "km_restantes": camion.km_restantes(),
+        "ultima_mantencion_real": u_m.fecha_mantencion.strftime('%d/%m/%Y') if u_m else "Sin datos",
+        "documentos_drive": docs_drive,
     })
 
 def api_estado_camiones(request):
