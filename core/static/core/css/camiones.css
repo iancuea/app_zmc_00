@@ -401,3 +401,52 @@ body {
     display: inline-block; /* Hace que el bloque sea tan ancho como el texto más largo */
     text-align: left;      /* Alinea el texto interno a la izquierda */
 }
+.text-left {
+    text-align: left !important;
+}
+
+/* Utilidad para centrar bloque de gestión (con su contenido interno) */
+.flex-center {
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Asegurar que el bundle interno y la fila de drive también se centren */
+.flex-center .health-info-bundle, 
+.flex-center .last-maint-row {
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100%;
+}
+.connector-parent {
+    position: relative;
+    padding-left: 60px !important; /* Más espacio para que el remolque se vea 'adentro' */
+    text-align: left !important;
+}
+
+.connector-line {
+    position: absolute;
+    left: 30px;      /* Centrado en el espacio de la izquierda */
+    top: -35px;      /* Sube hasta el fondo del camión */
+    width: 20px;     /* Ancho del 'gancho' */
+    height: 60px;    /* Largo de la caída */
+    border-left: 3px solid #64748b;   /* Línea más gruesa y oscura */
+    border-bottom: 3px solid #64748b; /* Línea más gruesa y oscura */
+    border-bottom-left-radius: 10px;
+    z-index: 5;
+}
+
+/* Sombra sutil a la fila del remolque para que parezca que está 'colgado' */
+.trailer-row td {
+    background-color: #f8fafc !important;
+    border-top: none !important; /* Quitamos el borde para que parezca una sola pieza */
+}
+.search-input {
+    border: 2px solid var(--border-color) !important;
+    background: white !important;
+    font-weight: 700 !important;
+    text-transform: uppercase; /* Forzamos mayúsculas visuales */
+}

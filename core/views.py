@@ -65,22 +65,52 @@ def camion_list(request):
         camiones_data.append(c)
         
     # 2. FILTROS
+    q = request.GET.get("q", "").strip().upper() # Capturamos la patente buscada
     estado_filtro = request.GET.get("estado")
-    if estado_filtro:
-        camiones_data = [c for c in camiones_data if c.salud_calculada["codigo"] == estado_filtro]
 
+    # Filtro 1: Por Patente (Tracto o Remolque)
+    if q:
+        camiones_data = [
+            c for c in camiones_data 
+            if (q in c.patente.upper()) or 
+               (hasattr(c, 'remolque_vinculado') and q in c.remolque_vinculado.patente.upper())
+        ]
+
+    # Filtro 2: Por Estado (Tracto o Remolque)
+    if estado_filtro:
+        camiones_data = [
+            c for c in camiones_data 
+            if (c.salud_calculada["codigo"] == estado_filtro) or 
+               (hasattr(c, 'remolque_vinculado') and c.remolque_vinculado.salud_calculada["codigo"] == estado_filtro)
+        ]
     # 3. ORDENAMIENTO (Crucial para que groupby no falle)
     ordenar = request.GET.get("orden")
     
     def obtener_llave_orden(c):
-        # Si no tiene estado_actual o base, usamos un string vacío para que no tire error
-        base_id = c.estado_actual.base_actual if (c.estado_actual and c.estado_actual.base_actual) else "ZZZ"
-        prioridad = c.salud_calculada.get("prioridad", 3)
+        # La base es lo más importante para el agrupamiento visual
+        base_id = str(c.estado_actual.base_actual) if (c.estado_actual and c.estado_actual.base_actual) else "ZZZ"
+        
+        # 1. Prioridad del camión
+        prio_camion = c.salud_calculada.get("prioridad", 3)
+        
+        # 2. Prioridad del remolque
+        prio_remolque = 99 
+        if hasattr(c, 'remolque_vinculado'):
+            prio_remolque = c.remolque_vinculado.salud_calculada.get("prioridad", 3)
+        
+        # 3. Urgencia mínima del conjunto
+        prioridad_final = min(prio_camion, prio_remolque)
         
         if ordenar == "urgencia":
-            return (prioridad, base_id)
-        return (base_id, prioridad)
+            # Si es por urgencia, la prioridad va PRIMERO en la tupla
+            km = c.salud_calculada.get("km_restantes")
+            km_val = km if km is not None else 999999
+            return (prioridad_final, km_val, base_id)
+        
+        # SI NO HAY ORDEN ESPECIAL: La base va PRIMERO para que groupby funcione
+        return (base_id, prioridad_final)
 
+    # Ejecutamos el sort
     camiones_data.sort(key=obtener_llave_orden)
 
     # 4. AGRUPAMIENTO (Aquí estaba el error)

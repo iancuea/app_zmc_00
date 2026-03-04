@@ -71,7 +71,7 @@ def evaluar_salud_entidad(entidad):
         "codigo": peor_estado,
         "css": f"estado-{peor_estado.lower()}",
         "label": peor_estado,
-        "prioridad": 3, # Tu mapa de prioridad
+        "prioridad": PRIORIDAD_MAP.get(peor_estado, 3),
         "motivos": motivos,
         "proxima_km": meta_km,  # <--- PASAMOS EL DATO CALCULADO AL DICCIONARIO
         "km_restantes": km_restantes
