@@ -532,3 +532,94 @@ body {
     border-radius: 12px;
     font-weight: 700;
 }
+/* Contenedor bundle de salud */
+.health-info-bundle {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.health-status-text {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+/* Fila de última mantención con botón Drive */
+.last-maint-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-drive-inline {
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    color: #4338ca;
+    padding: 1px 6px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    line-height: 1;
+    transition: 0.2s;
+}
+
+.btn-drive-inline:hover {
+    background: #4338ca;
+    color: white;
+}
+
+/* Fila de próxima mantención */
+.next-maint-row {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.km-value {
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+/* Alertas limpias */
+.alert-list-clean {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.alert-list-clean li {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #dc2626;
+    line-height: 1.2;
+    margin-bottom: 3px;
+}
+
+.alert-list-clean li.ok-check {
+    color: #059669;
+}
+.km-remaining {
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+/* Resalte cuando queda poco para la mantención */
+.km-urgente {
+    color: #f59e0b; /* Naranja advertencia */
+    background: #fffbeb;
+    padding: 2px 4px;
+    border-radius: 4px;
+    animation: pulse-subtle 2s infinite;
+}
+
+@keyframes pulse-subtle {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+.km-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-right: 4px;
+}

@@ -73,5 +73,6 @@ def evaluar_salud_entidad(entidad):
         "label": peor_estado,
         "prioridad": 3, # Tu mapa de prioridad
         "motivos": motivos,
-        "proxima_km": meta_km  # <--- PASAMOS EL DATO CALCULADO AL DICCIONARIO
+        "proxima_km": meta_km,  # <--- PASAMOS EL DATO CALCULADO AL DICCIONARIO
+        "km_restantes": km_restantes
     }

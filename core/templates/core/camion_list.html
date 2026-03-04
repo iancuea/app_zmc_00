@@ -1,5 +1,6 @@
 {% extends "core/base.html" %}
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 <div class="dashboard-header">
@@ -35,139 +36,118 @@
     <table class="tabla-pro">
         <thead>
             <tr>
-                <th>Unidad</th>
-                <th>Especificaciones</th>
-                <th>Ubicación</th>
-                <th>Estado Operativo</th>
-                <th>Mecánica</th>
-                <th>Motivos y Alertas</th>
+                <th style="width: 15%;">Unidad</th>
+                <th style="width: 25%;">Especificaciones</th>
+                <th style="width: 15%;">Estado Operativo</th>
+                <th style="width: 20%;">Gestión Mecánica</th> 
+                <th style="width: 25%;">Alertas Detalladas</th>
             </tr>
         </thead>
         <tbody>
             {% for grupo in camiones_por_base %}
                 <tr class="base-row-divider">
-                    <td colspan="6">Base Actual: <strong>{{ grupo.base }}</strong></td>
+                    <td colspan="5">Base Actual: <strong>{{ grupo.base }}</strong></td>
                 </tr>
 
                 {% for camion in grupo.camiones %}
-                    {% with estado_t=camion.salud_calculada %}
-                    
                     <tr class="unit-row {{ camion.salud_calculada.css }}" data-camion-id="{{ camion.id_camion }}">
                         <td class="col-patente">
-                            <a href="{% url 'camion_detail' camion.id_camion %}" class="patente-pill">
-                                {{ camion.patente }}
-                            </a>
+                            <a href="{% url 'camion_detail' camion.id_camion %}" class="patente-pill">{{ camion.patente }}</a>
                         </td>
                         <td>
                             <div class="unit-specs">
-                                <span class="spec-type">{{ camion.tipo_camion }}</span>
-                                <span class="spec-rol" style="display:block; font-size:0.7rem; color:var(--text-muted);">
-                                    {{ camion.get_rol_operativo_display }}
-                                </span>
+                                <span class="spec-type" style="display:block; font-weight:700;">{{ camion.tipo_camion }}</span>
+                                <span class="spec-rol" style="font-size:0.75rem; color:var(--text-muted);">{{ camion.get_rol_operativo_display }}</span>
                             </div>
                         </td>
-                        <td class="col-base">{{ grupo.base }}</td>
                         <td>
-                            <span class="badge-op-status">
-                                {{ camion.estado_actual.get_estado_operativo_display|default:"Sin Datos" }}
-                            </span>
+                            <span class="badge-op-status">{{ camion.estado_actual.get_estado_operativo_display|default:"Sin Datos" }}</span>
                         </td>
                         <td class="col-health">
-                            <div class="health-indicator">
-                                <strong>{{ camion.salud_calculada.label }}</strong>
-                                <span class="fecha-um">
-                                    {% if camion.ultima_m %}📅 U.M: {{ camion.ultima_m.fecha_mantencion|date:"d/m/y" }}{% else %}---{% endif %}
-                                </span>
+                            <div class="health-info-bundle">
+                                <strong class="health-status-text">{{ camion.salud_calculada.label }}</strong>
+                                
+                                <div class="last-maint-row">
+                                    <span class="fecha-um">📅 {{ camion.ultima_m.fecha_mantencion|date:"d/m/y"|default:"S/D" }}</span>
+                                    {% if camion.docs_drive %}
+                                        {% for doc in camion.docs_drive %}
+                                            <a href="{{ doc.ruta_archivo }}" target="_blank" class="btn-drive-inline">📄</a>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+
+                                <div class="next-maint-row">
+                                    {% with resto=camion.salud_calculada.km_restantes %}
+                                        <span class="km-label">Faltan:</span>
+                                        <span class="km-remaining {% if resto <= 1000 %}km-urgente{% endif %}">
+                                            {% if resto %}
+                                                {{ resto|intcomma }} km
+                                            {% else %}
+                                                --
+                                            {% endif %}
+                                        </span>
+                                    {% endwith %}
+                                </div>
                             </div>
                         </td>
                         <td class="motivos">
-                            <div class="motivos-container">
-                                <ul style="margin:0; padding-left:1.2rem; font-size: 0.8rem; line-height: 1.4;">
-                                    {% if camion.salud_calculada.motivos %}
-                                        {% for m in camion.salud_calculada.motivos %}
-                                            <li>{{ m }}</li>
-                                        {% endfor %}
-                                    {% else %}
-                                        <li style="list-style:none; margin-left:-1.2rem;">✅ Sin alertas</li>
-                                    {% endif %}
-                                </ul>
-
-                                {% if camion.docs_drive %}
-                                <div class="drive-docs-container">
-                                    {% for doc in camion.docs_drive %}
-                                        <a href="{{ doc.ruta_archivo }}" target="_blank" class="drive-doc-link">
-                                            <span class="drive-doc-icon">📄</span> {{ doc.nombre_archivo|default:"Ver Documento" }}
-                                        </a>
-                                    {% endfor %}
-                                </div>
-                                {% endif %}
-                            </div>
+                            <ul class="alert-list-clean">
+                                {% for m in camion.salud_calculada.motivos %}
+                                    <li>{{ m }}</li>
+                                {% empty %}
+                                    <li style="color:#059669;">✅ Al día</li>
+                                {% endfor %}
+                            </ul>
                         </td>
                     </tr>
-                    
+
                     {% if camion.remolque_vinculado %}
                         {% with remolque=camion.remolque_vinculado %}
                         <tr class="trailer-row {{ remolque.salud_calculada.css }}" data-remolque-id="{{ remolque.id_remolque }}">
                             <td class="connector-parent">
                                 <div class="connector-line"></div>
-                                <a href="{% url 'remolque_detail' remolque.id_remolque %}" class="patente-pill" style="background: #475569;">
-                                    {{ remolque.patente }}
-                                </a>
-                            </td>
-                            <td colspan="2">
-                                <span style="font-size: 0.7rem; color: var(--text-muted); display: block; text-transform: uppercase;">
-                                    Remolque Vinculado
-                                </span>
-                                <strong style="font-size: 0.85rem;">{{ remolque.modelo|default:"Unidad Estándar" }}</strong>
+                                <a href="{% url 'remolque_detail' remolque.id_remolque %}" class="patente-pill" style="background: #475569;">{{ remolque.patente }}</a>
                             </td>
                             <td>
-                                <span class="badge-op-status">
-                                    {{ remolque.estado_actual.get_estado_operativo_display|default:"OPERATIVO" }}
-                                </span>
+                                <div class="unit-specs">
+                                    <span class="spec-type" style="display:block; font-weight:700;">{{ remolque.tipo_remolque|default:"Remolque" }}</span>
+                                    <span class="spec-rol" style="font-size:0.75rem; color:var(--text-muted);">{{ remolque.modelo|default:"Unidad Estándar" }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge-op-status">{{ remolque.estado_actual.get_estado_operativo_display|default:"OPERATIVO" }}</span>
                             </td>
                             <td class="col-health">
-                                <div class="health-indicator">
-                                    <strong class="estado-mantencion-texto-rem">{{ remolque.salud_calculada.label }}</strong>
-                                    <span class="fecha-um-rem">
-                                        {% if remolque.ultima_m %}📅 U.M: {{ remolque.ultima_m.fecha_mantencion|date:"d/m/y" }}{% endif %}
-                                    </span>
+                                <div class="health-info-bundle">
+                                    <strong class="health-status-text">{{ remolque.salud_calculada.label }}</strong>
+                                    <div class="last-maint-row">
+                                        <span class="fecha-um">📅 {{ remolque.ultima_m.fecha_mantencion|date:"d/m/y"|default:"S/D" }}</span>
+                                        {% if remolque.docs_drive %}
+                                            {% for dr in remolque.docs_drive %}
+                                                <a href="{{ dr.ruta_archivo }}" target="_blank" class="btn-drive-inline">📄</a>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="next-maint-row">
+                                        Estado: <span style="font-weight:800;">{{ remolque.salud_calculada.label }}</span>
+                                    </div>
                                 </div>
                             </td>
-                            <td class="motivos-remolque">
-                                <div class="motivos-container">
-                                    <ul style="margin:0; padding-left:1.2rem; font-size: 0.8rem; line-height: 1.4;">
-                                        {% if remolque.salud_calculada.motivos %}
-                                            {% for m in remolque.salud_calculada.motivos %}
-                                                <li>{{ m }}</li>
-                                            {% endfor %}
-                                        {% else %}
-                                            <li style="list-style:none; margin-left:-1.2rem; color: var(--success);">✅ Al día</li>
-                                        {% endif %}
-                                    </ul>
-
-                                    {% if remolque.docs_drive %}
-                                    <div class="drive-docs-container">
-                                        {% for dr in remolque.docs_drive %}
-                                            <a href="{{ dr.ruta_archivo }}" target="_blank" class="drive-doc-link">
-                                                <span class="drive-doc-icon">📄</span> {{ dr.nombre_archivo|default:"Ver Doc" }}
-                                            </a>
-                                        {% endfor %}
-                                    </div>
-                                    {% endif %}
-                                </div>
+                            <td class="motivos">
+                                <ul class="alert-list-clean">
+                                    {% for m in remolque.salud_calculada.motivos %}
+                                        <li>{{ m }}</li>
+                                    {% empty %}
+                                        <li style="color:#059669;">✅ Al día</li>
+                                    {% endfor %}
+                                </ul>
                             </td>
                         </tr>
                         {% endwith %}
                     {% endif %}
-
-                    {% endwith %}
                 {% endfor %}
             {% endfor %}
         </tbody>
     </table>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-    <script src="{% static 'core/js/camiones.js' %}?v={% now 'U' %}"></script>
 {% endblock %}
