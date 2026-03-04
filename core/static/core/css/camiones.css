@@ -483,3 +483,52 @@ body {
     border-radius: 3px;
     border: 1px solid #f1f5f9;
 }
+.drive-doc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f1f5f9;
+    color: #1e293b;
+    border: 1px solid #cbd5e1;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.2s;
+    margin: 2px 0;
+}
+
+.drive-doc-link:hover {
+    background-color: #eff6ff;
+    border-color: #2563eb;
+    color: #2563eb;
+    transform: translateY(-1px);
+}
+.table-container-minimal { padding: 0.5rem; }
+.table-minimal { width: 100%; border-collapse: collapse; }
+
+.table-minimal th { 
+    padding: 1rem; 
+    text-align: left; 
+    font-size: 0.75rem; 
+    border-bottom: 2px solid var(--border-color); 
+    color: var(--text-muted); 
+    text-transform: uppercase; 
+}
+
+.table-minimal td { 
+    padding: 1rem; 
+    border-bottom: 1px solid #f1f5f9; 
+    font-size: 0.9rem; 
+}
+
+/* Badge para el tipo (Taller, Emergencia) */
+.badge-tipo {
+    font-size: 0.7rem;
+    background: #e2e8f0;
+    color: #475569;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-weight: 700;
+}

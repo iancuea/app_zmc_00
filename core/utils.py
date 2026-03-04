@@ -16,28 +16,31 @@ def evaluar_salud_entidad(entidad):
     peor_estado = "OK"
     motivos = []
     km_restantes = None
+    meta_km = 0  # <--- Iniciamos la variable para el HTML
     
     # 1. Identificar si es Camión o Remolque
     es_camion = hasattr(entidad, 'id_camion')
     
     # 2. LÓGICA MECÁNICA: Prioridad absoluta a la tabla Mantencion
     if es_camion:
-        ultima_m = entidad.mantenciones.all().first()
+        ultima_m = entidad.mantenciones.exclude(tipo_mantencion='DIARIA').order_by('-fecha_mantencion').first()  
         km_actual = entidad.estado_actual.kilometraje if entidad.estado_actual else 0
         intervalo = entidad.intervalo_mantencion  # Sacamos el dato del modelo Camion
     else:
-        ultima_m = entidad.mantenciones_remolque.all().first()
+        ultima_m = entidad.mantenciones_remolque.exclude(tipo_mantencion='DIARIA').order_by('-fecha_mantencion').first()
         km_actual = float(getattr(entidad, 'kilometraje_acumulado', 0))
         intervalo = 0 # O el intervalo que definas para remolques
 
     if ultima_m:
-        # SI EL CAMPO MANUAL TIENE DATO, USA ESE (Prioridad manual)
+        # Prioridad 1: Valor manual ingresado en el Admin
         if ultima_m.km_proxima_mantencion:
-            km_restantes = ultima_m.km_proxima_mantencion - km_actual
-        # SI ESTÁ VACÍO, CALCULA AUTOMÁTICAMENTE: (KM Salida Taller + Intervalo Camión)
+            meta_km = ultima_m.km_proxima_mantencion
+        # Prioridad 2: Cálculo automático (KM salida taller + intervalo)
         elif ultima_m.km_mantencion:
-            meta_automatica = ultima_m.km_mantencion + intervalo
-            km_restantes = meta_automatica - km_actual
+            meta_km = ultima_m.km_mantencion + intervalo
+        
+        if meta_km > 0:
+            km_restantes = meta_km - km_actual
 
     # Evaluar semáforo mecánico
     if km_restantes is not None:
@@ -68,6 +71,7 @@ def evaluar_salud_entidad(entidad):
         "codigo": peor_estado,
         "css": f"estado-{peor_estado.lower()}",
         "label": peor_estado,
-        "prioridad": PRIORIDAD_MAP.get(peor_estado, 3),
-        "motivos": motivos
+        "prioridad": 3, # Tu mapa de prioridad
+        "motivos": motivos,
+        "proxima_km": meta_km  # <--- PASAMOS EL DATO CALCULADO AL DICCIONARIO
     }
