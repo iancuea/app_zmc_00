@@ -142,7 +142,7 @@ body {
 .unit-row td:last-child, .trailer-row td:last-child { border-right: 1px solid var(--border-color); border-radius: 0 12px 12px 0; }
 
 /* Colores de Fila según Estado */
-.unit-row.estado-vencida td { background-color: #fef2f2 !important; border-top-color: #fee2e2; border-bottom-color: #fee2e2; }
+.unit-row.estado-vencida td { background-color: #fee2e2 !important; border-top-color: #fee2e2; border-bottom-color: #ebe2fe; }
 .unit-row.estado-critica td { background-color: #fffbeb !important; border-top-color: #fef3c7; border-bottom-color: #fef3c7; }
 
 .trailer-row td { background-color: #fcfcfd; }
@@ -532,3 +532,26 @@ body {
     background: #fee2e2;
     color: #ef4444;
 }
+/* Vencido - Rojo suave */
+.trailer-row.estado-vencida td {
+    background-color: #fee2e2 !important; /* Rojo ENAP */
+    color: #991b1b !important;
+}
+
+/* Crítico - Amarillo suave */
+.trailer-row.estado-critica td {
+    background-color: #fef9c3 !important; /* Amarillo */
+    color: #854d0e !important;
+}
+
+/* OK - Blanco o Gris muy claro */
+.trailer-row.estado-ok td {
+    background-color: #f8fafc !important;
+}
+
+/* Mantener la línea conectora visible */
+.trailer-row.estado-vencida .connector-line {
+    border-color: #ef4444 !important;
+}
+
+

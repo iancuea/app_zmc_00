@@ -25,11 +25,22 @@ def evaluar_salud_entidad(entidad):
     if es_camion:
         ultima_m = entidad.mantenciones.exclude(tipo_mantencion='DIARIA').order_by('-fecha_mantencion').first()  
         km_actual = entidad.estado_actual.kilometraje if entidad.estado_actual else 0
-        intervalo = entidad.intervalo_mantencion  # Sacamos el dato del modelo Camion
+        
+        # --- NUEVA REGLA DINÁMICA DE INTERVALO ---
+        from core.models import AsignacionTractoRemolque
+        tiene_remolque = AsignacionTractoRemolque.objects.filter(camion=entidad, activo=True).exists()
+        
+        if tiene_remolque:
+            intervalo = 40000  # Tracto con remolque asociado
+        else:
+            intervalo = 25000  # Camión solo o rígido
+        # -----------------------------------------
+        
     else:
+        # Lógica para Remolques
         ultima_m = entidad.mantenciones_remolque.exclude(tipo_mantencion='DIARIA').order_by('-fecha_mantencion').first()
         km_actual = float(getattr(entidad, 'kilometraje_acumulado', 0))
-        intervalo = 0 # O el intervalo que definas para remolques
+        intervalo = 25000 # O el que definas para los tanques
 
     if ultima_m:
         # Prioridad 1: Valor manual ingresado en el Admin
