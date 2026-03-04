@@ -1,4 +1,6 @@
-/* --- 1. VARIABLES Y CONFIGURACIÓN BASE --- */
+/* ==========================================================================
+   1. VARIABLES Y CONFIGURACIÓN BASE
+   ========================================================================== */
 :root {
     --primary: #2563eb;
     --primary-dark: #1e40af;
@@ -20,11 +22,15 @@ body {
     line-height: 1.5;
 }
 
-/* --- 2. NAVEGACIÓN Y HEADER GLOBAL --- */
+/* ==========================================================================
+   2. NAVEGACIÓN (GLOBAL Y MOBILE)
+   ========================================================================== */
 .navbar-pro {
-    background: #0f172a;
-    color: white;
-    padding: 0.75rem 0;
+    background-color: #0f172a;
+    padding: 12px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 2000;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
 }
 
@@ -38,14 +44,17 @@ body {
 }
 
 .brand { display: flex; align-items: center; gap: 10px; font-size: 1.25rem; }
+.brand-name { color: white; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
+
+.main-nav { display: flex; gap: 15px; }
 
 .nav-link { 
     color: #cbd5e1; 
     text-decoration: none; 
-    font-weight: 500; 
+    font-weight: 600; 
     font-size: 0.9rem; 
     padding: 0.5rem 1rem; 
-    border-radius: 6px; 
+    border-radius: 8px; 
     transition: 0.2s; 
 }
 
@@ -54,7 +63,18 @@ body {
     background: rgba(255,255,255,0.1); 
 }
 
-/* --- 3. FILTROS Y DASHBOARD CONTROLS --- */
+@media (max-width: 600px) {
+    .navbar-pro { padding: 10px 15px; }
+    .brand-name { font-size: 1.2rem; }
+    .nav-text { display: none; }
+    .nav-icon { font-size: 1.3rem; }
+    .main-nav { gap: 8px; }
+    .nav-link { padding: 8px 10px; }
+}
+
+/* ==========================================================================
+   3. FILTROS Y CONTROLES
+   ========================================================================== */
 .dashboard-header { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
 .page-title { font-size: 1.875rem; font-weight: 800; margin: 0; letter-spacing: -0.025em; }
 .page-subtitle { color: var(--text-muted); margin-top: 0.5rem; }
@@ -94,56 +114,45 @@ body {
     cursor: pointer; 
     transition: 0.2s; 
 }
-
 .btn-primary-pro:hover { background: var(--primary-dark); }
 
-/* --- 4. LISTADO DE UNIDADES (TABLA SIMÉTRICA) --- */
-/* --- 4. LISTADO DE UNIDADES (CORREGIDO) --- */
+/* ==========================================================================
+   4. LISTADO DE UNIDADES (TABLA)
+   ========================================================================== */
 .table-container-pro { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
 
 .tabla-pro { 
     width: 100%; 
     border-collapse: separate; 
-    border-spacing: 0 12px; /* Aumentamos espacio entre filas para que se note el redondeado */
+    border-spacing: 0 12px; 
     table-layout: fixed;
 }
 
-/* Forzamos que el redondeado funcione en las filas */
 .unit-row td, .trailer-row td { 
     background: white; 
     padding: 0.8rem 1rem; 
     vertical-align: middle;
-    height: 75px; 
     border-top: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
     position: relative;
 }
 
-/* Bordes Externos Redondeados */
-.unit-row td:first-child, .trailer-row td:first-child { 
-    border-left: 1px solid var(--border-color); 
-    border-radius: 12px 0 0 12px; 
-}
-.unit-row td:last-child, .trailer-row td:last-child { 
-    border-right: 1px solid var(--border-color); 
-    border-radius: 0 12px 12px 0; 
-}
+/* Bordes Redondeados de Fila */
+.unit-row td:first-child, .trailer-row td:first-child { border-left: 1px solid var(--border-color); border-radius: 12px 0 0 12px; }
+.unit-row td:last-child, .trailer-row td:last-child { border-right: 1px solid var(--border-color); border-radius: 0 12px 12px 0; }
 
-/* --- 5. JERARQUÍA REMOLQUE (CONECTOR VISUAL) --- */
-.trailer-row td {
-    background-color: #fcfcfd; /* Un gris casi imperceptible para diferenciarlo del camión */
-}
+/* Colores de Fila según Estado */
+.unit-row.estado-vencida td { background-color: #fef2f2 !important; border-top-color: #fee2e2; border-bottom-color: #fee2e2; }
+.unit-row.estado-critica td { background-color: #fffbeb !important; border-top-color: #fef3c7; border-bottom-color: #fef3c7; }
 
-/* La línea que conecta con el camión de arriba */
-.connector-parent {
-    position: relative;
-    padding-left: 40px !important;
-}
+.trailer-row td { background-color: #fcfcfd; }
 
+/* Conector Visual Remolque */
+.connector-parent { position: relative; padding-left: 40px !important; }
 .connector-line {
     position: absolute;
     left: 20px;
-    top: -25px; /* Sube hasta la fila del camión */
+    top: -25px;
     width: 15px;
     height: 50px;
     border-left: 2px solid #cbd5e1;
@@ -151,7 +160,6 @@ body {
     border-bottom-left-radius: 8px;
 }
 
-/* Patente Estilizada */
 .patente-pill { 
     background: #1e293b; 
     color: white !important; 
@@ -164,31 +172,93 @@ body {
     display: inline-block;
 }
 
-/* MOTIVOS Y BOTÓN */
-.motivos-container {
-    max-height: 40px; 
-    overflow: hidden;
-    transition: max-height 0.4s ease;
-}
+/* ==========================================================================
+   5. COMPONENTES TÉCNICOS (SALUD Y KM)
+   ========================================================================== */
+.health-info-bundle { display: flex; flex-direction: column; gap: 4px; }
+.health-status-text { font-size: 0.9rem; text-transform: uppercase; font-weight: 700; }
 
-.motivos-container.expanded { max-height: 500px !important; }
+.next-maint-row { font-size: 0.75rem; color: var(--text-muted); }
 
-/* El botón ahora es un link sutil a la derecha */
-.btn-ver-alertas {
-    position: absolute;
-    bottom: 8px;
-    right: 15px;
-    background: white;
-    border: 1px solid #e2e8f0;
-    color: #2563eb;
-    font-size: 0.65rem;
-    font-weight: 800;
-    cursor: pointer;
-    padding: 2px 8px;
+.km-label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted); margin-right: 4px; }
+.km-value, .km-remaining { font-weight: 800; color: var(--text-main); }
+
+.km-urgente {
+    color: #f59e0b;
+    background: #fffbeb;
+    padding: 2px 4px;
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    animation: pulse-subtle 2s infinite;
 }
-/* --- 6. PANTALLA DE DETALLE (CAMIÓN Y REMOLQUE) --- */
+
+@keyframes pulse-subtle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* ==========================================================================
+   6. DOCUMENTOS Y DRIVE (CONSOLIDADO)
+   ========================================================================== */
+.drive-docs-container {
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Estilo Base para Links de Drive */
+.drive-doc-link, .btn-drive-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f1f5f9;
+    color: #1e293b;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.drive-doc-link { padding: 6px 12px; margin: 2px 0; }
+.btn-drive-inline { padding: 1px 6px; background: #eef2ff; border-color: #c7d2fe; color: #4338ca; }
+
+.drive-doc-link:hover, .btn-drive-inline:hover {
+    background-color: #eff6ff;
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.btn-drive-inline:hover { background: #4338ca; color: white; }
+
+.drive-doc-icon { font-size: 1rem; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1)); }
+
+/* Fechas y Badges */
+.fecha-um, .fecha-um-rem {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #f1f5f9;
+    color: #334155;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid #e2e8f0;
+    font-family: 'Inter', sans-serif;
+    white-space: nowrap;
+    transition: 0.2s;
+}
+
+.fecha-um:hover { background-color: #e2e8f0; border-color: #cbd5e1; }
+
+/* ==========================================================================
+   7. PANTALLA DE DETALLE Y TARJETAS HERO
+   ========================================================================== */
 .container-detail-pro { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
 .detail-navigation { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
 .breadcrumb-pro { color: var(--text-muted); font-size: 0.9rem; font-weight: 500; }
@@ -196,7 +266,6 @@ body {
 .breadcrumb-pro .separator { margin: 0 0.5rem; color: #cbd5e1; }
 .patente-hero { background: #0f172a; color: white; padding: 0.2rem 1rem; border-radius: 8px; font-family: monospace; font-size: 2rem; margin-left: 10px; }
 
-/* --- 7. TARJETAS HERO (SEMÁFORO GIGANTE) --- */
 .card-hero-pro {
     display: flex;
     justify-content: space-between;
@@ -208,35 +277,16 @@ body {
     box-shadow: 0 15px 30px rgba(0,0,0,0.1);
 }
 
-/* --- LÓGICA DE COLORES BLINDADA --- */
+/* Lógica de Colores Semáforo */
+.card-hero-pro.estado-vencida, .card-hero-pro.VENCIDA, .card-hero-pro.estado-danger { background: linear-gradient(135deg, #e11d48, #9f1239) !important; }
+.card-hero-pro.estado-critica, .card-hero-pro.CRITICA, .card-hero-pro.estado-warning { background: linear-gradient(135deg, #f59e0b, #b45309) !important; color: #1e293b !important; }
+.card-hero-pro.estado-ok, .card-hero-pro.OK { background: linear-gradient(135deg, #10b981, #065f46) !important; }
+.card-hero-pro.estado-muted, .card-hero-pro.SIN_DATOS { background: linear-gradient(135deg, #94a3b8, #475569) !important; }
 
-/* ROJO: Vencida / Peligro */
-.card-hero-pro.estado-vencida, .card-hero-pro.VENCIDA, .card-hero-pro.estado-danger {
-    background: linear-gradient(135deg, #e11d48, #9f1239) !important;
-}
-
-/* AMARILLO: Crítica / Advertencia */
-.card-hero-pro.estado-critica, .card-hero-pro.CRITICA, .card-hero-pro.estado-warning {
-    background: linear-gradient(135deg, #f59e0b, #b45309) !important;
-    color: #1e293b !important;
-}
-
-/* VERDE: OK / Operativo */
-.card-hero-pro.estado-ok, .card-hero-pro.OK {
-    background: linear-gradient(135deg, #10b981, #065f46) !important;
-}
-
-/* GRIS: Sin datos */
-.card-hero-pro.estado-muted, 
-.card-hero-pro.SIN_DATOS {
-    background: linear-gradient(135deg, #94a3b8, #475569) !important;
-}
-
-/* Ajustes de texto dentro de la tarjeta */
 .hero-status-text { font-size: 3.5rem; font-weight: 900; margin: 0.5rem 0; text-transform: uppercase; letter-spacing: -2px; color: inherit; }
 .hero-motivos-list { list-style: none; padding: 0; margin-top: 1rem; font-weight: 600; font-size: 1.1rem; }
 
-/* --- 8. GRIDS Y TARJETAS DE DATOS --- */
+/* Grids y Datos Operativos */
 .grid-layout-pro { display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; margin-bottom: 2.5rem; }
 .card-pro { background: white; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); overflow: hidden; }
 .card-header-pro { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-color); background: #f8fafc; }
@@ -244,7 +294,6 @@ body {
 .card-body-pro { padding: 1.5rem; }
 
 .data-row { display: flex; justify-content: space-between; padding: 0.85rem 0; border-bottom: 1px solid #f1f5f9; }
-.data-row:last-child { border: none; }
 .data-label { color: var(--text-muted); font-weight: 500; font-size: 0.9rem; }
 .data-value { font-weight: 600; color: var(--text-main); }
 
@@ -253,18 +302,13 @@ body {
 .trailer-patente { display: block; font-weight: 800; font-size: 1.2rem; color: #0f172a; }
 
 .btn-secondary-pro { 
-    background: white; 
-    border: 1px solid var(--border-color); 
-    padding: 0.5rem 1rem; 
-    border-radius: 8px; 
-    font-weight: 600; 
-    text-decoration: none; 
-    color: var(--text-main); 
-    transition: 0.2s; 
+    background: white; border: 1px solid var(--border-color); padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; text-decoration: none; color: var(--text-main); transition: 0.2s; 
 }
 .btn-secondary-pro:hover { background: #f1f5f9; }
 
-/* --- 9. TABLAS MINIMALISTAS (LOGS Y DOCS) --- */
+/* ==========================================================================
+   8. TABLAS SECUNDARIAS (LOGS Y DOCS)
+   ========================================================================== */
 .table-container-minimal { padding: 0.5rem; }
 .table-minimal { width: 100%; border-collapse: collapse; }
 .table-minimal th { padding: 1rem; text-align: left; font-size: 0.75rem; border-bottom: 2px solid var(--border-color); color: var(--text-muted); text-transform: uppercase; }
@@ -273,353 +317,87 @@ body {
 .empty-table-msg { text-align: center; padding: 2rem !important; color: var(--text-muted); font-style: italic; }
 
 .btn-action-small { 
-    background: #f1f5f9; 
-    color: var(--primary); 
-    text-decoration: none; 
-    padding: 0.4rem 0.8rem; 
-    border-radius: 6px; 
-    font-size: 0.8rem; 
-    font-weight: 600; 
-    transition: 0.2s; 
-    border: 1px solid var(--border-color); 
+    background: #f1f5f9; color: var(--primary); text-decoration: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; transition: 0.2s; border: 1px solid var(--border-color); 
 }
 .btn-action-small:hover { background: var(--primary); color: white; }
 
-/* --- 10. INDICADORES VISUALES --- */
+/* ==========================================================================
+   9. INDICADORES Y UTILIDADES
+   ========================================================================== */
 .status-dot-label { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
 .status-dot-label.ok::before { content: ""; width: 8px; height: 8px; background: var(--success); border-radius: 50%; }
 .status-dot-label.vencido::before { content: ""; width: 8px; height: 8px; background: var(--danger); border-radius: 50%; }
 .status-dot-label.proximo::before { content: ""; width: 8px; height: 8px; background: var(--warning); border-radius: 50%; }
 
 .empty-state-pro { text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 12px; border: 2px dashed #e2e8f0; }
-.empty-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+.badge-tipo { font-size: 0.7rem; background: #e2e8f0; color: #475569; padding: 3px 8px; border-radius: 12px; font-weight: 700; }
 
-/* NAVBAR BASE (Escritorio) */
-.navbar-pro {
-    background-color: #0f172a; /* Azul muy oscuro tipo ENAP */
-    padding: 12px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 2000;
-}
-
-.navbar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.brand-name {
-    color: white;
-    font-size: 1.4rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-}
-
-.main-nav {
-    display: flex;
-    gap: 15px;
-}
-
-.nav-link {
-    color: #94a3b8;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    padding: 8px 12px;
-    border-radius: 8px;
-    transition: all 0.2s;
-}
-
-.nav-link.active {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-/* --- AJUSTES PARA CELULAR (Punta Arenas Mobile) --- */
-@media (max-width: 600px) {
-    .navbar-pro {
-        padding: 10px 15px;
-    }
-
-    .brand-name {
-        font-size: 1.2rem; /* Más pequeño en celular */
-    }
-
-    .nav-text {
-        display: none; /* OCULTA EL TEXTO EN CELULAR PARA QUE NO SE AMONTONE */
-    }
-
-    .nav-icon {
-        font-size: 1.3rem; /* Aumenta el icono para que sea fácil de tocar */
-    }
-
-    .main-nav {
-        gap: 8px;
-    }
-
-    .nav-link {
-        padding: 8px 10px;
-    }
-}
-
-/* Ajuste para los inputs del formulario de login de Django */
-#id_username, #id_password {
-    width: 100% !important;
-    padding: 12px 15px !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 10px !important;
-    background-color: #f8fafc !important;
-    margin-bottom: 10px;
-    display: block;
-    box-sizing: border-box; /* Evita que el input se salga de la tarjeta */
-}
-
-#id_username:focus, #id_password:focus {
-    border-color: #0056b3 !important;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
-}
-/* Esto pintará el fondo de toda la fila cuando esté vencida */
-.unit-row.estado-vencida td {
-    background-color: #fef2f2 !important; /* Rojo muy tenue */
-    border-top: 1px solid #fee2e2;
-    border-bottom: 1px solid #fee2e2;
-}
-
-/* Y esto para las críticas */
-.unit-row.estado-critica td {
-    background-color: #fffbeb !important; /* Amarillo tenue */
-    border-top: 1px solid #fef3c7;
-    border-bottom: 1px solid #fef3c7;
-}
-/* Contenedor de motivos limitado */
-.motivos-container {
-    max-height: 45px; /* Altura de unas dos líneas */
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-    position: relative;
-}
-
-/* Cuando el contenedor está abierto */
-.motivos-container.expanded {
-    max-height: 500px; /* Suficiente para ver todo */
-}
-
-/* Botón de toggle pequeño y discreto */
-.btn-ver-alertas {
-    display: block;
-    background: none;
-    border: none;
-    color: var(--primary);
-    font-size: 0.75rem;
-    font-weight: 700;
-    cursor: pointer;
-    padding: 2px 0;
-    margin-top: 4px;
-    text-decoration: underline;
-}
-
-.btn-ver-alertas:hover {
-    color: var(--primary-dark);
-}
-/* Estilo para los links de Google Drive */
-.drive-docs-container {
-    margin-top: 12px;
-    padding-top: 8px;
-    border-top: 1px solid #e2e8f0; /* Línea sutil divisoria */
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.drive-doc-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #f8fafc;
-    color: #1e293b;
-    border: 1px solid #cbd5e1;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-
-.drive-doc-link:hover {
-    background-color: #eff6ff;
-    border-color: #3b82f6;
-    color: #2563eb;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.drive-doc-icon {
-    font-size: 1rem;
-    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
-}   
-
-/* Ajuste del contenedor de motivos para expansión suave */
 .motivos-container {
     max-height: 120px;
     overflow: hidden;
     transition: max-height 0.4s ease;
     position: relative;
 }
+.motivos-container.expanded { max-height: 1000px; }
 
-.motivos-container.expanded {
-    max-height: 1000px;
-}
-
-/* Badge de fecha debajo de OK/VENCIDA */
-.fecha-um, .fecha-um-rem {
-    font-family: 'Courier New', Courier, monospace;
-    background: #f8fafc;
-    padding: 2px 4px;
-    border-radius: 3px;
-    border: 1px solid #f1f5f9;
-}
-.drive-doc-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #f1f5f9;
-    color: #1e293b;
-    border: 1px solid #cbd5e1;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: 0.2s;
-    margin: 2px 0;
+.btn-ver-alertas {
+    display: block;
+    background: none; border: none; color: var(--primary); font-size: 0.75rem; font-weight: 700; cursor: pointer; padding: 2px 0; margin-top: 4px; text-decoration: underline;
 }
 
-.drive-doc-link:hover {
-    background-color: #eff6ff;
-    border-color: #2563eb;
-    color: #2563eb;
-    transform: translateY(-1px);
-}
-.table-container-minimal { padding: 0.5rem; }
-.table-minimal { width: 100%; border-collapse: collapse; }
+.alert-list-clean { list-style: none; padding: 0; margin: 0; }
+.alert-list-clean li { font-size: 0.75rem; font-weight: 600; color: #dc2626; line-height: 1.2; margin-bottom: 3px; }
+.alert-list-clean li.ok-check { color: #059669; }
 
-.table-minimal th { 
-    padding: 1rem; 
-    text-align: left; 
-    font-size: 0.75rem; 
-    border-bottom: 2px solid var(--border-color); 
-    color: var(--text-muted); 
-    text-transform: uppercase; 
+/* Login Inputs */
+#id_username, #id_password {
+    width: 100% !important; padding: 12px 15px !important; border: 1px solid #e2e8f0 !important; border-radius: 10px !important; background-color: #f8fafc !important; margin-bottom: 10px; display: block; box-sizing: border-box;
+}
+#id_username:focus, #id_password:focus { border-color: #0056b3 !important; outline: none; box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1); }
+/* --- ALINEACIÓN CENTRAL PARA TABLA --- */
+
+/* 1. Centrar los títulos de las columnas */
+.tabla-pro th {
+    text-align: center !important;
 }
 
-.table-minimal td { 
-    padding: 1rem; 
-    border-bottom: 1px solid #f1f5f9; 
-    font-size: 0.9rem; 
+/* 2. Centrar el contenido de todas las celdas */
+.tabla-pro td {
+    text-align: center !important;
 }
 
-/* Badge para el tipo (Taller, Emergencia) */
-.badge-tipo {
-    font-size: 0.7rem;
-    background: #e2e8f0;
-    color: #475569;
-    padding: 3px 8px;
-    border-radius: 12px;
-    font-weight: 700;
+/* 3. Ajustar contenedores internos para que se centren */
+.unit-specs, 
+.health-info-bundle, 
+.last-maint-row, 
+.alert-list-clean {
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
 }
-/* Contenedor bundle de salud */
-.health-info-bundle {
+
+/* 4. Ajuste para que la lista de alertas no tenga espacio a la izquierda */
+.alert-list-clean {
+    padding: 0 !important;
     display: flex;
     flex-direction: column;
-    gap: 4px;
 }
 
-.health-status-text {
-    font-size: 0.9rem;
-    text-transform: uppercase;
+/* 5. Centrar el conector del remolque (opcional, para que no se vea raro) */
+.connector-parent {
+    padding-left: 0 !important; /* Quitamos el padding lateral */
 }
 
-/* Fila de última mantención con botón Drive */
-.last-maint-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.connector-line {
+    left: 50%; /* Lo movemos al centro */
+    transform: translateX(-50%);
+    top: -32px;
+    height: 35px;
+    width: 2px; /* Lo convertimos en una línea recta vertical */
+    border-bottom: none;
+    border-bottom-left-radius: 0;
 }
-
-.btn-drive-inline {
-    background: #eef2ff;
-    border: 1px solid #c7d2fe;
-    color: #4338ca;
-    padding: 1px 6px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 0.9rem;
-    line-height: 1;
-    transition: 0.2s;
-}
-
-.btn-drive-inline:hover {
-    background: #4338ca;
-    color: white;
-}
-
-/* Fila de próxima mantención */
-.next-maint-row {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-}
-
-.km-value {
-    font-weight: 800;
-    color: var(--text-main);
-}
-
-/* Alertas limpias */
 .alert-list-clean {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.alert-list-clean li {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #dc2626;
-    line-height: 1.2;
-    margin-bottom: 3px;
-}
-
-.alert-list-clean li.ok-check {
-    color: #059669;
-}
-.km-remaining {
-    font-weight: 800;
-    color: var(--text-main);
-}
-
-/* Resalte cuando queda poco para la mantención */
-.km-urgente {
-    color: #f59e0b; /* Naranja advertencia */
-    background: #fffbeb;
-    padding: 2px 4px;
-    border-radius: 4px;
-    animation: pulse-subtle 2s infinite;
-}
-
-@keyframes pulse-subtle {
-    0% { opacity: 1; }
-    50% { opacity: 0.7; }
-    100% { opacity: 1; }
-}
-
-.km-label {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-right: 4px;
+    display: inline-block; /* Hace que el bloque sea tan ancho como el texto más largo */
+    text-align: left;      /* Alinea el texto interno a la izquierda */
 }
