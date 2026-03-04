@@ -130,6 +130,21 @@ function gestionarErrorServidor() {
         navigator.vibrate([200, 100, 200]);
     }
 }
+/**
+ * 
+
+function gestionarExitoServidor() {
+    const modalEl = document.getElementById('modalExito');
+    if (modalEl) {
+        const myModal = new bootstrap.Modal(modalEl);
+        myModal.show();
+
+        // Vibración de éxito (Corta y doble)
+        if (navigator.vibrate) {
+            navigator.vibrate([50, 30, 50]);
+        }
+    }
+} */
 
 // 1. VARIABLE GLOBAL PARA KM
 let kmMinimoPermitido = 0;

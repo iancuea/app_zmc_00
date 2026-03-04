@@ -8,37 +8,36 @@
         <h1 class="page-title">Gestión de Unidades</h1>
         <p class="page-subtitle">Monitoreo de estado técnico y documentación en tiempo real.</p>
     </div>
-    <form method="get" class="filter-card">
-        <div class="filter-group">
-            <label>Buscar Patente</label>
-            <input type="text" 
-                   name="q" 
-                   value="{{ request.GET.q|default:'' }}" 
-                   placeholder="Ej: ABCD-12" 
-                   class="pro-input search-input">
-        </div>
-    
-    <form method="get" class="filter-card">
-        <div class="filter-group">
-            <label>Estado Operativo</label>
-            <select name="estado" class="pro-input">
-                <option value="">Todos los estados</option>
-                <option value="VENCIDA" {% if request.GET.estado == 'VENCIDA' %}selected{% endif %}>🔴 Vencida</option>
-                <option value="CRITICA" {% if request.GET.estado == 'CRITICA' %}selected{% endif %}>🟡 Crítica</option>
-                <option value="OK" {% if request.GET.estado == 'OK' %}selected{% endif %}>🟢 OK</option>
-            </select>
-        </div>
+    <form method="get" class="filter-card filter-compact">
+    <div class="filter-group group-small">
+        <label>Unidad</label>
+        <input type="text" name="q" value="{{ request.GET.q|default:'' }}" 
+               placeholder="Patente..." class="pro-input input-compact">
+    </div>
 
-        <div class="filter-group">
-            <label>Priorizar por</label>
-            <select name="orden" class="pro-input">
-                <option value="">Normal (Por Base)</option>
-                <option value="urgencia" {% if request.GET.orden == 'urgencia' %}selected{% endif %}>🚨 Mayor Urgencia</option>
-            </select>
-        </div>
+    <div class="filter-group group-small">
+        <label>Estado</label>
+        <select name="estado" class="pro-input input-compact">
+            <option value="">Todos</option>
+            <option value="VENCIDA" {% if request.GET.estado == 'VENCIDA' %}selected{% endif %}>🔴 Vencida</option>
+            <option value="CRITICA" {% if request.GET.estado == 'CRITICA' %}selected{% endif %}>🟡 Crítica</option>
+            <option value="OK" {% if request.GET.estado == 'OK' %}selected{% endif %}>🟢 OK</option>
+        </select>
+    </div>
 
-        <button type="submit" class="btn-primary-pro">Actualizar Vista</button>
-    </form>
+    <div class="filter-group group-small">
+        <label>Orden</label>
+        <select name="orden" class="pro-input input-compact">
+            <option value="">Base</option>
+            <option value="urgencia" {% if request.GET.orden == 'urgencia' %}selected{% endif %}>🚨 Urgencia</option>
+        </select>
+    </div>
+
+    <div class="filter-actions-compact">
+        <button type="submit" class="btn-primary-compact" title="Aplicar">🔍</button>
+        <a href="{% url 'camion_list' %}" class="btn-reset-compact" title="Limpiar">✕</a>
+    </div>
+</form>
 </div>
 
 <div class="table-container-pro">

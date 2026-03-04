@@ -148,9 +148,9 @@ def crear_inspeccion(request):
 
                     messages.success(
                         request, 
-                        f"¡Inspección de {inspeccion.vehiculo.patente} completada! PDF generado."
+                        f"✅ Inspección de {inspeccion.vehiculo.patente} enviada correctamente. El informe ha sido enviado por correo."
                     )
-                    return redirect('camion_list')
+                    return redirect('crear_inspeccion')
                     
             except json.JSONDecodeError:
                 messages.error(request, "Error procesando el checklist. Intenta nuevamente.")
