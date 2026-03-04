@@ -83,6 +83,7 @@ def obtener_datos_camion_autocompletado(camion):
             'remolque_marca': rem.marca or 'N/A',
             'remolque_modelo': rem.modelo or 'N/A',
             'remolque_patente': rem.patente,
+            'remolque_anio': rem.anio or 'N/A', # Agregado
             'remolque_capacidad': str(rem.capacidad_carga) if rem.capacidad_carga else 'N/A',
         })
 
@@ -92,7 +93,8 @@ def obtener_datos_camion_autocompletado(camion):
             'REVISION_TECNICA': 'remolque_vto_rt',
             'PERMISO_CIRCULACION': 'remolque_vto_pc',
             'SOAP': 'remolque_vto_soap',
-            'TC8': 'remolque_vto_tc8'
+            'TC8': 'remolque_vto_tc8',
+            'PRUEBA_HERMETICIDAD': 'remolque_vto_herm' # Agregado
         }
         for doc in docs_rem:
             if doc.categoria in mapa_rem:
@@ -170,6 +172,13 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
         alignment=1,
         fontName='Helvetica-Bold',
     )
+    cell_body_style = ParagraphStyle(
+        'CellBody',
+        parent=styles['Normal'],
+        fontSize=9,
+        leading=10, # Espacio entre líneas
+        alignment=TA_LEFT,
+    )
 
     # --- PÁGINA 1: CARÁTULA ---
     nombre_contrato = vehiculo.contrato.nombre.upper() if vehiculo.contrato else "GENERAL"
@@ -203,20 +212,25 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
 
     story.append(Paragraph("CAMIÓN", header_label))
     c_w = 7.5*inch / 6
+    modelo_camion_p = Paragraph(datos_autocompletado['camion_modelo'], cell_body_style)
     camion_data = [
-        ['Marca:', datos_autocompletado['camion_marca'], 'Modelo:', datos_autocompletado['camion_modelo'], 'Año:', datos_autocompletado['camion_anio']],
+        ['Marca:', datos_autocompletado['camion_marca'], 'Modelo:', modelo_camion_p, 'Año:', datos_autocompletado['camion_anio']],
         ['Patente:', datos_autocompletado['camion_patente'], 'Odómetro:', f"{inspeccion.km_registro:,}", 'Vto. RT:', datos_autocompletado['camion_vto_rt']],
         ['Vto. PC:', datos_autocompletado['camion_vto_pc'], 'Vto. SOAP:', datos_autocompletado['camion_vto_soap'], 'Vto. TC8:', datos_autocompletado['camion_vto_tc8']],
     ]
     t3 = Table(camion_data, colWidths=[c_w]*6)
-    t3.setStyle(TableStyle(base_style + [('FONTSIZE', (0,0), (-1,-1), 9)]))
+    t3.setStyle(TableStyle(base_style + [
+        ('FONTSIZE', (0,0), (-1,-1), 9),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), # Alineación vertical al centro
+        ('LEFTPADDING', (3, 0), (3, 0), 2),    # Ajuste de margen interno para el modelo
+    ]))
     story.append(t3)
 
     story.append(Paragraph("ESTANQUE / REMOLQUE", header_label))
     est_data = [
-        ['Marca:',  datos_autocompletado['remolque_marca'], 'Modelo:', datos_autocompletado['remolque_modelo'], 'Año:', datos_autocompletado['remolque_anio']],
-        ['Patente:', datos_autocompletado['remolque_patente'], 'Cap. m³:', datos_autocompletado['remolque_capacidad'], 'Vto. RT:', 'N/A'],
-        ['Vto. PC:', 'N/A', 'Vto. TC8:', 'N/A', 'F. Hermeticidad:', 'N/A'],
+        ['Marca:', datos_autocompletado['remolque_marca'], 'Modelo:', datos_autocompletado['remolque_modelo'], 'Año:', datos_autocompletado['remolque_anio']],
+        ['Patente:', datos_autocompletado['remolque_patente'], 'Cap. m³:', datos_autocompletado['remolque_capacidad'], 'Vto. RT:', datos_autocompletado.get('remolque_vto_rt', 'N/A')],
+        ['Vto. PC:', datos_autocompletado.get('remolque_vto_pc', 'N/A'), 'Vto. TC8:', datos_autocompletado.get('remolque_vto_tc8', 'N/A'), 'F. Hermeticidad:', datos_autocompletado.get('remolque_vto_herm', 'N/A')],
     ]
     t4 = Table(est_data, colWidths=[c_w]*6)
     t4.setStyle(TableStyle(base_style + [('FONTSIZE', (0,0), (-1,-1), 9)]))
