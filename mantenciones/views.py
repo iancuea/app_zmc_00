@@ -27,19 +27,20 @@ def crear_inspeccion(request):
         form = InspeccionForm(request.POST)
         
         if form.is_valid():
+            ruta_pdf = None  
             try:
+                # 1. BLOQUE DE BASE DE DATOS (Transacción Atómica)
                 with transaction.atomic():
-                    # 1. Guardamos la Inspección
+                    # Guardamos la Inspección
                     inspeccion = form.save(commit=False)
                     inspeccion.fecha_ingreso = timezone.localtime(timezone.now())
                     inspeccion.save()
                     
-                    # 2. Procesar resultados del checklist
+                    # Procesar resultados del checklist
                     resultados_raw = request.POST.get('resultados_checklist', '[]')
                     resultados_data = json.loads(resultados_raw)
                     
                     for data in resultados_data:
-                        print(f"DEBUG: Guardando Item ID {data['item_id']} - Estado: '{data['estado']}'")
                         try:
                             item = ItemChecklist.objects.get(id=data['item_id'])
                             ResultadoItem.objects.create(
@@ -51,23 +52,14 @@ def crear_inspeccion(request):
                         except ItemChecklist.DoesNotExist:
                             continue
                     
-                    # 3. Obtener datos auto-completados
+                    # Datos autocompletado (solo para lógica interna aquí)
                     datos_autocompletado = obtener_datos_camion_autocompletado(inspeccion.vehiculo)
                     datos_autocompletado['apto_trabajar'] = 'SI' if inspeccion.es_apto_operar else 'NO'
                     fecha_chile = timezone.localtime(inspeccion.fecha_ingreso)
                     datos_autocompletado['fecha_inspeccion'] = fecha_chile.strftime('%d/%m/%Y %H:%M')
-                    
-                    # 4. Generar PDF
-                    resultados_items = inspeccion.resultados.all().select_related('item')
-                    if inspeccion.tipo_inspeccion == 'DIARIO':
-                        ruta_pdf = generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado)                    
-                    else:
-                        ruta_pdf = generar_pdf_mantencion_tecnica(inspeccion, resultados_items, datos_autocompletado)
 
-                    print(f"DEBUG: La ruta del PDF es -> {ruta_pdf}")
-                    
-                    # 5. Guardar registro en RegistroDiario
-                    registro_diario = RegistroDiario.objects.create(
+                    # Guardar en RegistroDiario
+                    RegistroDiario.objects.create(
                         vehiculo=inspeccion.vehiculo,
                         revisado_por=inspeccion.responsable,
                         km_actual=inspeccion.km_registro,
@@ -76,7 +68,7 @@ def crear_inspeccion(request):
                         novedades=inspeccion.observaciones
                     )
                     
-                    # 6. Crear la Mantención "Cabecera" siempre (necesaria para el documento)
+                    # Lógica de Mantención y Próxima Meta
                     nueva_meta = inspeccion.km_registro
                     if inspeccion.renovó_aceite:
                         nueva_meta = inspeccion.km_registro + inspeccion.vehiculo.intervalo_mantencion
@@ -87,86 +79,86 @@ def crear_inspeccion(request):
                         fecha_mantencion=timezone.now().date(),
                         km_mantencion=inspeccion.km_registro,
                         km_proxima_mantencion=nueva_meta,
-                        observaciones=f"Checklist realizado por {inspeccion.responsable}.",
-                        fecha_creacion=timezone.now()
+                        observaciones=f"Checklist realizado por {inspeccion.responsable}."
                     )
 
-                    # 7. Guardar el registro del PDF en DocumentoMantencion
-                    if ruta_pdf:
-                        DocumentoMantencion.objects.create(
-                            mantencion=nueva_mantencion,
-                            nombre_archivo=f"Checklist_{inspeccion.vehiculo.patente}_{inspeccion.fecha_ingreso.strftime('%Y%m%d')}.pdf",
-                            ruta_archivo=ruta_pdf,
-                            tipo_documento='CHECKLIST_ENAP',
-                            fecha_subida=timezone.now()
-                        )
-                    
-                    # 8. SOLO si se renovó aceite, crear el registro específico de lubricantes
-                    if inspeccion.renovó_aceite:
-                        RegistroLubricantes.objects.create(
-                            inspeccion=inspeccion,
-                            tipo_lubricante="ACEITE MOTOR",
-                            renovado=True,
-                            proximo_cambio_km=nueva_meta
-                        )
-
-                    # 9. Actualizar estado actual del camión
+                    # Actualizar KM actual del camión
                     if hasattr(inspeccion.vehiculo, 'estado_actual'):
                         inspeccion.vehiculo.estado_actual.kilometraje = inspeccion.km_registro
                         inspeccion.vehiculo.estado_actual.save()
 
-                    # --- NUEVO: ENVÍO DE CORREO AUTOMÁTICO CON EL PDF ---
-                    if ruta_pdf and os.path.exists(ruta_pdf):
-                        try:
-                            destinatarios = ['iancuevas7321@gmail.com', 'gestion.flota.zmc@gmail.com']
-                            sujeto = f"📝 NUEVO CHECKLIST: {inspeccion.vehiculo.patente} - {inspeccion.tipo_inspeccion}"
-                            cuerpo = (
-                                f"Se ha registrado una nueva inspección.\n\n"
-                                f"Unidad: {inspeccion.vehiculo.patente}\n"
-                                f"Responsable: {inspeccion.responsable}\n"
-                                f"Kilometraje: {inspeccion.km_registro}\n"
-                                f"Apto para operar: {'SÍ' if inspeccion.es_apto_operar else 'NO'}\n"
-                                f"Fecha: {datos_autocompletado['fecha_inspeccion']}\n\n"
-                                f"Se adjunta el informe PDF."
-                            )
+                # --- 2. BLOQUE DE GENERACIÓN (FUERA DE LA TRANSACCIÓN) ---
+                # Ahora que la transacción cerró, los resultados_items EXISTEN en la DB.
+                resultados_items = ResultadoItem.objects.filter(inspeccion=inspeccion).select_related('item')
 
-                            email = EmailMessage(
-                                subject=sujeto,
-                                body=cuerpo,
-                                from_email=settings.DEFAULT_FROM_EMAIL,
-                                to=destinatarios,
-                            )
+                if inspeccion.tipo_inspeccion == 'DIARIO':
+                    ruta_pdf = generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado)                     
+                else:
+                    ruta_pdf = generar_pdf_mantencion_tecnica(inspeccion, resultados_items, datos_autocompletado)
 
-                            with open(ruta_pdf, 'rb') as f:
-                                email.attach(f"Checklist_{inspeccion.vehiculo.patente}.pdf", f.read(), 'application/pdf')
-
-                            email.send()
-                            print(f"DEBUG: Correo enviado con éxito para {inspeccion.vehiculo.patente}")
-                        except Exception as e_mail:
-                            print(f"ERROR al enviar correo: {e_mail}")
-                    # --- FIN BLOQUE CORREO ---
-
-                    messages.success(
-                        request, 
-                        f"✅ Inspección de {inspeccion.vehiculo.patente} enviada correctamente. El informe ha sido enviado por correo."
+                # Registrar el PDF generado en la base de datos
+                if ruta_pdf:
+                    DocumentoMantencion.objects.create(
+                        mantencion=nueva_mantencion,
+                        nombre_archivo=f"Checklist_{inspeccion.vehiculo.patente}_{inspeccion.fecha_ingreso.strftime('%Y%m%d')}.pdf",
+                        ruta_archivo=ruta_pdf,
+                        tipo_documento='CHECKLIST_ENAP'
                     )
-                    return redirect('crear_inspeccion')
-                    
-            except json.JSONDecodeError:
-                messages.error(request, "Error procesando el checklist. Intenta nuevamente.")
+
+                # --- BLOQUE DE CORREO (FUERA DE LA TRANSACCIÓN) ---
+                if ruta_pdf and os.path.exists(ruta_pdf):
+                    try:
+                        destinatarios = ['iancuevas7321@gmail.com', 'gestion.flota.zmc@gmail.com','bsantanav@gmail.com']
+                        sujeto = f"📝 NUEVO CHECKLIST: {inspeccion.vehiculo.patente} - {inspeccion.tipo_inspeccion}"
+                        
+                        # Cuerpo del mensaje con formato profesional
+                        cuerpo = (
+                            f"Se ha registrado una nueva inspección en el sistema.\n\n"
+                            f"--- DETALLES DE LA UNIDAD ---\n"
+                            f" Unidad: {inspeccion.vehiculo.patente}\n"
+                            f" Responsable: {inspeccion.responsable}\n"
+                            f" Kilometraje: {inspeccion.km_registro:,} KM\n"
+                            f" Fecha/Hora: {datos_autocompletado['fecha_inspeccion']}\n"
+                            f" Contrato: {datos_autocompletado.get('contrato', 'GENERAL')}\n\n"
+                            f"--- ESTADO DE OPERACIÓN ---\n"
+                            f" ¿Apto para trabajar?: {'SÍ' if inspeccion.es_apto_operar else 'NO'}\n"
+                            f" ¿Renovó Aceite?: {'SÍ' if inspeccion.renovó_aceite else 'NO'}\n"
+                            f" Observaciones: {inspeccion.observaciones if inspeccion.observaciones else 'Sin observaciones.'}\n\n"
+                            f"Se adjunta el informe técnico detallado en formato PDF.\n\n"
+                            f"Atentamente,\n"
+                            f"Sistema de Gestión de Flota ZMC"
+                        )
+
+                        email = EmailMessage(
+                            subject=sujeto,
+                            body=cuerpo,
+                            from_email=settings.DEFAULT_FROM_EMAIL,
+                            to=destinatarios,
+                        )
+
+                        # Adjuntamos el archivo con un nombre más limpio
+                        with open(ruta_pdf, 'rb') as f:
+                            email.attach(f"Checklist_{inspeccion.vehiculo.patente}_{inspeccion.fecha_ingreso.strftime('%d-%m-%Y')}.pdf", f.read(), 'application/pdf')
+
+                        email.send()
+                        print(f"DEBUG: Correo enviado con éxito para {inspeccion.vehiculo.patente}")
+
+                    except Exception as e_mail:
+                        print(f"ERROR al enviar correo: {e_mail}")
+
+                # --- 4. REDIRECT (EVITA DUPLICADOS AL REFRESCAR) ---
+                messages.success(request, f"✅ Inspección enviada y reporte enviado por correo.")
+                return redirect('/mantenciones/nueva/')
+
             except Exception as e:
-                messages.error(request, f"Error al guardar: {str(e)}")
-                print(f"Error crítico: {e}")
+                messages.error(request, f"Error crítico: {str(e)}")
+                print(f"Error: {e}")
     
     else:
         form = InspeccionForm()
     
     categorias = CategoriaChecklist.objects.all().order_by('orden')
-    context = {
-        'form': form,
-        'categorias': categorias
-    }
-    return render(request, 'mantenciones/crear_inspeccion.html', context)
+    return render(request, 'mantenciones/crear_inspeccion.html', {'form': form, 'categorias': categorias})
 
 @require_http_methods(["GET"])
 def api_datos_autocompletado(request, camion_id):
