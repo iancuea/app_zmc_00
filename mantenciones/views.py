@@ -53,14 +53,14 @@ def crear_inspeccion(request):
                             continue
                     
                     # Datos autocompletado (solo para lógica interna aquí)
-                    datos_autocompletado = obtener_datos_camion_autocompletado(inspeccion.vehiculo)
+                    datos_autocompletado = obtener_datos_camion_autocompletado(inspeccion.camion)
                     datos_autocompletado['apto_trabajar'] = 'SI' if inspeccion.es_apto_operar else 'NO'
                     fecha_chile = timezone.localtime(inspeccion.fecha_ingreso)
                     datos_autocompletado['fecha_inspeccion'] = fecha_chile.strftime('%d/%m/%Y %H:%M')
 
                     # Guardar en RegistroDiario
                     RegistroDiario.objects.create(
-                        vehiculo=inspeccion.vehiculo,
+                        vehiculo=inspeccion.camion,
                         revisado_por=inspeccion.responsable,
                         km_actual=inspeccion.km_registro,
                         es_apto=inspeccion.es_apto_operar,
@@ -71,10 +71,10 @@ def crear_inspeccion(request):
                     # Lógica de Mantención y Próxima Meta
                     nueva_meta = inspeccion.km_registro
                     if inspeccion.renovó_aceite:
-                        nueva_meta = inspeccion.km_registro + inspeccion.vehiculo.intervalo_mantencion
+                        nueva_meta = inspeccion.km_registro + inspeccion.camion.intervalo_mantencion
 
                     nueva_mantencion = Mantencion.objects.create(
-                        camion=inspeccion.vehiculo,
+                        camion=inspeccion.camion,
                         taller='ZMC',
                         fecha_mantencion=timezone.now().date(),
                         km_mantencion=inspeccion.km_registro,
@@ -83,9 +83,9 @@ def crear_inspeccion(request):
                     )
 
                     # Actualizar KM actual del camión
-                    if hasattr(inspeccion.vehiculo, 'estado_actual'):
-                        inspeccion.vehiculo.estado_actual.kilometraje = inspeccion.km_registro
-                        inspeccion.vehiculo.estado_actual.save()
+                    if hasattr(inspeccion.camion, 'estado_actual'):
+                        inspeccion.camion.estado_actual.kilometraje = inspeccion.km_registro
+                        inspeccion.camion.estado_actual.save()
 
                 # --- 2. BLOQUE DE GENERACIÓN (FUERA DE LA TRANSACCIÓN) ---
                 # Ahora que la transacción cerró, los resultados_items EXISTEN en la DB.
@@ -100,7 +100,7 @@ def crear_inspeccion(request):
                 if ruta_pdf:
                     DocumentoMantencion.objects.create(
                         mantencion=nueva_mantencion,
-                        nombre_archivo=f"Checklist_{inspeccion.vehiculo.patente}_{inspeccion.fecha_ingreso.strftime('%Y%m%d')}.pdf",
+                        nombre_archivo=f"Checklist_{inspeccion.camion.patente}_{inspeccion.fecha_ingreso.strftime('%Y%m%d')}.pdf",
                         ruta_archivo=ruta_pdf,
                         tipo_documento='CHECKLIST_ENAP'
                     )
@@ -109,13 +109,13 @@ def crear_inspeccion(request):
                 if ruta_pdf and os.path.exists(ruta_pdf):
                     try:
                         destinatarios = ['iancuevas7321@gmail.com', 'gestion.flota.zmc@gmail.com','bsantanav@gmail.com']
-                        sujeto = f"📝 NUEVO CHECKLIST: {inspeccion.vehiculo.patente} - {inspeccion.tipo_inspeccion}"
+                        sujeto = f"📝 NUEVO CHECKLIST: {inspeccion.camion.patente} - {inspeccion.tipo_inspeccion}"
                         
                         # Cuerpo del mensaje con formato profesional
                         cuerpo = (
                             f"Se ha registrado una nueva inspección en el sistema.\n\n"
                             f"--- DETALLES DE LA UNIDAD ---\n"
-                            f" Unidad: {inspeccion.vehiculo.patente}\n"
+                            f" Unidad: {inspeccion.camion.patente}\n"
                             f" Responsable: {inspeccion.responsable}\n"
                             f" Kilometraje: {inspeccion.km_registro:,} KM\n"
                             f" Fecha/Hora: {datos_autocompletado['fecha_inspeccion']}\n"
@@ -138,10 +138,10 @@ def crear_inspeccion(request):
 
                         # Adjuntamos el archivo con un nombre más limpio
                         with open(ruta_pdf, 'rb') as f:
-                            email.attach(f"Checklist_{inspeccion.vehiculo.patente}_{inspeccion.fecha_ingreso.strftime('%d-%m-%Y')}.pdf", f.read(), 'application/pdf')
+                            email.attach(f"Checklist_{inspeccion.camion.patente}_{inspeccion.fecha_ingreso.strftime('%d-%m-%Y')}.pdf", f.read(), 'application/pdf')
 
                         email.send()
-                        print(f"DEBUG: Correo enviado con éxito para {inspeccion.vehiculo.patente}")
+                        print(f"DEBUG: Correo enviado con éxito para {inspeccion.camion.patente}")
 
                     except Exception as e_mail:
                         print(f"ERROR al enviar correo: {e_mail}")

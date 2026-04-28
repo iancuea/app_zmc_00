@@ -2,6 +2,8 @@ from django.urls import path
 from . import views
 from .views import api_estado_camiones
 
+app_name = 'core'
+
 urlpatterns = [
     path('camiones/', views.camion_list, name='camion_list'),
     path('camiones/<int:pk>/', views.camion_detail, name='camion_detail'),

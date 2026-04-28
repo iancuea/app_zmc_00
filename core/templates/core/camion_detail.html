@@ -6,11 +6,11 @@
 <div class="container-detail-pro">
     <div class="detail-navigation">
         <div class="breadcrumb-pro">
-            <a href="{% url 'camion_list' %}">Flota</a> 
+            <a href="{% url 'core:camion_list' %}">Flota</a> 
             <span class="separator">/</span> 
             <span class="current">Detalle de Unidad</span>
         </div>
-        <a href="{% url 'camion_list' %}" class="btn-secondary-pro">← Volver al listado</a>
+        <a href="{% url 'core:camion_list' %}" class="btn-secondary-pro">← Volver al listado</a>
     </div>
 
     <div class="detail-header-section">
@@ -91,7 +91,7 @@
                             <span class="trailer-type">{{ remolque_vinculado.tipo_remolque|default:"Semirremolque" }}</span>
                         </div>
                     </div>
-                    <a href="{% url 'remolque_detail' remolque_vinculado.id_remolque %}" class="btn-secondary-pro">Ver ficha remolque →</a>
+                    <a href="{% url 'core:remolque_detail' remolque_vinculado.id_remolque %}" class="btn-secondary-pro">Ver ficha remolque →</a>
                 {% else %}
                     <div class="empty-state-pro"><p>Sin remolque asignado.</p></div>
                 {% endif %}

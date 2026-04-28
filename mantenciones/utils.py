@@ -116,7 +116,7 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
     os.makedirs(directorio, exist_ok=True)
     
     fecha_str = timezone.now().strftime('%Y%m%d_%H%M%S')
-    patente = inspeccion.vehiculo.patente
+    patente = inspeccion.camion.patente
     nombre_pdf = f'reporte_{fecha_str}_{patente}.pdf'
     ruta_pdf = os.path.join(directorio, nombre_pdf)
     
@@ -134,9 +134,9 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
         img_zmc.hAlign = 'LEFT'
 
     img_contrato = None
-    vehiculo = inspeccion.vehiculo
-    if vehiculo.contrato and vehiculo.contrato.logo_cliente:
-        path_logo_contrato = vehiculo.contrato.logo_cliente.path
+    camion = inspeccion.camion
+    if camion.contrato and camion.contrato.logo_cliente:
+        path_logo_contrato = camion.contrato.logo_cliente.path
         if os.path.exists(path_logo_contrato):
             img_contrato = Image(path_logo_contrato, width=1.2*inch, height=0.6*inch)
             img_contrato.hAlign = 'RIGHT'
@@ -181,7 +181,7 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
     )
 
     # --- PÁGINA 1: CARÁTULA ---
-    nombre_contrato = vehiculo.contrato.nombre.upper() if vehiculo.contrato else "GENERAL"
+    nombre_contrato = camion.contrato.nombre.upper() if camion.contrato else "GENERAL"
     story.append(Paragraph(f"ZMC TRANSPORTES - {nombre_contrato}", title_style))
     
     patente_camion = datos_autocompletado.get('camion_patente', 'S/P')

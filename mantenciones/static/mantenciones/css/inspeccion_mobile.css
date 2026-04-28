@@ -233,7 +233,7 @@ body {
 /* Ajuste para que los Select de Django hereden el estilo limpio */
 select.value-input, 
 select#id_tipo_inspeccion, 
-select#id_vehiculo {
+select#id_camion {
     background: transparent !important;
     border: none !important;
     text-align: right !important;

@@ -47,6 +47,15 @@ class Empresa(models.Model):
 
 #---------ENTIDADES-------
 
+class ModeloVehiculo(models.Model):
+    UNIDADES = [('KM', 'Kilómetros'), ('HORAS', 'Horas')]
+    nombre = models.CharField(max_length=100)
+    marca = models.CharField(max_length=50)
+    unidad_medida = models.CharField(max_length=10, choices=UNIDADES, default='KM')
+
+    def __str__(self):
+        return f"{self.marca} {self.nombre}"
+
 class Contrato(models.Model):
     nombre = models.CharField(max_length=100)
     logo_cliente = models.ImageField(upload_to='logos/contratos/', null=True, blank=True)
@@ -63,7 +72,9 @@ class Camion(models.Model):
     patente = models.CharField(max_length=10, unique=True)
     vin = models.CharField(max_length=17, unique=True, blank=True, null=True)
     marca = models.CharField(max_length=50, blank=True, null=True)
-    modelo = models.CharField(max_length=50, blank=True, null=True)
+    modelo = models.ForeignKey(ModeloVehiculo, on_delete=models.SET_NULL, null=True, blank=True)
+    TIPO_OP = [('SEVERO', 'Severo'), ('MIXTO', 'Mixto'), ('CARRETERO', 'Carretero')]
+    tipo_operacion = models.CharField(max_length=20, choices=TIPO_OP, default='MIXTO')
     anio = models.IntegerField(blank=True, null=True)
     contrato = models.ForeignKey(Contrato, on_delete=models.SET_NULL, null=True, blank=True)
     intervalo_mantencion = models.IntegerField(default=25000, help_text="KM entre mantenciones")
@@ -92,65 +103,6 @@ class Camion(models.Model):
         managed = False
         db_table = 'camiones'
 
-    def km_restantes(self):
-            """
-            Nueva lógica: Busca la última inspección de la app 'mantenciones' 
-            donde se renovó el aceite de motor.
-            """
-            # Accedemos a la relación 'inspecciones' definida en el ForeignKey de la nueva app
-            ultima = self.inspecciones.filter(
-                lubricantes__tipo_lubricante__icontains="MOTOR", 
-                lubricantes__renovado=True
-            ).order_by('-fecha_ingreso').first()
-
-            estado = getattr(self, 'estado_actual', None)
-
-            if not ultima or not estado:
-                return None
-
-            # Obtenemos el registro de lubricante específico de esa inspección
-            lubricante = ultima.lubricantes.filter(tipo_lubricante__icontains="MOTOR").first()
-            
-            if not lubricante or not lubricante.proximo_cambio_km or not estado.kilometraje:
-                return None
-
-            # Retorna la resta entre la meta calculada y el GPS actual
-            return lubricante.proximo_cambio_km - estado.kilometraje
-    
-    def estado_mantencion(self):
-        km = self.km_restantes()
-
-        if km is None:
-            return {
-                "codigo": "SIN_DATOS",
-                "label": "SIN DATOS",
-                "css": "estado-muted",
-                "prioridad": 5,
-            }
-
-        if km <= 0:
-            return {
-                "codigo": "VENCIDA",
-                "label": "VENCIDA",
-                "css": "estado-danger",
-                "prioridad": 1,
-            }
-
-        if km <= 1000:
-            return {
-                "codigo": "CRITICA",
-                "label": "CRÍTICA",
-                "css": "estado-warning",
-                "prioridad": 2,
-            }
-
-        return {
-            "codigo": "OK",
-            "label": "OK",
-            "css": "estado-ok",
-            "prioridad": 3,
-        }
-
     @property
     def asignacion_actual(self):
         return self.asignaciontractoremolque_set.filter(activo=True).first()
@@ -158,9 +110,6 @@ class Camion(models.Model):
     @property
     def tiene_remolque(self):
         return self.asignacion_actual is not None
-
-    def prioridad_mantencion(self):
-        return self.estado_mantencion()["prioridad"]
 
     def __str__(self):
         return self.patente if self.patente else "Camión sin patente"

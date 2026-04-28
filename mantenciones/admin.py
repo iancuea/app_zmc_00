@@ -1,9 +1,7 @@
 from django.contrib import admin
-
-from django.contrib import admin
 from .models import (
     Inspeccion, CategoriaChecklist, ItemChecklist, 
-    ResultadoItem, RegistroLubricantes,RegistroDiario
+    ResultadoItem, RegistroLubricantes,RegistroDiario,CronogramaPlan
 )
 
 # Esto permite editar los ítems directamente dentro de la categoría
@@ -29,13 +27,22 @@ class RegistroLubricantesInline(admin.TabularInline):
 @admin.register(Inspeccion)
 class InspeccionAdmin(admin.ModelAdmin):
     # Usamos los nombres reales de tu modelo
-    list_display = ('id_inspeccion', 'vehiculo', 'km_registro', 'tipo_inspeccion', 'es_apto_operar')
-    list_filter = ('tipo_inspeccion', 'es_apto_operar', 'vehiculo')
-    search_fields = ('vehiculo__patente',)
-
-admin.site.register(ItemChecklist)
+    list_display = ('id_inspeccion', 'camion', 'km_registro', 'tipo_inspeccion', 'es_apto_operar')
+    list_filter = ('tipo_inspeccion', 'es_apto_operar', 'camion')
+    search_fields = ('camion__patente',)
 
 @admin.register(RegistroDiario)
 class RegistroDiarioAdmin(admin.ModelAdmin):
     list_display = ('vehiculo', 'fecha', 'km_actual', 'revisado_por', 'es_apto')
     list_filter = ('es_apto', 'fecha')
+
+@admin.register(ItemChecklist)
+class ItemChecklistAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'nivel_servicio', 'modelo', 'referencia_tecnica', 'codigo_sap')
+    list_filter = ('nivel_servicio', 'modelo', 'categoria')
+    search_fields = ('nombre', 'codigo_sap')
+
+@admin.register(CronogramaPlan)
+class CronogramaPlanAdmin(admin.ModelAdmin):
+    list_display = ('modelo', 'posicion_ciclo', 'intervalo_teorico', 'paquetes_json')
+    list_filter = ('modelo',)

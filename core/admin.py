@@ -14,7 +14,8 @@ from .models import (
     HistorialEstadoRemolque,
     EstadoRemolque,
     Contrato,
-    AsignacionPermanente
+    AsignacionPermanente,
+    ModeloVehiculo
 )
 
 admin.site.register(Empresa)
@@ -61,6 +62,10 @@ class ContratoAdmin(admin.ModelAdmin):
     list_display = ('nombre', 'activo')
     search_fields = ('nombre',)
 
+@admin.register(ModeloVehiculo)
+class ModeloVehiculoAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'marca', 'unidad_medida')
+
 @admin.register(Camion)
 class CamionAdmin(admin.ModelAdmin):
     search_fields = ['patente']
@@ -69,7 +74,6 @@ class CamionAdmin(admin.ModelAdmin):
         'tipo_camion',
         'activo',
         'rol_operativo',
-        'km_restantes',
         'estado_actual_display',
         'remolque_actual',
         'contrato' # Agregamos una columna para ver el remolque enganchado

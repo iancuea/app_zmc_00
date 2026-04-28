@@ -152,14 +152,14 @@ let kmMinimoPermitido = 0;
 document.addEventListener('DOMContentLoaded', function() {
     // 2. REFERENCIAS A ELEMENTOS DEL FORMULARIO
     const tipoSelect = document.getElementById('id_tipo_inspeccion');
-    const vehiculoSelect = document.getElementById('id_vehiculo');
+    const camionSelect = document.getElementById('id_camion');
     const kmInput = document.getElementById('id_km_registro');
 
     // 3. LISTENERS DE CAMBIOS
     if (tipoSelect) tipoSelect.addEventListener('change', cargarCategorias);
     
-    if (vehiculoSelect) {
-        vehiculoSelect.addEventListener('change', function() {
+    if (camionSelect) {
+        camionSelect.addEventListener('change', function() {
             cargarDatosAutocompletados();
             if (this.value) mostrarPaso('#step-2');
         });
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 4. LÓGICA DE RECUPERACIÓN TRAS ERROR (Mantiene el form abierto)
-    if (vehiculoSelect && vehiculoSelect.value) {
+    if (camionSelect && camionSelect.value) {
         const step2 = document.getElementById('step-2');
         const step4 = document.getElementById('step-4');
         const datosAuto = document.getElementById('datos-autocompletados');
@@ -229,8 +229,8 @@ function mostrarPaso(selector) {
 
 async function cargarCategorias() {
     const tSel = document.getElementById('id_tipo_inspeccion');
-    const vSel = document.getElementById('id_vehiculo');
-    if (!tSel.value || !vSel.value) return; 
+    const cSel = document.getElementById('id_camion');
+    if (!tSel.value || !cSel.value) return; 
 
     try {
         const response = await fetch(`/mantenciones/api/categorias/${tSel.value}/`);
@@ -243,13 +243,13 @@ async function cargarCategorias() {
 }
 
 async function cargarDatosAutocompletados() {
-    const vSel = document.getElementById('id_vehiculo');
+    const cSel = document.getElementById('id_camion');
     const tSel = document.getElementById('id_tipo_inspeccion');
     const kmIn = document.getElementById('id_km_registro');
     
-    if (!vSel || !vSel.value) return;
+    if (!cSel || !cSel.value) return;
 
-    const id = vSel.value;
+    const id = cSel.value;
     const seccionRemolque = document.getElementById('seccion-remolque');
     const inputRemolqueId = document.getElementById('id_remolque');
     const inputRemolquePatente = document.getElementById('remolque-patente');

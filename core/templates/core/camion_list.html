@@ -35,7 +35,7 @@
 
     <div class="filter-actions-compact">
         <button type="submit" class="btn-primary-compact" title="Aplicar">🔍</button>
-        <a href="{% url 'camion_list' %}" class="btn-reset-compact" title="Limpiar">✕</a>
+        <a href="{% url 'core:camion_list' %}" class="btn-reset-compact" title="Limpiar">✕</a>
     </div>
 </form>
 </div>
@@ -59,7 +59,7 @@
                 {% for camion in grupo.camiones %}
                     <tr class="unit-row {{ camion.salud_calculada.css }}" data-camion-id="{{ camion.id_camion }}">
                         <td class="col-patente text-left"> 
-                            <a href="{% url 'camion_detail' camion.id_camion %}" class="patente-pill">{{ camion.patente }}</a>
+                            <a href="{% url 'core:camion_detail' camion.id_camion %}" class="patente-pill">{{ camion.patente }}</a>
                         </td>
 
                         <td class="text-left">
@@ -117,7 +117,7 @@
                         <tr class="trailer-row {{ remolque.salud_calculada.css }}" data-remolque-id="{{ remolque.id_remolque }}">
                             <td class="connector-parent text-left">
                                 <div class="connector-line"></div>
-                                <a href="{% url 'remolque_detail' remolque.id_remolque %}" class="patente-pill" style="background: #475569;">{{ remolque.patente }}</a>
+                                <a href="{% url 'core:remolque_detail' remolque.id_remolque %}" class="patente-pill" style="background: #475569;">{{ remolque.patente }}</a>
                             </td>
                             <td class="text-left">
                                 <div class="unit-specs">

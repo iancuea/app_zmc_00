@@ -29,7 +29,7 @@
                         <div class="data-row">
                             <span class="label">PATENTE / UNIDAD</span>
                             <div class="d-flex align-items-center justify-content-end" style="width: 60%;">
-                                {{ form.vehiculo }}
+                                {{ form.camion }}
                             </div>
                         </div>
                     </div>
@@ -139,7 +139,7 @@
                             <button type="button" onclick="llenarTodo()" class="btn-secundario-discreto btn-test-style">
                                 ⚡ TEST RÁPIDO
                             </button>
-                            <a href="{% url 'camion_list' %}" class="btn-secundario-discreto">
+                            <a href="{% url 'core:camion_list' %}" class="btn-secundario-discreto">
                                 ✖ CANCELAR
                             </a>
                         </div>

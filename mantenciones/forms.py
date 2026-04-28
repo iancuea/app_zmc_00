@@ -7,15 +7,15 @@ class InspeccionForm(forms.ModelForm):
     
     class Meta:
         model = Inspeccion
-        fields = ['tipo_inspeccion', 'vehiculo', 'remolque', 'km_registro', 'responsable', 'es_apto_operar', 'observaciones']        
+        fields = ['tipo_inspeccion', 'camion', 'remolque', 'km_registro', 'responsable', 'es_apto_operar', 'observaciones']        
         widgets = {
             'tipo_inspeccion': forms.Select(attrs={
                 'class': 'form-select form-select-lg',
                 'id': 'id_tipo_inspeccion'
             }),
-            'vehiculo': forms.Select(attrs={
+            'camion': forms.Select(attrs={
                 'class': 'form-select form-select-lg',
-                'id': 'id_vehiculo'
+                'id': 'id_camion'
             }),
             'remolque': forms.Select(attrs={
                 'class': 'form-select form-select-lg',
@@ -44,7 +44,7 @@ class InspeccionForm(forms.ModelForm):
         }
         labels = {
             'tipo_inspeccion': 'Tipo de Inspección',
-            'vehiculo': 'Patente Camión',
+            'camion': 'Patente Camión',
             'remolque': 'Patente Remolque (Auto-llenado)',
             'km_registro': 'Kilometraje Actual',
             'responsable': 'Responsable de Inspección',
@@ -54,12 +54,12 @@ class InspeccionForm(forms.ModelForm):
 
     def clean_km_registro(self):
         km_ingresado = self.cleaned_data.get('km_registro')
-        vehiculo = self.cleaned_data.get('vehiculo')
+        camion = self.cleaned_data.get('camion')
 
-        if vehiculo and km_ingresado is not None:
+        if camion and km_ingresado is not None:
             try:
                 # Accedemos al kilometraje actual a través de la relación que definiste
-                km_actual = vehiculo.estado_actual.kilometraje
+                km_actual = camion.estado_actual.kilometraje
             except (ObjectDoesNotExist, AttributeError):
                 # Si el camión no tiene un 'estado_actual' creado todavía
                 km_actual = 0

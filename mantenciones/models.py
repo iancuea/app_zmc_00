@@ -15,8 +15,8 @@ class Inspeccion(models.Model):
     id_inspeccion = models.AutoField(primary_key=True)
     
     # Datos de la Unidad (Fierros)
-    # Usamos 'vehiculo' como nombre principal para evitar líos
-    vehiculo = models.ForeignKey(Camion, on_delete=models.CASCADE, related_name='inspecciones', db_column='id_camion')
+    # Usamos 'camion' como nombre principal (más claro que 'vehiculo')
+    camion = models.ForeignKey(Camion, on_delete=models.CASCADE, related_name='inspecciones', db_column='id_camion')
     remolque = models.ForeignKey(Remolque, on_delete=models.SET_NULL, null=True, blank=True, related_name='inspecciones', db_column='id_remolque')
     
     # Datos Operativos
@@ -39,7 +39,7 @@ class Inspeccion(models.Model):
         verbose_name_plural = "Inspecciones"
 
     def __str__(self):
-        return f"{self.tipo_inspeccion} - {self.vehiculo.patente} ({self.fecha_ingreso.strftime('%d/%m/%Y')})"
+        return f"{self.tipo_inspeccion} - {self.camion.patente} ({self.fecha_ingreso.strftime('%d/%m/%Y')})"
 
 class CategoriaChecklist(models.Model):
     """
@@ -80,8 +80,22 @@ class ItemChecklist(models.Model):
         verbose_name="¿Es opcional?",
         help_text="Si se marca, permitirá al usuario indicar que el ítem 'No Aplica' (N/A)"
     )   
+    modelo = models.ForeignKey('core.ModeloVehiculo', on_delete=models.CASCADE, null=True, blank=True)
+    nivel_servicio = models.CharField(max_length=20, default='DIARIO') # SM1, SM2, etc.
+    referencia_tecnica = models.CharField(max_length=50, null=True, blank=True)
+    codigo_sap = models.CharField(max_length=50, null=True, blank=True)
+
     def __str__(self):
         return f"{self.categoria.nombre} - {self.nombre}"
+
+class CronogramaPlan(models.Model):
+    modelo = models.ForeignKey('core.ModeloVehiculo', on_delete=models.CASCADE)
+    posicion_ciclo = models.IntegerField()
+    paquetes_json = models.JSONField() # Lista de paquetes: ["SM1", "SC1"]
+    intervalo_teorico = models.IntegerField()
+
+    class Meta:
+        ordering = ['posicion_ciclo']
 
 class ResultadoItem(models.Model):
     """
@@ -114,12 +128,12 @@ class RegistroLubricantes(models.Model):
     def save(self, *args, **kwargs):
         # Si se renovó el aceite y no se puso el próximo km a mano
         if self.renovado and not self.proximo_cambio_km:
-            # CORRECCIÓN: Usamos 'km_registro' que es el nombre real en tu modelo Inspeccion
+            # Usamos 'km_registro' que es el nombre real en tu modelo Inspeccion
             km_entrada = self.inspeccion.km_registro
             
-            # CORRECCIÓN: Usamos 'vehiculo' que es el nombre real en tu modelo Inspeccion
+            # Usamos 'camion' que es el nombre actualizado del modelo Inspeccion
             # Asegúrate de que el modelo Camion tenga el campo 'intervalo_mantencion'
-            intervalo = self.inspeccion.vehiculo.intervalo_mantencion
+            intervalo = self.inspeccion.camion.intervalo_mantencion
             
             self.proximo_cambio_km = km_entrada + intervalo
             
