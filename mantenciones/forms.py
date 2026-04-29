@@ -1,9 +1,14 @@
+"""
+mantenciones/forms.py
+Formularios para crear inspecciones con validación de kilometraje y filtrado de categorías.
+"""
+
 from django import forms
 from .models import Inspeccion, ResultadoItem, RegistroDiario
 from django.core.exceptions import ObjectDoesNotExist
 
 class InspeccionForm(forms.ModelForm):
-    """Formulario para crear inspecciones con filtrado dinámico de categorías"""
+    """Formulario para crear inspecciones con filtrado dinámico de categorías según tipo."""
     
     class Meta:
         model = Inspeccion

@@ -1,3 +1,9 @@
+"""
+mantenciones/views.py
+Vistas para crear inspecciones de mantenimiento con generación de PDF y envío de correos.
+Implementa APIs para autocompletado de datos, categorías y validación de remolques asignados.
+"""
+
 import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
@@ -10,7 +16,7 @@ from mantenciones.forms import InspeccionForm
 from .utils import obtener_datos_camion_autocompletado, generar_pdf_enap_diario, generar_pdf_mantencion_tecnica
 from .models import (
     CategoriaChecklist, ItemChecklist, Inspeccion, 
-    ResultadoItem, RegistroLubricantes, RegistroDiario
+    ResultadoItem, RegistroLubricantes, RegistroDiario, CronogramaPlan
 )
 from core.models import DocumentoMantencion, EstadoCamion, Mantencion, Camion, Remolque, AsignacionTractoRemolque
 from mantenciones import models
@@ -21,6 +27,16 @@ import os
 
 @login_required
 def crear_inspeccion(request):
+    """
+    Procesa la creación de una inspección con su checklist.
+    
+    Flujo:
+    1. Guarda inspección y resultados en BD (transacción atómica)
+    2. Genera PDF del reporte (diario o técnico)
+    3. Envía correo con el PDF adjunto
+    4. Redirige a la página de creación
+    """
+    
     """Vista para crear una nueva inspección con checklist dinámico"""
     
     if request.method == 'POST':
@@ -163,6 +179,13 @@ def crear_inspeccion(request):
 @require_http_methods(["GET"])
 def api_datos_autocompletado(request, camion_id):
     """
+    API que retorna todos los datos del camión para auto-llenar el formulario:
+    - Datos del camión: marca, modelo, patente, año
+    - Datos del conductor: nombre, antigüedad
+    - Vencimientos de documentos
+    - Datos del remolque (si está asignado)
+    """
+    """
     API que retorna los datos que se auto-completan al seleccionar un camión
     """
     try:
@@ -179,9 +202,16 @@ def api_datos_autocompletado(request, camion_id):
             'error': str(e)
         }, status=400)
 
-
 @require_http_methods(["GET"])
 def api_categorias_por_tipo(request, tipo_inspeccion):
+    """
+    API que retorna todas las categorías y sus items filtrando por tipo de inspección.
+    
+    Retorna:
+    - DIARIO: Solo categorías de checklist diario
+    - MANTENCION: Solo categorías de mantención técnica
+    - AMBOS: Categorías comunes
+    """
     """
     API que retorna todas las categorías de checklist
     """
@@ -217,9 +247,15 @@ def api_categorias_por_tipo(request, tipo_inspeccion):
             'error': str(e)
         }, status=400)
 
-
 @require_http_methods(["GET"])
 def api_remolque_asignado(request, camion_id):
+    """
+    API que verifica si un camión tiene un remolque asignado actualmente.
+    
+    Retorna:
+    - tiene_remolque: True si hay remolque activo
+    - remolque_id y remolque_patente (si existe)
+    """
     """
     API que verifica si un camión tiene remolque asignado
     """

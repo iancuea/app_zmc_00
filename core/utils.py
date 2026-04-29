@@ -2,17 +2,20 @@ from datetime import date
 
 # Prioridades: Menor número = Mayor Urgencia (para ordenar)
 # 1: VENCIDA/O, 2: CRITICA/O, 3: OK
+"""Mapeo de prioridades para ordenamiento de urgencias."""
 PRIORIDAD_MAP = {
     "VENCIDA": 1, "VENCIDO": 1,
     "CRITICA": 2, "CRITICO": 2,
     "OK": 3, "SIN_DATOS": 4
 }
-
-# core/utils.py
-from datetime import date
-
-PRIORIDAD_MAP = {"VENCIDA": 1, "CRITICA": 2, "OK": 3, "SIN_DATOS": 4}
 def evaluar_salud_entidad(entidad):
+    """
+    Evalúa el estado general de un camión o remolque verificando:
+    - Kilómetros pendientes hasta próxima mantención
+    - Documentos vencidos o próximos a vencer
+    
+    Retorna dict con: codigo, label, css, prioridad, motivos y km_restantes
+    """
     peor_estado = "OK"
     motivos = []
     km_restantes = None

@@ -1,3 +1,9 @@
+"""
+core/views.py
+Vistas para la visualización de camiones y remolques con sistema de salud e inspecciones.
+Implementa listados agrupados por base, filtrado por patente/estado, y API de detalles.
+"""
+
 from datetime import date
 from django.shortcuts import render, get_object_or_404
 from .models import Camion, EstadoCamion, Mantencion, DocumentacionGeneral, Remolque, AsignacionTractoRemolque
@@ -12,6 +18,10 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def camion_list(request):
+    """
+    Listado principal de camiones activos con estado de salud.
+    Agrupa los camiones por base operativa, filtra por patente/estado y ordena por urgencia.
+    """
     # 1. Prefetch para TRACTO: Excluimos DIARIAS y ordenamos (2026 arriba)
     prefetch_mants_camion = Prefetch(
         'mantenciones', 
@@ -139,6 +149,9 @@ def camion_list(request):
 
 @login_required
 def camion_detail(request, pk):
+    """
+    Detalle completo de un camión: histórico de mantenciones, documentos y remolque vinculado.
+    """
     # 1. Prefetch filtrado: Solo mantenciones reales para el historial técnico
     # Así el usuario ve reparaciones, no checklists infinitos
     prefetch_reales = Prefetch(
@@ -180,6 +193,9 @@ def camion_detail(request, pk):
 
 @login_required
 def remolque_detail(request, pk):
+    """
+    Detalle completo de un remolque: mantenciones, documentación y camión vinculado.
+    """
     # 1. Obtenemos el remolque optimizado
     # Traemos de un golpe documentos y mantenciones para que la salud no dispare más queries
     remolque = get_object_or_404(
@@ -213,6 +229,9 @@ def remolque_detail(request, pk):
     return render(request, 'core/remolque_detail.html', context)
 
 def api_camion_detalle(request, camion_id):
+    """
+    API que retorna detalles de un camión: estado, kilometraje, última mantención y documentos.
+    """
     # Traemos con prefetch para los documentos
     camion = get_object_or_404(
         Camion.objects.prefetch_related('mantenciones__documentos'), 
@@ -247,9 +266,9 @@ def api_camion_detalle(request, camion_id):
 
 def api_estado_camiones(request):
     """
-    API Corregida: Filtra DIARIAS y ordena por fecha descendente.
+    API que retorna el estado completo de todos los camiones (salud, documentos, estado del remolque).
     """
-    resultado = []
+    # API Corregida: Filtra DIARIAS y ordena por fecha descendente.
     
     camiones = Camion.objects.filter(activo=True).select_related(
         "estado_actual"

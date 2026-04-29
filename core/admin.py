@@ -1,3 +1,9 @@
+"""
+core/admin.py
+Configuración del panel de administración de Django para camiones, remolques y mantenciones.
+Define las vistas, inlines y filtros para gestionar los vehículos desde el admin.
+"""
+
 from django.contrib import admin
 from django.utils.html import format_html
 from .models import (

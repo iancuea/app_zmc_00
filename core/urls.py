@@ -1,3 +1,8 @@
+"""
+core/urls.py
+Rutas URL de la aplicación core para listados, detalles y APIs de camiones y remolques.
+"""
+
 from django.urls import path
 from . import views
 from .views import api_estado_camiones

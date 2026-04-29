@@ -1,3 +1,8 @@
+"""
+mantenciones/admin.py
+Configuración del panel de administración para inspecciones, categorías, items y resultados.
+"""
+
 from django.contrib import admin
 from .models import (
     Inspeccion, CategoriaChecklist, ItemChecklist, 
@@ -5,6 +10,7 @@ from .models import (
 )
 
 # Esto permite editar los ítems directamente dentro de la categoría
+"""Inline para editar ItemChecklist dentro de CategoriaChecklistAdmin"""
 class ItemChecklistInline(admin.TabularInline):
     model = ItemChecklist
     extra = 1
@@ -15,6 +21,7 @@ class CategoriaChecklistAdmin(admin.ModelAdmin):
     inlines = [ItemChecklistInline]
 
 # Esto permite ver los resultados del B-R-M dentro de la Inspección
+"""Inline para mostrar ResultadoItem dentro de InspeccionAdmin"""
 class ResultadoItemInline(admin.TabularInline):
     model = ResultadoItem
     extra = 0

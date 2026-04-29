@@ -1,6 +1,12 @@
 """
 Utilidades para reportes y generación de PDFs de inspecciones
 """
+"""
+mantenciones/utils.py
+Utilidades para reportes y generación de PDFs de inspecciones diarias y técnicas.
+Autocompletación de datos del camión, remolque, documentos y generación de reportes.
+"""
+
 from datetime import datetime
 from django.conf import settings
 from django.utils import timezone
@@ -14,6 +20,15 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT
 import os
 
 def obtener_datos_camion_autocompletado(camion):
+    """
+    Recopila todos los datos del camión para auto-llenar formularios de inspección:
+    - Información del camión: patente, marca, modelo, año
+    - Estado actual: conductor, base, kilometraje
+    - Vencimientos: RT, PC, SOAP, TC8
+    - Remolque asignado (si existe) con sus vencimientos
+    
+    Retorna dict con todas las claves necesarias para templates
+    """
     """
     Retorna un diccionario con todos los datos que se auto-llenan 
     basado en el camión seleccionado
@@ -103,6 +118,10 @@ def obtener_datos_camion_autocompletado(camion):
     return datos
 
 def generar_pdf_mantencion_tecnica(inspeccion, resultados_items, datos_autocompletado):
+    """
+    Genera un PDF de reporte de mantención técnica con detalles de la inspección.
+    (Placeholder para implementación futura)
+    """
     return 0
 
 import os
@@ -110,6 +129,13 @@ from reportlab.lib.utils import ImageReader
 from reportlab.platypus import Image, Table, TableStyle, Paragraph, Spacer, PageBreak, SimpleDocTemplate
 # ... tus otros imports de reportlab ...
 def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
+    """
+    Genera un PDF de checklist diario con:
+    - Información del camión/remolque
+    - Resultados del checklist (Bien/Regular/Malo)
+    - Observaciones y novedades
+    - Logos de ZMC y cliente
+    """
     # Crear directorio
     tipo_insp = inspeccion.get_tipo_inspeccion_display().lower()
     directorio = f'media/reportes_diarios/{tipo_insp}/'
@@ -142,6 +168,7 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
             img_contrato.hAlign = 'RIGHT'
 
     header_logo_data = [[img_zmc if img_zmc else '', '', img_contrato if img_contrato else '']]
+    """Tabla de encabezado con logos de ZMC y cliente"""
     t_logos = Table(header_logo_data, colWidths=[2.5*inch, 2.5*inch, 2.5*inch])
     t_logos.setStyle(TableStyle([
         ['VALIGN', (0,0), (-1,-1), 'MIDDLE'],
@@ -181,6 +208,7 @@ def generar_pdf_enap_diario(inspeccion, resultados_items, datos_autocompletado):
     )
 
     # --- PÁGINA 1: CARÁTULA ---
+    """Primera página del reporte con información general del vehículo y contrato"""
     nombre_contrato = camion.contrato.nombre.upper() if camion.contrato else "GENERAL"
     story.append(Paragraph(f"ZMC TRANSPORTES - {nombre_contrato}", title_style))
     

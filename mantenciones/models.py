@@ -1,9 +1,19 @@
+"""
+mantenciones/models.py
+Modelo de datos para inspecciones y checklists de mantenimiento.
+Define categorías de checklist, items, resultados de inspecciones y registro de aceites.
+"""
+
 from django.db import models
 from django.conf import settings
 from core.models import Camion, Remolque
 from django.contrib.auth.models import User
 
 class Inspeccion(models.Model):
+    """
+    Registro de una inspección en una unidad (camion/remolque).
+    Puede ser DIARIA (checklist operador) o MANTENCION (técnica).
+    """
     # Tipos de inspección para el filtro lógico
     TIPO_CHOICES = [
         ('DIARIO', 'Checklist Diario'),
@@ -43,9 +53,12 @@ class Inspeccion(models.Model):
 
 class CategoriaChecklist(models.Model):
     """
+    Agrupa los items del checklist (ej: 'KIT DE SEGURIDAD', 'SISTEMA HIDRAULICO', 'CABINA').
+    """
+    """
     Categorías del informe: 'CABINA', 'SISTEMA HIDRÁULICO', 'SEGURIDAD', etc.
     """
-    nombre = models.CharField(max_length=100) # ej: "KIT DE SEGURIDAD" [cite: 19]
+    nombre = models.CharField(max_length=100)  # ej: "KIT DE SEGURIDAD"
     orden = models.IntegerField(default=0) # Para que aparezcan en orden en el celular]
     filtro_tipo = models.CharField(
         max_length=20, 
@@ -62,6 +75,10 @@ class CategoriaChecklist(models.Model):
         return f"{self.nombre} ({self.get_filtro_tipo_display()})"
 
 class ItemChecklist(models.Model):
+    """
+    Items individuales del checklist (ej: 'EXTINTORES', 'FRENOS', 'LUZ TRASERA').
+    Cada item se califica como Bien/Regular/Malo o Sí/No.
+    """
     TIPO_CHOICES = [
         ('ESCALA', 'Bien / Regular / Malo'),
         ('BINARIO', 'Sí / No'),
@@ -89,6 +106,9 @@ class ItemChecklist(models.Model):
         return f"{self.categoria.nombre} - {self.nombre}"
 
 class CronogramaPlan(models.Model):
+    """
+    Define el plan de mantenimiento teórico: qué paquetes se deben hacer en cada ciclo/posición.
+    """
     modelo = models.ForeignKey('core.ModeloVehiculo', on_delete=models.CASCADE)
     posicion_ciclo = models.IntegerField()
     paquetes_json = models.JSONField() # Lista de paquetes: ["SM1", "SC1"]
@@ -98,6 +118,10 @@ class CronogramaPlan(models.Model):
         ordering = ['posicion_ciclo']
 
 class ResultadoItem(models.Model):
+    """
+    Almacena el resultado de cada item en una inspección (Bien/Regular/Malo o Sí/No).
+    Permite capturar observaciones y evidencia fotográfica.
+    """
     """
     Aquí guardamos el B-R-M de cada ítem en una inspección específica.
     """
@@ -118,6 +142,9 @@ class ResultadoItem(models.Model):
 
 class RegistroLubricantes(models.Model):
     """
+    Registra los aceites renovados en una inspección y calcula el próximo cambio de aceite.
+    """
+    """
     Sección especial para los aceites renovados.
     """
     inspeccion = models.ForeignKey(Inspeccion, on_delete=models.CASCADE, related_name='lubricantes')
@@ -126,6 +153,10 @@ class RegistroLubricantes(models.Model):
     proximo_cambio_km = models.IntegerField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
+        """
+        Calcula automáticamente el próximo cambio de aceite si no se especifica.
+        Usa: km_registro + intervalo_mantencion del camión
+        """
         # Si se renovó el aceite y no se puso el próximo km a mano
         if self.renovado and not self.proximo_cambio_km:
             # Usamos 'km_registro' que es el nombre real en tu modelo Inspeccion
@@ -140,6 +171,10 @@ class RegistroLubricantes(models.Model):
         super().save(*args, **kwargs)
 
 class RegistroDiario(models.Model):
+    """
+    Resumen diario de inspecciones de un vehículo.
+    Almacena kilometraje, responsable, estado de operación y novedades.
+    """
     # Relaciones básicas
     vehiculo = models.ForeignKey(Camion, on_delete=models.CASCADE, related_name='checklists_diarios')
     revisado_por = models.CharField(max_length=100, help_text="Nombre de quien realiza la inspección")    

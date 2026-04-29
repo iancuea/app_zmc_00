@@ -1,8 +1,14 @@
+"""
+core/models.py
+Modelo de datos para la gestión de camiones, remolques, conductores y mantenciones.
+Define las entidades principales del sistema y sus relaciones: camiones, remolques,
+contratistas, conductores, mantenciones y documentación.
+"""
+
 from django.db import models
 from datetime import date
 from django.core.exceptions import ValidationError
 import os
-# Create your models here.
 
 # Opciones de Base (Magallanes)
 BASE_CHOICES = [
@@ -22,8 +28,11 @@ ESTADO_OPERATIVO_CHOICES = [
 ]
 
 def path_documentos_general(instance, filename):
+    """
+    Define la ruta de almacenamiento para documentos de camiones, remolques y conductores.
+    Retorna una ruta como: media/documentos/CAMION/10/archivo.pdf
+    """
     # Determinamos el ID real de la entidad vinculada
-    # Usamos getattr por seguridad, pero como ya son FK, podemos acceder directo
     entidad_id = "sin_id"
     
     if instance.camion_id:
@@ -33,10 +42,10 @@ def path_documentos_general(instance, filename):
     elif instance.conductor_id:
         entidad_id = instance.conductor_id
     
-    # Retorna la ruta: documentos/CAMION/10/archivo.pdf
     return f'documentos/{instance.tipo_entidad}/{entidad_id}/{filename}'
 
 class Empresa(models.Model):
+    """Representa una empresa (cliente/contratista)."""
     nombre = models.CharField(max_length=100)
     rut = models.CharField(max_length=20, unique=True)
     activa = models.BooleanField(default=True)
@@ -48,6 +57,7 @@ class Empresa(models.Model):
 #---------ENTIDADES-------
 
 class ModeloVehiculo(models.Model):
+    """Catálogo de modelos de vehículos (marca, modelo y unidad de medida para mantenimiento)."""
     UNIDADES = [('KM', 'Kilómetros'), ('HORAS', 'Horas')]
     nombre = models.CharField(max_length=100)
     marca = models.CharField(max_length=50)
@@ -57,12 +67,13 @@ class ModeloVehiculo(models.Model):
         return f"{self.marca} {self.nombre}"
 
 class Contrato(models.Model):
+    """Representa un contrato/cliente con su logo asociado."""
     nombre = models.CharField(max_length=100)
     logo_cliente = models.ImageField(upload_to='logos/contratos/', null=True, blank=True)
     activo = models.BooleanField(default=True)
 
     class Meta:
-        db_table = 'core_contrato' # Obligamos a usar el nombre exacto de la tabla
+        db_table = 'core_contrato'
 
     def __str__(self):
         return self.nombre
@@ -105,16 +116,17 @@ class Camion(models.Model):
 
     @property
     def asignacion_actual(self):
+        """Retorna la asignación activa del remolque al camión (si existe)."""
         return self.asignaciontractoremolque_set.filter(activo=True).first()
 
     @property
     def tiene_remolque(self):
-        return self.asignacion_actual is not None
-
+        """Verifica si el camión tiene un remolque asignado actualmente."""
     def __str__(self):
         return self.patente if self.patente else "Camión sin patente"
     
 class Conductor(models.Model):
+    """Representa un conductor asignado a los camiones."""
     nombre = models.CharField(max_length=100)
     rut = models.CharField(max_length=20, unique=True)
     # Dejamos solo correo y celular como campos de contacto principales
@@ -137,7 +149,7 @@ class Conductor(models.Model):
 
     @property
     def nombre_corto(self):
-        """Retorna 'Primer Nombre + Primer Apellido'"""
+        """Extrae 'Primer Nombre + Primer Apellido' del nombre completo chileno."""
         partes = self.nombre.split()
         if len(partes) >= 3:
             # Si tiene 4 nombres (común en Chile), el índice 2 suele ser el primer apellido
@@ -158,6 +170,7 @@ class Conductor(models.Model):
         return f"{self.nombre} ({self.rut})"
 
 class AsignacionPermanente(models.Model):
+    """Asigna conductores permanentes a camiones (titular o backup)."""
     camion = models.ForeignKey(Camion, on_delete=models.CASCADE, related_name='conductores_asignados')
     conductor = models.ForeignKey(Conductor, on_delete=models.CASCADE)
     TURNO_CHOICES = [
@@ -176,6 +189,7 @@ class AsignacionPermanente(models.Model):
         return f"{self.camion.patente} -> {self.conductor.nombre}"
 
 class Remolque(models.Model):
+    """Representa un remolque que puede ser asignado a camiones (tractores)."""
     # Opciones para el estado operativo
     ESTADO_CHOICES = [
         ('disponible', 'Disponible'),
@@ -217,6 +231,7 @@ class Remolque(models.Model):
         return self.patente if self.patente else "Remolque sin patente"
 
 class Mantencion(models.Model):
+    """Registra los eventos de mantenimiento de camiones y remolques (taller, diaria o emergencia)."""
     TIPOS_CHOICES = [
         ('TALLER', 'Mantención de Taller / Preventiva'),
         ('DIARIA', 'Checklist Diario (Operador)'),
@@ -268,6 +283,7 @@ class Mantencion(models.Model):
 
     @property
     def km_restantes_calculados(self):
+        """Calcula los kilómetros restantes hasta la próxima mantención."""
         if self.km_proxima_mantencion is None or self.km_mantencion is None:
             return None
         return self.km_proxima_mantencion - self.km_mantencion

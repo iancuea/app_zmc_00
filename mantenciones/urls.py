@@ -1,3 +1,8 @@
+"""
+mantenciones/urls.py
+Rutas URL para crear inspecciones y APIs de autocompletado de datos.
+"""
+
 from django.urls import path
 from . import views
 
