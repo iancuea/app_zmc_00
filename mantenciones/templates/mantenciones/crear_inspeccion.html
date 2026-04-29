@@ -32,6 +32,8 @@
                                 {{ form.camion }}
                             </div>
                         </div>
+                        <div id="sugerencia-mantencion-box" style="display: none; margin-top: 15px; border-top: 1px dashed #cbd5e0; padding-top: 10px;">
+                            </div>
                     </div>
                 </div>
 
@@ -115,13 +117,11 @@
                 </div>
 
                 <div id="step-4" class="form-step" {% if form.errors %}style="display: block;"{% endif %}>
-                    <div id="categorias-checklist"></div>
-                </div>
-
-                <div id="categorias-checklist" class="mt-5">
-                    <div class="text-center py-5">
-                        <div class="spinner-border text-primary mb-2" role="status"></div>
-                        <p class="text-muted">Esperando selección de camión...</p>
+                    <div id="categorias-checklist" class="mt-5">
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary mb-2" role="status"></div>
+                            <p class="text-muted">Esperando selección de camión...</p>
+                        </div>
                     </div>
                 </div>
 
@@ -136,9 +136,6 @@
                         </button>
                         
                         <div class="d-flex gap-2">
-                            <button type="button" onclick="llenarTodo()" class="btn-secundario-discreto btn-test-style">
-                                ⚡ TEST RÁPIDO
-                            </button>
                             <a href="{% url 'core:camion_list' %}" class="btn-secundario-discreto">
                                 ✖ CANCELAR
                             </a>
@@ -185,10 +182,14 @@
                 
                 <h4 class="fw-bold mb-2">¡Envío Exitoso!</h4>
                 <p class="text-muted mb-4">
-                    {{ messages.0 }} </p>
+                    ✅ La inspección ha sido registrada y el PDF enviado por correo.
+                </p>
 
-                <button type="button" class="btn btn-success w-100 py-3 fw-bold" data-bs-dismiss="modal" style="border-radius: 12px;">
-                    ENTENDIDO
+                <button type="button" class="btn btn-success w-100 py-3 fw-bold" onclick="location.href='{% url 'mantenciones:crear_inspeccion' %}'" style="border-radius: 12px;">
+                    NUEVA INSPECCIÓN
+                </button>
+                <button type="button" class="btn btn-outline-secondary w-100 py-3 fw-bold mt-2" onclick="location.href='{% url 'core:camion_list' %}'" style="border-radius: 12px;">
+                    VER FLOTA
                 </button>
             </div>
         </div>
@@ -202,12 +203,26 @@
 
 {% if form.errors %}
 <script>
-    // Usamos window.onload para asegurar que Bootstrap esté cargado en la base
-    window.onload = function() {
+    // Mostrar modal de error si hay errores de validación
+    window.addEventListener('DOMContentLoaded', function() {
         if (typeof gestionarErrorServidor === 'function') {
             gestionarErrorServidor();
         }
-    };
+    });
 </script>
 {% endif %}
+
+<script>
+    // Listener para detectar si el modal de éxito debe mostrarse
+    {% if messages %}
+    window.addEventListener('DOMContentLoaded', function() {
+        const modalExito = document.getElementById('modalExito');
+        if (modalExito && typeof bootstrap !== 'undefined') {
+            const myModal = new bootstrap.Modal(modalExito);
+            myModal.show();
+            if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+        }
+    });
+    {% endif %}
+</script>
 {% endblock %}

@@ -233,13 +233,17 @@ async function cargarCategorias() {
     if (!tSel.value || !cSel.value) return; 
 
     try {
-        const response = await fetch(`/mantenciones/api/categorias/${tSel.value}/`);
+        // --- CAMBIO: Agregamos el camion_id como parámetro GET ---
+        const response = await fetch(`/mantenciones/api/categorias/${tSel.value}/?camion_id=${cSel.value}`);
         const data = await response.json();
+        
         if (data.success) {
             renderizarCategorias(data.categorias);
             mostrarPaso('#step-4');
         }
-    } catch (e) { console.error("Error cargando items del checklist", e); }
+    } catch (e) { 
+        console.error("Error cargando items del checklist", e); 
+    }
 }
 
 async function cargarDatosAutocompletados() {
@@ -265,6 +269,20 @@ async function cargarDatosAutocompletados() {
             document.getElementById('conductor-nombre').value = d.conductor_nombre_corto || d.conductor_nombre;
             document.getElementById('datos-autocompletados').style.display = 'flex';
             
+            const sugerenciaContainer = document.getElementById('sugerencia-mantencion-box');
+            if (sugerenciaContainer && data.sugerencia_mantenimiento) {
+                sugerenciaContainer.innerHTML = `
+                    <div class="alert alert-info d-flex align-items-center" style="border-radius: 12px; border-left: 5px solid var(--primary-zmc);">
+                        <div class="me-2" style="font-size: 1.2rem;">💡</div>
+                        <div>
+                            <small class="d-block fw-bold text-uppercase" style="font-size: 0.65rem; opacity: 0.8;">Recomendación del Sistema</small>
+                            <span class="fw-800" style="font-weight: 800;">${data.sugerencia_mantenimiento.texto}</span>
+                        </div>
+                    </div>
+                `;
+                sugerenciaContainer.style.display = 'block';
+            }
+
             kmMinimoPermitido = parseInt(d.km_actual_registrado) || 0;
 
             if (hint) {
@@ -293,6 +311,8 @@ async function cargarDatosAutocompletados() {
 
 function renderizarCategorias(categorias) {
     const checklistDiv = document.getElementById('categorias-checklist');
+    
+    // 1. Iniciamos el HTML con la barra de progreso
     let html = `
         <div class="sticky-progress">
             <div class="d-flex justify-content-between align-items-center mb-2">
@@ -305,6 +325,7 @@ function renderizarCategorias(categorias) {
             </div>
         </div>`;
 
+    // 2. Iteramos por cada categoría
     categorias.forEach(cat => {
         html += `
         <div class="card info-card-modern mb-4">
@@ -318,16 +339,23 @@ function renderizarCategorias(categorias) {
             </div>
             <div id="cat-body-${cat.id}" class="info-card-content">`;
         
+        // 3. Iteramos por cada ítem dentro de la categoría
         cat.items.forEach((item) => {
-            // 1. DEFINICIÓN DE BOTONES SEGÚN TIPO_RESPUESTA
+            let badgesTecnicos = "";
+            if (item.codigo_sap) {
+                badgesTecnicos += `<span class="badge bg-light text-dark border me-1" style="font-size: 0.65rem;">SAP: ${item.codigo_sap}</span>`;
+            }
+            if (item.referencia_tecnica) {
+                badgesTecnicos += `<span class="badge bg-secondary me-1" style="font-size: 0.65rem; opacity: 0.8;">Ref: ${item.referencia_tecnica}</span>`;
+            }
+
             let botonesHtml = "";
             if (item.tipo_respuesta === 'BINARIO') {
                 botonesHtml = `
                     <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="s_${item.id}" value="S" data-item-id="${item.id}">
                     <label class="btn btn-outline-success" for="s_${item.id}">SÍ</label>
                     <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="n_${item.id}" value="N" data-item-id="${item.id}">
-                    <label class="btn btn-outline-danger" for="n_${item.id}">NO</label>
-                `;
+                    <label class="btn btn-outline-danger" for="n_${item.id}">NO</label>`;
             } else {
                 botonesHtml = `
                     <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="b_${item.id}" value="B" data-item-id="${item.id}">
@@ -335,11 +363,9 @@ function renderizarCategorias(categorias) {
                     <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="r_${item.id}" value="R" data-item-id="${item.id}">
                     <label class="btn btn-outline-warning" for="r_${item.id}">REG.</label>
                     <input type="radio" class="btn-check item-radio" name="item_${item.id}" id="m_${item.id}" value="M" data-item-id="${item.id}">
-                    <label class="btn btn-outline-danger" for="m_${item.id}">MALO</label>
-                `;
+                    <label class="btn btn-outline-danger" for="m_${item.id}">MALO</label>`;
             }
 
-            // 2. DEFINICIÓN DEL SWITCH SI EL ÍTEM ES OPCIONAL
             let switchHtml = "";
             if (item.es_opcional) {
                 switchHtml = `
@@ -349,23 +375,19 @@ function renderizarCategorias(categorias) {
                         <label class="form-check-label small text-muted fw-bold" for="sw_${item.id}" style="font-size: 0.75rem;">
                             ESTE EQUIPO CUENTA CON ESTE COMPONENTE
                         </label>
-                    </div>
-                `;
+                    </div>`;
             }
 
-            // 3. CONSTRUCCIÓN DEL HTML FINAL DEL ÍTEM
             html += `
             <div class="checklist-row px-2 py-3 border-bottom" id="row_${item.id}">
-                <div class="item-info mb-1" style="font-weight: 700; color: #2d3748;">
-                    ${item.nombre} ${item.es_critico ? '<span class="text-danger">*</span>' : ''}
+                <div class="item-info mb-1" style="font-weight: 700; color: #2d3748; display: flex; flex-direction: column;">
+                    <span style="font-size: 0.95rem;">${item.nombre} ${item.es_critico ? '<span class="text-danger">*</span>' : ''}</span>
+                    <div class="mt-1">${badgesTecnicos}</div> 
                 </div>
-
                 ${switchHtml}
-
                 <div class="btn-group-mobile" id="cont_botones_${item.id}" style="transition: opacity 0.3s ease;">
                     ${botonesHtml}
                 </div>
-                
                 <input type="text" class="form-control item-observacion mt-2" 
                     id="obs_${item.id}" 
                     data-item-id="${item.id}" 
@@ -373,13 +395,15 @@ function renderizarCategorias(categorias) {
                     style="border-radius: 8px; font-size: 0.85rem;">
             </div>`;
         });
-        html += `</div></div>`;
-    });
 
+        html += `</div></div>`; // Cerramos el cuerpo y la tarjeta de la categoría
+    }); // <--- AQUÍ ESTABA EL ERROR: Faltaba cerrar este forEach
+
+    // 4. Inyectamos el HTML final en el DOM
     checklistDiv.innerHTML = html;
 
-    // RE-VINCULAR EVENTOS
-// 1. LISTENERS PARA RADIOS (BUENO/REG/MAL o SÍ/NO)
+    // 5. RE-VINCULAR EVENTOS
+    // Listeners para radios
     document.querySelectorAll('.item-radio').forEach(radio => {
         radio.addEventListener('change', () => {
             if (typeof actualizarChecklist === 'function') actualizarChecklist();
@@ -387,14 +411,14 @@ function renderizarCategorias(categorias) {
         });
     });
     
-    // 2. LISTENERS PARA OBSERVACIONES (HALLAZGOS)
+    // Listeners para observaciones
     document.querySelectorAll('.item-observacion').forEach(input => {
         input.addEventListener('input', () => {
             if (typeof actualizarChecklist === 'function') actualizarChecklist();
         });
     });
 
-    // 3. LISTENERS PARA SWITCHES (APLICA / NO APLICA)
+    // Listeners para switches (Aplica / No Aplica)
     document.querySelectorAll('.switch-aplica').forEach(sw => {
         sw.addEventListener('change', function() {
             const itemId = this.dataset.itemId;
@@ -402,7 +426,6 @@ function renderizarCategorias(categorias) {
             const inputObs = document.getElementById(`obs_${itemId}`);
             
             if (!this.checked) {
-                // ESTADO: NO APLICA
                 if (contBotones) {
                     contBotones.style.opacity = "0.3";
                     contBotones.style.pointerEvents = "none";
@@ -410,15 +433,10 @@ function renderizarCategorias(categorias) {
                 if (inputObs) {
                     inputObs.value = "N/A - El equipo no cuenta con este componente";
                     inputObs.readOnly = true;
-                    inputObs.style.backgroundColor = "#f7fafc"; // Gris claro para indicar bloqueo
+                    inputObs.style.backgroundColor = "#f7fafc";
                 }
-                
-                // Desmarcar cualquier opción seleccionada anteriormente
-                document.querySelectorAll(`input[name="item_${itemId}"]`).forEach(r => {
-                    r.checked = false;
-                });
+                document.querySelectorAll(`input[name="item_${itemId}"]`).forEach(r => r.checked = false);
             } else {
-                // ESTADO: APLICA (Vuelve a la normalidad)
                 if (contBotones) {
                     contBotones.style.opacity = "1";
                     contBotones.style.pointerEvents = "auto";
@@ -429,8 +447,6 @@ function renderizarCategorias(categorias) {
                     inputObs.style.backgroundColor = "#ffffff";
                 }
             }
-            
-            // Forzamos actualización para que la barra de progreso y el JSON de resultados se enteren
             if (typeof actualizarChecklist === 'function') actualizarChecklist();
             if (typeof actualizarBarra === 'function') actualizarBarra();
         });

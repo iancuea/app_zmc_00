@@ -84,18 +84,41 @@ def crear_inspeccion(request):
                         novedades=inspeccion.observaciones
                     )
                     
-                    # Lógica de Mantención y Próxima Meta
-                    nueva_meta = inspeccion.km_registro
-                    if inspeccion.renovó_aceite:
-                        nueva_meta = inspeccion.km_registro + inspeccion.camion.intervalo_mantencion
+                    # --- NUEVA LÓGICA DE MANTENCIÓN Y PRÓXIMA META (KAUFMANN/FTL) ---
+                    intervalo_base = 20000 
 
+                    if inspeccion.camion.modelo:
+                        if inspeccion.camion.modelo.marca == 'Mercedes-Benz':
+                            intervalo_base = 40000  
+                        else:
+                            intervalo_base = 30000  
+
+                    # Ajuste por Tipo de Operación
+                    if inspeccion.camion.tipo_operacion == 'SEVERO':
+                        intervalo_base = intervalo_base * 0.25  
+                    elif inspeccion.camion.tipo_operacion == 'MIXTO':
+                        intervalo_base = intervalo_base * 0.5   
+
+                    # Cálculo de la meta según el tipo de reporte
+                    if inspeccion.tipo_inspeccion == 'DIARIO':
+                        if inspeccion.renovó_aceite:
+                            nueva_meta = inspeccion.km_registro + intervalo_base
+                        else:
+                            # Si es diario sin cambio de aceite, busca la meta anterior
+                            ultima_m = Mantencion.objects.filter(camion=inspeccion.camion).last()
+                            nueva_meta = ultima_m.km_proxima_mantencion if ultima_m else inspeccion.km_registro
+                    else:
+                        # Si es una preventiva (SM1, SM2, etc.), se setea la nueva meta obligatoriamente
+                        nueva_meta = inspeccion.km_registro + intervalo_base
+
+                    # Guardar la mantención técnica en el historial
                     nueva_mantencion = Mantencion.objects.create(
                         camion=inspeccion.camion,
                         taller='ZMC',
                         fecha_mantencion=timezone.now().date(),
                         km_mantencion=inspeccion.km_registro,
                         km_proxima_mantencion=nueva_meta,
-                        observaciones=f"Checklist realizado por {inspeccion.responsable}."
+                        observaciones=f"Servicio {inspeccion.tipo_inspeccion} realizado por {inspeccion.responsable}."
                     )
 
                     # Actualizar KM actual del camión
@@ -192,15 +215,38 @@ def api_datos_autocompletado(request, camion_id):
         camion = get_object_or_404(Camion, id_camion=camion_id)
         datos = obtener_datos_camion_autocompletado(camion)
         
+        # --- NUEVA LÓGICA DE SUGERENCIA ---
+        sugerencia = "DIARIO"
+        paquetes_sugeridos = []
+        
+        # Buscamos cuántas mantenciones preventivas tiene este camión
+        conteo_preventivas = Inspeccion.objects.filter(
+            camion=camion
+        ).exclude(tipo_inspeccion='DIARIO').count()
+        
+        if camion.modelo:
+            # Calculamos la posición en el ciclo (ej: 1 al 8 o 1 al 16)
+            posicion = (conteo_preventivas % CronogramaPlan.objects.filter(modelo=camion.modelo).count()) + 1
+            
+            plan = CronogramaPlan.objects.filter(
+                modelo=camion.modelo, 
+                posicion_ciclo=posicion
+            ).first()
+            
+            if plan:
+                paquetes_sugeridos = plan.paquetes_json # Ej: ["SM2", "MB1"]
+                sugerencia = f"Sugerido: {', '.join(paquetes_sugeridos)}"
+
         return JsonResponse({
             'success': True,
-            'datos': datos
+            'datos': datos,
+            'sugerencia_mantenimiento': {
+                'texto': sugerencia,
+                'paquetes': paquetes_sugeridos
+            }
         })
     except Exception as e:
-        return JsonResponse({
-            'success': False,
-            'error': str(e)
-        }, status=400)
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)
 
 @require_http_methods(["GET"])
 def api_categorias_por_tipo(request, tipo_inspeccion):
@@ -215,37 +261,47 @@ def api_categorias_por_tipo(request, tipo_inspeccion):
     """
     API que retorna todas las categorías de checklist
     """
+    camion_id = request.GET.get('camion_id') # Enviamos el ID por parámetro
+    
     try:
-        categorias = CategoriaChecklist.objects.filter(
-            Q(filtro_tipo=tipo_inspeccion) | Q(filtro_tipo='AMBOS')
-        ).prefetch_related('items').order_by('orden')
+        # Filtro base por categoría
+        # Si es una mantención preventiva, el 'tipo_inspeccion' vendrá como "SM2", "SM1", etc.
+        
+        if tipo_inspeccion == 'DIARIO':
+            q_items = Q(nivel_servicio='DIARIO')
+        else:
+            # Lógica de Herencia: Si es SM2, traemos tareas de SM1 y SM2
+            # Determinamos los niveles a cargar (esto depende de cómo nombres tus niveles)
+            niveles_a_cargar = [tipo_inspeccion]
+            if "SM" in tipo_inspeccion:
+                num = int(tipo_inspeccion.replace("SM", ""))
+                niveles_a_cargar = [f"SM{i}" for i in range(1, num + 1)]
+            
+            q_items = Q(nivel_servicio__in=niveles_a_cargar)
+            if camion_id:
+                camion = Camion.objects.get(id_camion=camion_id)
+                q_items &= Q(modelo=camion.modelo)
+
+        categorias = CategoriaChecklist.objects.all().order_by('orden')
         
         categorias_con_items = []
         for cat in categorias:
-            items = ItemChecklist.objects.filter(categoria=cat).values(
-                'id', 
-                'nombre', 
-                'es_critico', 
-                'tipo_respuesta',
-                'es_opcional'  # <-- AGREGAR ESTO
-            )            
-            cat_data = {
-                'id': cat.id,
-                'nombre': cat.nombre,
-                'orden': cat.orden,
-                'items': list(items)
-            }
-            categorias_con_items.append(cat_data)
+            # Filtramos ítems dinámicamente según modelo y nivel
+            items = ItemChecklist.objects.filter(
+                q_items, 
+                categoria=cat
+            ).values('id', 'nombre', 'es_critico', 'tipo_respuesta', 'es_opcional', 'referencia_tecnica', 'codigo_sap')
+            
+            if items.exists():
+                categorias_con_items.append({
+                    'id': cat.id,
+                    'nombre': cat.nombre,
+                    'items': list(items)
+                })
         
-        return JsonResponse({
-            'success': True,
-            'categorias': categorias_con_items
-        })
+        return JsonResponse({'success': True, 'categorias': categorias_con_items})
     except Exception as e:
-        return JsonResponse({
-            'success': False,
-            'error': str(e)
-        }, status=400)
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)
 
 @require_http_methods(["GET"])
 def api_remolque_asignado(request, camion_id):
