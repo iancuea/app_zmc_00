@@ -45,8 +45,8 @@ def obtener_datos_camion_autocompletado(camion):
         'conductor_antiguedad': 'N/A',
         'fecha_control': timezone.now().strftime('%d/%m/%Y'),
         'apto_trabajar': 'SÍ',
-        'camion_marca': camion.marca or 'N/A',
-        'camion_modelo': camion.modelo or 'N/A',
+        'camion_marca': str(camion.marca) if camion.marca else 'N/A',
+        'camion_modelo': str(camion.modelo) if camion.modelo else 'N/A',
         'camion_patente': camion.patente,
         'camion_anio': camion.anio or 'N/A',
         'camion_odometro': estado.kilometraje if estado else 0,
@@ -95,8 +95,8 @@ def obtener_datos_camion_autocompletado(camion):
         datos.update({
             'tiene_remolque': True,
             'remolque_id': rem.id_remolque,
-            'remolque_marca': rem.marca or 'N/A',
-            'remolque_modelo': rem.modelo or 'N/A',
+            'remolque_marca': str(rem.marca) if rem.marca else 'N/A',
+            'remolque_modelo': str(rem.modelo) if rem.modelo else 'N/A',
             'remolque_patente': rem.patente,
             'remolque_anio': rem.anio or 'N/A', # Agregado
             'remolque_capacidad': str(rem.capacidad_carga) if rem.capacidad_carga else 'N/A',

@@ -7,9 +7,21 @@ from django import forms
 from .models import Inspeccion, ResultadoItem, RegistroDiario
 from django.core.exceptions import ObjectDoesNotExist
 
+
+
 class InspeccionForm(forms.ModelForm):
     """Formulario para crear inspecciones con filtrado dinámico de categorías según tipo."""
-    
+    OPCIONES_SERVICIO = [
+        ('DIARIO', 'Checklist Diario'),
+        ('TECNICO', 'Mantención Técnica General'),
+        # Servicios Freightliner / Mercedes
+        ('SM1', 'Servicio SM1 (Chasis)'),
+        ('SM2', 'Servicio SM2 (Chasis)'),
+        ('SC1', 'Servicio Cummins SC1 (Motor)'),
+        ('MB1', 'Servicio Detroit MB1 (Motor)'),
+        ('ST1', 'Servicio Allison ST1 (Transmisión)'),
+    ]
+
     class Meta:
         model = Inspeccion
         fields = ['tipo_inspeccion', 'camion', 'remolque', 'km_registro', 'responsable', 'es_apto_operar', 'observaciones']        
@@ -87,5 +99,6 @@ class InspeccionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Remolque no es requerido y se auto-llena
+        self.fields['tipo_inspeccion'].choices = self.OPCIONES_SERVICIO
         self.fields['remolque'].required = False
-        self.fields['remolque'].disabled = True  # No editable, auto-llenado
+        self.fields['remolque'].disabled = True
