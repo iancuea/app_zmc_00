@@ -452,3 +452,28 @@ function renderizarCategorias(categorias) {
         });
     });
 }
+
+function seleccionarVehiculoRapido(id, patente) {
+    // 1. Marcar tarjeta seleccionada
+    document.querySelectorAll('.truck-select-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById(`card-${id}`).classList.add('selected');
+
+    // 2. Llenar el campo oculto
+    document.getElementById('id_camion').value = id;
+
+    // 3. Mostrar formulario y disparar la lógica de Kaufmann
+    const contenedor = document.getElementById('formulario-inspeccion-contenedor');
+    contenedor.style.display = 'block';
+    
+    cargarDatosAutocompletados();
+
+    // 4. Scroll elegante (con el margen que querías)
+    setTimeout(() => {
+        const offset = 90; // El alto de tu barra + un poquito más
+        const elementPosition = contenedor.getBoundingClientRect().top + window.pageYOffset;
+        window.scrollTo({
+            top: elementPosition - offset,
+            behavior: 'smooth'
+        });
+    }, 100);
+}

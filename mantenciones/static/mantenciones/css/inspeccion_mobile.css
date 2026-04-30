@@ -274,3 +274,69 @@ select#id_camion {
 .modal-backdrop {
     background-color: rgba(0, 0, 0, 0.7) !important;
 }
+
+.truck-select-card {
+    border-radius: 15px;
+    background: #ffffff;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: 2px solid transparent !important;
+}
+
+.truck-select-card:active {
+    transform: scale(0.95);
+    background: #f1f5f9;
+}
+
+.truck-select-card.selected {
+    border-color: var(--primary-zmc) !important;
+    background: #eef2ff;
+}
+
+.patente-text {
+    font-size: 1.1rem;
+    color: #1e293b;
+    font-weight: 900;
+}
+
+.truck-icon {
+    font-size: 1.5rem;
+}
+
+.truck-select-card:active {
+    transform: scale(0.92);
+}
+
+.truck-select-card.selected {
+    border: 2px solid #2563eb !important; /* Color primario ZMC */
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2) !important;
+}
+
+/* Para que el formulario aparezca de forma elegante */
+#formulario-inspeccion-contenedor {
+    will-change: opacity;
+}
+
+/* En inspeccion_mobile.css */
+
+
+
+#selector-vehiculo-grid {
+    /* Un pequeño margen interno para que el texto no toque la barra */
+    padding-top: 15px; 
+}
+
+.navbar-pro {
+    position: fixed; /* Esto la saca del flujo y la deja fija al scroll */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1050; /* Para que siempre esté por encima de las tarjetas */
+    height: 70px; /* Ajusta esto al alto real de tu barra */
+    display: flex;
+    align-items: center;
+}   
+
+.content-wrapper {
+    padding-top: 85px; /* Debe ser un poco más que el alto de la barra (70px + 15px de aire) */
+}
