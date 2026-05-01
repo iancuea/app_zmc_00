@@ -8,167 +8,170 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mb-5">
-    <div class="card shadow-sm border-0" style="border-radius: 20px; overflow: hidden;">
-        <div class="card-header bg-dark text-white py-3">
-            <h3 class="mb-0 fs-5 text-center text-uppercase fw-800">📋 Registro de Inspección</h3>
+<div class="container-fluid p-0 bg-app" style="min-height: 100vh;">
+    <!-- PASO 1: BANNER Y SELECTOR DE VEHÍCULOS -->
+    <div style="background-color: #1e293b;">
+        <div class="py-3">
+            <h3 class="mb-0 fs-5 text-center text-uppercase fw-800 text-white">📋 Registro de Inspección</h3>
         </div>
-        <div class="card-body bg-light">
-            <div id="selector-vehiculo-grid" class="container mb-4">
-                <h5 class="text-muted fw-bold mb-3 small" style="letter-spacing: 1px;">SELECCIONE UNA UNIDAD</h5>
-                <div class="row g-2">
-                    {% for choice in form.camion.field.choices %}
-                        {% if choice.0 %}
-                            <div class="col-6">
-                                <div class="card truck-select-card h-100 border-0 shadow-sm" 
-                                    onclick="seleccionarVehiculoRapido('{{ choice.0 }}', '{{ choice.1 }}')"
-                                    id="card-{{ choice.0 }}">
-                                    <div class="card-body p-3 text-center">
-                                        <div style="font-size: 1.5rem;">🚛</div>
-                                        <div class="fw-bold mt-1 text-dark">{{ choice.1 }}</div>
-                                    </div>
-                                </div>
+    </div>
+
+    <div id="selector-vehiculo-grid" class="container-fluid px-3 py-4">
+        <h5 class="text-muted fw-bold mb-3 small" style="letter-spacing: 1px;">SELECCIONE UNA UNIDAD</h5>
+        <div class="row g-2">
+            {% for choice in form.camion.field.choices %}
+                {% if choice.0 %}
+                    <div class="col-6">
+                        <div class="card truck-select-card h-100 border-0 shadow-sm" 
+                            onclick="seleccionarVehiculoRapido('{{ choice.0 }}', '{{ choice.1 }}')"
+                            id="card-{{ choice.0 }}">
+                            <div class="card-body p-3 text-center">
+                                <div style="font-size: 1.5rem;">🚛</div>
+                                <div class="fw-bold mt-1 text-dark">{{ choice.1 }}</div>
                             </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- PASO 2: El formulario (Se activa tras el click) -->
+    <div id="formulario-inspeccion-contenedor" style="display: none;">
+        <!-- BANNER DEL FORMULARIO -->
+        <div style="background-color: #1e293b;">
+            <div class="py-3">
+                <h3 class="mb-0 fs-5 text-center text-uppercase fw-800 text-white">📋 Registro de Inspección</h3>
             </div>
+        </div>
 
-            <div id="formulario-inspeccion-contenedor" style="display: none;">
-                <div class="container">
-                    <div class="card shadow-sm border-0" style="border-radius: 20px; overflow: hidden;">
-                        <!-- El título ahora aparece aquí, como parte del Paso 2 -->
-                        <div class="card-header bg-dark text-white py-3">
-                            <h3 class="mb-0 fs-5 text-center text-uppercase fw-800">📋 Registro de Inspección</h3>
-                        </div>
-                        
-                        <div class="card-body bg-light">
-                            <form id="inspeccion-form" method="post">
-                                {% csrf_token %}
-                                <div style="display: none;">{{ form.camion }}</div>
-                <div class="info-card-modern mb-3">
-                    <div class="info-card-content">
-                        <div class="data-row">
-                            <span class="label">TIPO DE INSPECCIÓN</span>
-                            <div class="d-flex align-items-center justify-content-end" style="width: 60%;">
-                                {{ form.tipo_inspeccion }}
-                            </div>
-                        </div>
-                        
-                        <!-- Aquí aparecerá la sugerencia inteligente de Kaufmann -->
-                        <div id="sugerencia-mantencion-box" style="display: none; margin-top: 15px; border-top: 1px dashed #cbd5e0; padding-top: 10px;"></div>
-                    </div>
-                </div>
-
-                <div id="step-2" class="form-step" {% if form.errors %}style="display: block;"{% endif %}>
-                    <div id="datos-autocompletados" class="info-card-modern mb-4" style="display: none;">
-                        <div class="info-card-content">
-                            <div class="data-row">
-                                <span class="label">LUGAR ACTUAL</span>
-                                <input type="text" id="lugar-inspeccion" class="value-input" readonly>
-                            </div>
-                            
-                            <div class="data-row">
-                                <span class="label">CONDUCTOR</span>
-                                <input type="text" id="conductor-nombre" class="value-input" readonly>
-                                <input type="hidden" name="conductor_nombre_full" id="conductor-nombre-full">
-                            </div>
-
-                            <div id="seccion-remolque" class="data-row-special" style="display: none;">
-                                <div class="d-flex justify-content-between align-items-center w-100">
-                                    <span class="label-special">🚛 REMOLQUE</span>
-                                    <input type="text" id="remolque-patente" class="value-input-special" readonly>
-                                </div>
-                                <input type="hidden" name="remolque" id="id_remolque">
-                            </div>
-                        </div>
-                    </div>
-
-                   <div class="info-card-modern {% if form.km_registro.errors %}border-danger-zmc{% endif %}">
-                        <div class="info-card-content">
-                            <div class="data-row">
-                                <span class="label">KM ACTUAL (ODÓMETRO)</span>
-                                {{ form.km_registro }}
-                            </div>
-
-                            <div class="status-container" style="padding: 8px 12px; margin: 5px 0 10px 0; border-radius: 8px; background: #f8fafc;">
-                                
-                                <small id="km-referencia-hint" style="color: #718096; font-weight: 600; font-size: 0.7rem; display: block;">
-                                    📌 SELECCIONE UN VEHÍCULO PARA VER EL KM ACTUAL.
-                                </small>
-
-                                {% if form.km_registro.errors %}
-                                    <div class="error-alert-box" style="margin-top: 5px; border-top: 1px solid #fed7d7; padding-top: 5px;">
-                                        {% for error in form.km_registro.errors %}
-                                            <small style="color: #e53e3e; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; display: flex; align-items: center;">
-                                                <i class="bi bi-exclamation-triangle-fill me-1"></i> {{ error }}
-                                            </small>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-
-                            <div class="data-row">
-                                <span class="label">RESPONSABLE</span>
-                                {{ form.responsable }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-               <div class="info-card-modern mb-4">
-                    <div class="info-card-content">
-                        <div class="data-row">
-                            <span class="label">¿APTO PARA OPERAR?</span>
-                            <div class="form-check form-switch m-0">
-                                {{ form.es_apto_operar }}
-                            </div>
-                        </div>
-                        
-                        <div class="data-row">
-                            <span class="label">¿CAMBIO DE ACEITE?</span>
-                            <div class="form-check form-switch m-0">
-                                {{ form.renovó_aceite }}
-                            </div>
+        <form id="inspeccion-form" method="post" class="container-fluid px-3 py-4">
+            {% csrf_token %}
+            <div style="display: none;">{{ form.camion }}</div>
+            
+            <div class="info-card-modern mb-3">
+                <div class="info-card-content">
+                    <div class="data-row">
+                        <span class="label">TIPO DE INSPECCIÓN</span>
+                        <div class="d-flex align-items-center justify-content-end" style="width: 60%;">
+                            {{ form.tipo_inspeccion }}
                         </div>
                     </div>
                     
-                    <div class="p-3 bg-light border-top">
-                        <span class="label d-block mb-2">OBSERVACIONES GENERALES</span>
-                        {{ form.observaciones }}
-                    </div>
+                    <!-- Aquí aparecerá la sugerencia inteligente de Kaufmann -->
+                    <div id="sugerencia-mantencion-box" style="display: none; margin-top: 15px; border-top: 1px dashed #cbd5e0; padding-top: 10px;"></div>
                 </div>
-
-                <div id="step-4" class="form-step" {% if form.errors %}style="display: block;"{% endif %}>
-                    <div id="categorias-checklist" class="mt-5">
-                        <div class="text-center py-5">
-                            <div class="spinner-border text-primary mb-2" role="status"></div>
-                            <p class="text-muted">Esperando selección de camión...</p>
-                        </div>
-                    </div>
-                </div>
-
-                <input type="hidden" id="resultados-checklist" name="resultados_checklist" value="[]">
-
-                <div class="content-spacer" style="height: 100px;"></div>
-
-                <div class="sticky-bottom-actions">
-                    <div class="d-flex flex-column">
-                        <button type="submit" class="btn-finalizar-pro">
-                            <span>💾</span> FINALIZAR Y ENVIAR PDF
-                        </button>
-                        
-                        <div class="d-flex gap-2">
-                            <a href="{% url 'core:camion_list' %}" class="btn-secundario-discreto">
-                                ✖ CANCELAR
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </form>
             </div>
-        </div>
+
+            <div id="step-2" class="form-step" {% if form.errors %}style="display: block;"{% endif %}>
+                <div id="datos-autocompletados" class="info-card-modern mb-4" style="display: none;">
+                    <div class="info-card-content">
+                        <div class="data-row">
+                            <span class="label">LUGAR ACTUAL</span>
+                            <input type="text" id="lugar-inspeccion" class="value-input" readonly>
+                        </div>
+                        
+                        <div class="data-row">
+                            <span class="label">CONDUCTOR</span>
+                            <input type="text" id="conductor-nombre" class="value-input" readonly>
+                            <input type="hidden" name="conductor_nombre_full" id="conductor-nombre-full">
+                        </div>
+
+                        <div id="seccion-remolque" class="data-row-special" style="display: none;">
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <span class="label-special">🚛 REMOLQUE</span>
+                                <input type="text" id="remolque-patente" class="value-input-special" readonly>
+                            </div>
+                            <input type="hidden" name="remolque" id="id_remolque">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card-modern {% if form.km_registro.errors %}border-danger-zmc{% endif %}">
+                    <div class="info-card-content">
+                        <div class="data-row">
+                            <span class="label">KM ACTUAL (ODÓMETRO)</span>
+                            {{ form.km_registro }}
+                        </div>
+
+                        <div class="status-container" style="padding: 8px 12px; margin: 5px 0 10px 0; border-radius: 8px; background: #f8fafc;">
+                            
+                            <small id="km-referencia-hint" style="color: #718096; font-weight: 600; font-size: 0.7rem; display: block;">
+                                📌 SELECCIONE UN VEHÍCULO PARA VER EL KM ACTUAL.
+                            </small>
+
+                            {% if form.km_registro.errors %}
+                                <div class="error-alert-box" style="margin-top: 5px; border-top: 1px solid #fed7d7; padding-top: 5px;">
+                                    {% for error in form.km_registro.errors %}
+                                        <small style="color: #e53e3e; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; display: flex; align-items: center;">
+                                            <i class="bi bi-exclamation-triangle-fill me-1"></i> {{ error }}
+                                        </small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="data-row">
+                            <span class="label">RESPONSABLE</span>
+                            {{ form.responsable }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card-modern mb-4">
+                <div class="info-card-content">
+                    <div class="data-row">
+                        <span class="label">¿APTO PARA OPERAR?</span>
+                        <div class="form-check form-switch m-0">
+                            {{ form.es_apto_operar }}
+                        </div>
+                    </div>
+                    
+                    <div class="data-row">
+                        <span class="label">¿CAMBIO DE ACEITE?</span>
+                        <div class="form-check form-switch m-0">
+                            {{ form.renovó_aceite }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-3 bg-light border-top">
+                    <span class="label d-block mb-2">OBSERVACIONES GENERALES</span>
+                    {{ form.observaciones }}
+                </div>
+            </div>
+
+            <!-- SECCIÓN CHECKLIST: Ancho completo sin márgenes -->
+            <div class="checklist-section-wrapper container-fluid p-0 mt-4">
+                <div id="categorias-checklist" class="px-3">
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary mb-2" role="status"></div>
+                        <p class="text-muted">Esperando selección de camión...</p>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" id="resultados-checklist" name="resultados_checklist" value="[]">
+
+            <div class="content-spacer" style="height: 100px;"></div>
+
+            <div class="sticky-bottom-actions">
+                <div class="d-flex flex-column">
+                    <button type="submit" class="btn-finalizar-pro">
+                        <span>💾</span> FINALIZAR Y ENVIAR PDF
+                    </button>
+                    
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'core:camion_list' %}" class="btn-secundario-discreto">
+                            ✖ CANCELAR
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
+    
 </div>
 <div class="modal fade" id="modalError" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -218,6 +221,15 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Opción 2: Círculo de progreso flotante -->
+<div id="floating-progress-container" class="d-none" onclick="irAlFaltante()" style="cursor: pointer;">
+    <svg viewBox="0 0 36 36" class="circular-chart">
+        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+        <path id="circle-progress-path" class="circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+        <text x="18" y="20.35" class="percentage" id="circle-text">0%</text>
+    </svg>
 </div>
 
 {% endblock %}

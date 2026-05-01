@@ -18,21 +18,99 @@ function actualizarBarra() {
     if (total === 0) return;
 
     const perc = Math.round((respondidos / total) * 100);
+    
+    // 1. Elementos originales (los que ya tenías)
     const bar = document.getElementById('checklist-progress');
     const texto = document.getElementById('progreso-texto');
+
+    // 2. Nuevos elementos (Sticky y Círculo)
+    const stickyBar = document.getElementById('sticky-progress-bar');
+    const stickyWrapper = document.getElementById('sticky-progress-wrapper');
+    const circlePath = document.getElementById('circle-progress-path');
+    const circleText = document.getElementById('circle-text');
+    const floatingContainer = document.getElementById('floating-progress-container');
+
+    // --- ACTUALIZACIÓN DE ESTADOS ---
 
     if (bar && texto) {
         bar.style.width = perc + '%';
         texto.innerText = perc + '%';
         
+        // Lógica de colores que ya tenías
         if (perc < 40) {
             bar.className = "progress-bar progress-bar-striped progress-bar-animated bg-danger";
+            if(stickyBar) stickyBar.style.backgroundColor = "#dc3545"; // Rojo
         } else if (perc < 99) {
             bar.className = "progress-bar progress-bar-striped progress-bar-animated bg-warning";
+            if(stickyBar) stickyBar.style.backgroundColor = "#ffc107"; // Amarillo
         } else {
             bar.className = "progress-bar bg-success"; 
+            if(stickyBar) stickyBar.style.backgroundColor = "#198754"; // Verde
             if (window.navigator.vibrate) window.navigator.vibrate([30, 50, 30]);
         }
+    }
+
+    // --- ACTUALIZACIÓN DE LOS NUEVOS INDICADORES ---
+
+    // Mostrar indicadores solo si hay progreso
+    if (perc > 0) {
+        if (stickyWrapper) stickyWrapper.classList.remove('d-none');
+        if (floatingContainer) floatingContainer.classList.remove('d-none');
+    }
+
+    // Actualizar Barra Sticky Superior
+    if (stickyBar) {
+        stickyBar.style.width = perc + '%';
+    }
+
+    // Actualizar Círculo Flotante
+    if (circlePath) {
+        circlePath.setAttribute('stroke-dasharray', `${perc}, 100`);
+    }
+    if (circleText) {
+        circleText.textContent = perc + "%";
+    }
+}
+
+function irAlFaltante() {
+    const rows = document.querySelectorAll('.checklist-row');
+    let primerFaltante = null;
+
+    // Buscamos el primer ítem que no esté listo
+    for (let row of rows) {
+        const radioMarcado = row.querySelector('.item-radio:checked');
+        const switchAplica = row.querySelector('.switch-aplica');
+        const esAplicable = switchAplica ? switchAplica.checked : true;
+
+        // Si el ítem aplica pero no tiene ninguna opción seleccionada
+        if (esAplicable && !radioMarcado) {
+            primerFaltante = row;
+            break; // Nos detenemos en el primero que encontremos
+        }
+    }
+
+    if (primerFaltante) {
+        // 1. Calculamos la posición con el offset del Navbar (80px o 90px)
+        const offset = 85; 
+        const elementPosition = primerFaltante.getBoundingClientRect().top + window.pageYOffset;
+        
+        window.scrollTo({
+            top: elementPosition - offset,
+            behavior: 'smooth'
+        });
+
+        // 2. Feedback visual: Resaltamos la fila para que el mecánico la vea rápido
+        primerFaltante.classList.add('highlight-missing');
+        
+        // Quitamos el resaltado después de un segundo
+        setTimeout(() => {
+            primerFaltante.classList.remove('highlight-missing');
+        }, 1500);
+
+    } else {
+        // Si no falta nada, damos un pequeño feedback de "Todo listo"
+        if (window.navigator.vibrate) window.navigator.vibrate(50);
+        console.log("¡Todo el checklist está completo!");
     }
 }
 
