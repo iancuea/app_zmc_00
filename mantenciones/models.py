@@ -207,4 +207,81 @@ class RegistroDiario(models.Model):
         estado = "APTO" if self.es_apto else "NO APTO"
         return f"{self.vehiculo.patente} - {self.fecha.strftime('%d/%m/%Y')} - {estado}"
     
+#REPUESTOS Y COMPONENTES PARA CHECKLIST DE MANTENCION    
+class Componente(models.Model):
+    CATEGORIA_CHOICES = [
+        ('MOTOR', 'Motor'),
+        ('TRANSMISION', 'Transmisión'),
+        ('DIFERENCIAL', 'Diferencial'),
+        ('DIRECCION', 'Dirección'),
+        ('CHASIS', 'Chasis'),
+    ]
+
+    nombre = models.CharField(max_length=100)
+    categoria = models.CharField(max_length=50, choices=CATEGORIA_CHOICES)
+    capacidad_fluido = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    especificacion_fluido = models.CharField(max_length=100, null=True, blank=True, help_text="Ej: DTFR 15C110")
+    # Relación con el modelo de vehículo de la app core
+    modelo = models.ForeignKey('core.ModeloVehiculo', on_delete=models.CASCADE, related_name='componentes')
+
+    class Meta:
+        db_table = 'mantenciones_componente'
+        verbose_name = 'Componente'
+        verbose_name_plural = 'Componentes'
+
+    def __str__(self):
+        return f"{self.nombre} ({self.modelo.nombre})"
+
+class Repuesto(models.Model):
+    TIPO_CHOICES = [
+        ('FILTRO', 'Filtro'),
+        ('ACEITE', 'Aceite'),
+        ('GRASA', 'Grasa'),
+        ('EMPAQUETADURA', 'Empaquetadura'),
+        ('OTRO', 'Otro'),
+    ]
+
+    nombre = models.CharField(max_length=150)
+    codigo_zmc = models.CharField(max_length=50, unique=True, null=True, blank=True)
+    tipo = models.CharField(max_length=50, choices=TIPO_CHOICES, null=True, blank=True)
+    unidad_medida = models.CharField(max_length=20, default='UNIDAD')
+    stock_minimo = models.IntegerField(default=0)
+
+    class Meta:
+        db_table = 'mantenciones_repuesto'
+
+    def __str__(self):
+        return f"{self.nombre} [{self.codigo_zmc if self.codigo_zmc else 'S/C'}]"
+
+class KitComponente(models.Model):
+    PLAN_CHOICES = [
+        ('DIARIO', 'Diario'),
+        ('SM1', 'SM1'),
+        ('SM2', 'SM2'),
+        ('SM3', 'SM3'),
+        ('SM4', 'SM4'),
+    ]
+
+    componente = models.ForeignKey(Componente, on_delete=models.CASCADE, related_name='kits')
+    repuesto = models.ForeignKey(Repuesto, on_delete=models.CASCADE)
+    cantidad_necesaria = models.DecimalField(max_digits=6, decimal_places=2)
+    plan_asociado = models.CharField(max_length=20, choices=PLAN_CHOICES)
+
+    class Meta:
+        db_table = 'mantenciones_kit_componente'
+        verbose_name = 'Kit de Mantenimiento'
+
+class InsumoUtilizado(models.Model):
+    # Relación con tu tabla de inspecciones existente
+    inspeccion = models.ForeignKey('Inspeccion', on_delete=models.CASCADE, related_name='insumos_usados')
+    repuesto = models.ForeignKey(Repuesto, on_delete=models.PROTECT)
+    cantidad_usada = models.DecimalField(max_digits=8, decimal_places=2)
+    observacion = models.TextField(null=True, blank=True)
+
+    class Meta:
+        db_table = 'mantenciones_insumo_utilizado'
+        verbose_name = 'Insumo Utilizado'
+
+    def __str__(self):
+        return f"{self.cantidad_usada} {self.repuesto.unidad_medida} de {self.repuesto.nombre}"
     
