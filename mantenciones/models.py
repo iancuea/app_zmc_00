@@ -217,10 +217,10 @@ class Componente(models.Model):
         ('CHASIS', 'Chasis'),
     ]
 
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=500)
     categoria = models.CharField(max_length=50, choices=CATEGORIA_CHOICES)
     capacidad_fluido = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
-    especificacion_fluido = models.CharField(max_length=100, null=True, blank=True, help_text="Ej: DTFR 15C110")
+    especificacion_fluido = models.CharField(max_length=500, null=True, blank=True, help_text="Ej: DTFR 15C110")
     # Relación con el modelo de vehículo de la app core
     modelo = models.ForeignKey('core.ModeloVehiculo', on_delete=models.CASCADE, related_name='componentes')
 
