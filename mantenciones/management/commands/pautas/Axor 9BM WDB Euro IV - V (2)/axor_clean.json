@@ -1,0 +1,434 @@
+[
+  {
+    "modelo": "Axor",
+    "marca": "Mercedes-Benz",
+    "componentes": [
+      {
+        "nombre": "Aceite motor OM 906 LA / OM 926 LA (906.9 / 926.9)",
+        "categoria": "MOTOR",
+        "capacidad_fluido": 29.0,
+        "especificacion_fluido": "DTFR 15C100"
+      },
+      {
+        "nombre": "Aceite motor OM 457 LA (457.9)",
+        "categoria": "MOTOR",
+        "capacidad_fluido": 39.0,
+        "especificacion_fluido": "DTFR 15C110"
+      },
+      {
+        "nombre": "Refrigerante OM 906/926 LA sin retardador",
+        "categoria": "MOTOR",
+        "capacidad_fluido": 22.0,
+        "especificacion_fluido": "DTFR 29C120"
+      },
+      {
+        "nombre": "Refrigerante OM 906/926 LA con retardador R115 H",
+        "categoria": "MOTOR",
+        "capacidad_fluido": 40.0,
+        "especificacion_fluido": "DTFR 29C120"
+      },
+      {
+        "nombre": "Refrigerante OM 906/926 LA con retardador R115 HV",
+        "categoria": "MOTOR",
+        "capacidad_fluido": 37.0,
+        "especificacion_fluido": "DTFR 29C120"
+      },
+      {
+        "nombre": "Refrigerante OM 457 LA sin retardador",
+        "categoria": "MOTOR",
+        "capacidad_fluido": 33.5,
+        "especificacion_fluido": "DTFR 29C120"
+      },
+      {
+        "nombre": "Refrigerante OM 457 LA con retardador R115 H",
+        "categoria": "MOTOR",
+        "capacidad_fluido": 40.0,
+        "especificacion_fluido": "DTFR 29C120"
+      },
+      {
+        "nombre": "Refrigerante OM 457 LA con retardador R115 HV",
+        "categoria": "MOTOR",
+        "capacidad_fluido": 37.0,
+        "especificacion_fluido": "DTFR 29C120"
+      },
+      {
+        "nombre": "Caja MB G-85-6 (712.630 / 715.060)",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 9.0,
+        "especificacion_fluido": "DTFR 13B100"
+      },
+      {
+        "nombre": "Caja MB G 131-9 (715.57)",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 12.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 131-9 (715.57) con retardador",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 13.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 131-9 (715.57) con refrigerador de aceite",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 13.0,
+        "especificacion_fluido": "DTFR 13B100"
+      },
+      {
+        "nombre": "Caja MB G 131-9 (715.57) con refrigerador y retardador",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 14.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 210-16 / G 211-16 (715.500 / 715.510 / 715.517)",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 14.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 210-16 / G 211-16 con retardador",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 15.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 210-16 / G 211-16 con refrigerador de aceite",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 15.0,
+        "especificacion_fluido": "DTFR 13B100"
+      },
+      {
+        "nombre": "Caja MB G 210-16 / G 211-16 con refrigerador y retardador",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 16.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB PowerShift G 211-12 (715.350)",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 11.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB PowerShift G 211-12 con retardador",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 12.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB PowerShift G 211-12 con refrigerador de aceite",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 11.5,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB PowerShift G 211-12 con refrigerador y retardador",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 12.5,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 221-9 (715.567 / 715.568)",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 14.0,
+        "especificacion_fluido": "DTFR 13B100"
+      },
+      {
+        "nombre": "Caja MB G 221-9 (715.567 / 715.568) con retardador",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 15.0,
+        "especificacion_fluido": "DTFR 13B100"
+      },
+      {
+        "nombre": "Caja MB G 221-9 (715.567 / 715.568) con refrigerador de aceite",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 15.0,
+        "especificacion_fluido": "DTFR 13B100"
+      },
+      {
+        "nombre": "Caja MB G 221-9 (715.567 / 715.568) con refrigerador y retardador",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 16.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 221-9 (715.561)",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 12.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 221-9 (715.561) con retardador",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 13.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 221-9 (715.561) con refrigerador de aceite",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 13.0,
+        "especificacion_fluido": "DTFR 13B100"
+      },
+      {
+        "nombre": "Caja MB G 221-9 (715.561) con refrigerador y retardador",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 14.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 240-16 (715.520 / 715.527)",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 14.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 240-16 con retardador",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 15.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 240-16 con refrigerador de aceite",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 15.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 240-16 con refrigerador y retardador",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 16.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB PowerShift G 241-16 (715.535)",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 15.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB PowerShift G 241-16 con retardador",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 16.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB PowerShift G 281-12 (715.378)",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 16.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB PowerShift G 281-12 (715.378) con toma de fuerza",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 16.5,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 281-12 (715.372)",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 16.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 281-12 (715.372) con retardador",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 17.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 330-12 (715.388)",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 15.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 330-12 con retardador",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 16.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja MB G 330-12 con retardador y refrigerador de aceite",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 17.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja de transferencia VG 1400 (750.704 / 750.705)",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 7.5,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Caja de transferencia VG 1700 (750.864)",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 9.0,
+        "especificacion_fluido": "DTFR 13B110"
+      },
+      {
+        "nombre": "Retardador Voith R 115H",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 5.9,
+        "especificacion_fluido": "DTFR 13D110"
+      },
+      {
+        "nombre": "Retardador Voith R 115HV",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": 5.6,
+        "especificacion_fluido": "DTFR 13D110"
+      },
+      {
+        "nombre": "Liquido de embrague y mando hidraulico del cambio",
+        "categoria": "TRANSMISION",
+        "capacidad_fluido": null,
+        "especificacion_fluido": "DTFR 30B100"
+      },
+      {
+        "nombre": "Eje delantero AL7 (730.114 / 730.115) - mineral",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 7.0,
+        "especificacion_fluido": "DTFR 12B110"
+      },
+      {
+        "nombre": "Eje delantero AL7 (730.114 / 730.115) - sintetico",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 7.0,
+        "especificacion_fluido": "DTFR 12B140"
+      },
+      {
+        "nombre": "Eje trasero HL4 (741.934)",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 11.0,
+        "especificacion_fluido": "DTFR 12B110"
+      },
+      {
+        "nombre": "Eje trasero HD4 (741.935)",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 12.5,
+        "especificacion_fluido": "DTFR 12B110"
+      },
+      {
+        "nombre": "Eje trasero HD4 (771.180)",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 14.0,
+        "especificacion_fluido": "DTFR 12B110"
+      },
+      {
+        "nombre": "Eje trasero HD4 (771.181)",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 11.0,
+        "especificacion_fluido": "DTFR 12B110"
+      },
+      {
+        "nombre": "Eje trasero HL7/HD7 (740.8)",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 12.0,
+        "especificacion_fluido": "DTFR 12B130"
+      },
+      {
+        "nombre": "Grupo reductor epicicloidal HL7/HD7 (740.8) por lado",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 3.25,
+        "especificacion_fluido": "DTFR 12B130"
+      },
+      {
+        "nombre": "Eje trasero HL7/HD7 (748.21/23/24/26/27/7) corona 233 mm",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 8.0,
+        "especificacion_fluido": "DTFR 12B140"
+      },
+      {
+        "nombre": "Grupo reductor epicicloidal HL7/HD7 corona 233 mm por lado",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 3.25,
+        "especificacion_fluido": "DTFR 12B140"
+      },
+      {
+        "nombre": "Eje trasero HL7/HD7 (748.21/23/24/26/27) corona 300 mm",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 12.0,
+        "especificacion_fluido": "DTFR 12B140"
+      },
+      {
+        "nombre": "Grupo reductor epicicloidal HL7/HD7 corona 300 mm por lado",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 3.25,
+        "especificacion_fluido": "DTFR 12B140"
+      },
+      {
+        "nombre": "Eje trasero HL6 (746.210/213/230) hasta numero M138406",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 15.5,
+        "especificacion_fluido": "DTFR 12B110"
+      },
+      {
+        "nombre": "Eje trasero HL6 (746.210/213/230) desde numero M138407",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 11.5,
+        "especificacion_fluido": "DTFR 12B140"
+      },
+      {
+        "nombre": "Eje trasero HL7/HD7 (740.892 / 740.893)",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 12.0,
+        "especificacion_fluido": "DTFR 12B110"
+      },
+      {
+        "nombre": "Grupo reductor epicicloidal HL7/HD7 (740.892/893) por lado",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 3.25,
+        "especificacion_fluido": "DTFR 12B110"
+      },
+      {
+        "nombre": "Eje trasero HL8 (748.590)",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 14.0,
+        "especificacion_fluido": "DTFR 12B140"
+      },
+      {
+        "nombre": "Eje R440-13 VIN 9BM sin codigo ZC8 (746.230)",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 11.0,
+        "especificacion_fluido": "DTFR 12B140"
+      },
+      {
+        "nombre": "Eje R440-13 VIN 9BM con codigo ZC8 (746.230)",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 9.0,
+        "especificacion_fluido": "DTFR 12B140"
+      },
+      {
+        "nombre": "Eje trasero HL6/20 (741.710)",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 11.0,
+        "especificacion_fluido": "DTFR 12B110"
+      },
+      {
+        "nombre": "Carter arbol de paso eje delantero HD7 (740.26/27/7/8) - mineral",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 1.0,
+        "especificacion_fluido": "DTFR 12B130"
+      },
+      {
+        "nombre": "Carter arbol de paso eje delantero HD7 (740.26/27/7/8) - sintetico",
+        "categoria": "DIFERENCIAL",
+        "capacidad_fluido": 1.0,
+        "especificacion_fluido": "DTFR 12B140"
+      },
+      {
+        "nombre": "Liquido de direccion",
+        "categoria": "DIRECCION",
+        "capacidad_fluido": 5.55,
+        "especificacion_fluido": "236.3"
+      },
+      {
+        "nombre": "Lubricacion de chasis - componentes en general",
+        "categoria": "CHASIS",
+        "capacidad_fluido": null,
+        "especificacion_fluido": "DTFR 33B130"
+      }
+    ]
+  }
+]
