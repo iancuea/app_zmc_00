@@ -1,0 +1,838 @@
+{
+  "modelo": "Axor",
+  "marca": "Mercedes-Benz",
+  "items_checklist": [
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Servicio de aceite motor OM 457 LA con cambio de filtro",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "Pos: 00-3300-01 | 0.7 HH",
+      "codigo_sap": "A 000 180 29 09"
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Servicio de aceite motor OM 926 LA con cambio de filtro",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "Pos: 00-2951-01 | 0.5 HH",
+      "codigo_sap": "A 906 180 02 09"
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Verificar estado de saturación del filtro de aire",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.1 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Renovar elemento del filtro de combustible",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "Pos: 00-3651-01 | 0.2 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Renovar elemento del prefiltro de combustible con separador de agua (racor)",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "Pos: 00-3607-01 | 0.2 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Eliminar polvo de la válvula de evacuación del filtro de aire",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Verificar estado y tensión de la correa trapezoidal",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Limpiar el prefiltro de combustible (motor 906.9)",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Controlar nivel de líquido refrigerante y concentración de anticorrosivo/anticongelante",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Inspeccionar tubería de aspiración entre filtro de aire, intercooler y motor",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Sistema de escape: verificar fugas, estado y fijación",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Control de estado y estanqueidad del sistema de refrigeración y calefacción",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Renovar el filtro de aire",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "Pos: 00-3952-01 | 0.2 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Ajustar el juego de válvulas",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "Pos: 00-3674-01 | 1.2 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Renovar filtro secador de aire (cartucho granulado con separador de aceite)",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "Pos: 00-3701-02 | 0.2 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Renovar filtro de polvo del sistema de calefacción / aire acondicionado",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "Pos: 00-3670-01 | 0.1 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Renovar elemento del filtro de AdBlue (Euro IV / Euro V)",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "Pos: 00-4665 | 0.4 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Rellenar acumulador de presión de la unidad de alimentación de AdBlue",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "Pos: 00-4688 | 0.2 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "MOTOR",
+      "nombre": "Renovar el líquido refrigerante",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM4",
+      "referencia_tecnica": "Pos: 00-5109-01 | 0.5 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "TRANSMISION",
+      "nombre": "Verificar nivel de fluidos (motor, caja, dirección, eje trasero, embrague, eje delantero, transferencia)",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "TRANSMISION",
+      "nombre": "Control de estado y estanqueidad: caja de cambios, caja de transferencia y volquete de cabina",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "TRANSMISION",
+      "nombre": "Servicio de aceite de la caja manual (lubricante mineral)",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "Pos: 00-6450-01 | 0.4 HH | Solo mineral (LM)",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "TRANSMISION",
+      "nombre": "Servicio de aceite de la caja manual (lubricante sintético o mineral)",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "Pos: 00-6450-01 | 0.4 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "TRANSMISION",
+      "nombre": "Servicio de aceite de la caja de transferencia",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "0.3 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "TRANSMISION",
+      "nombre": "Servicio de aceite del retardador (lubricante mineral)",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "Pos: 00-6464-01 | 0.5 HH | Solo mineral (LM)",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "TRANSMISION",
+      "nombre": "Renovar aceite con filtro de aceite del retardador (lubricante sintético o mineral)",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "Pos: 00-5024 | 0.7 HH",
+      "codigo_sap": "A 000 430 12 69"
+    },
+    {
+      "categoria_nombre": "TRANSMISION",
+      "nombre": "Renovar líquido de frenos del acoplamiento hidráulico del embrague / Mando AGZ",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "Pos: 00-3664-01 | 0.3 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "DIFERENCIAL",
+      "nombre": "Servicio de aceite del eje delantero (lubricante mineral)",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "0.3 HH | Solo mineral (LM)",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "DIFERENCIAL",
+      "nombre": "Servicio de aceite del eje delantero (lubricante sintético o mineral)",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "0.3 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "DIFERENCIAL",
+      "nombre": "Servicio de aceite en el eje trasero (lubricante mineral)",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "Pos: 00-6550-01 | 0.3 HH por eje | Solo mineral (LM)",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "DIFERENCIAL",
+      "nombre": "Servicio de aceite en el eje trasero (lubricante sintético o mineral)",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "Pos: 00-6550-01 | 0.3 HH por eje",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "DIFERENCIAL",
+      "nombre": "Servicio de aceite cárter árbol de paso eje trasero",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "Pos: 00-5008-01 | 0.2 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "DIFERENCIAL",
+      "nombre": "Control de estado y estanqueidad de ejes delantero y trasero",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "DIFERENCIAL",
+      "nombre": "Eje de transmisión: verificar juego y desgaste de crucetas, buje desplazable y cojinete central",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "DIFERENCIAL",
+      "nombre": "Renovar grasa y retenes de cubos de rueda del eje delantero (freno disco)",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "Pos: 33-2309 | 5.1 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "DIFERENCIAL",
+      "nombre": "Renovar grasa y retenes de cubos de rueda del eje delantero (freno tambor)",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "Pos: 00-4039 | 3.0 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "DIFERENCIAL",
+      "nombre": "Renovar grasa y retenes de cubos de rueda del eje trasero propulsado (freno disco)",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "Pos: 00-4045-01 | 4.8 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "DIFERENCIAL",
+      "nombre": "Renovar grasa y retenes de cubos de rueda del eje trasero propulsado (freno tambor)",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "3.2 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "DIRECCION",
+      "nombre": "Renovar el líquido de dirección",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "Pos: 46-2195-01 | 1.1 HH",
+      "codigo_sap": "A 000 460 47 83"
+    },
+    {
+      "categoria_nombre": "DIRECCION",
+      "nombre": "Examinar estado del sistema mecánico de la dirección",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "DIRECCION",
+      "nombre": "Control de estado y estanqueidad del sistema de dirección hidráulica",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Realizar servicio de mantenimiento (procedimiento base)",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "Pos: 00-3000-01 | 1.6 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Realizar test breve con Star Diagnosis",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "Pos: 54-1011-01 | 0.4 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Elaborar datos del sistema Telligent",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Realizar trabajos de lubricación (manguetas, crucetas, ejes de frenos y enganche de remolque)",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "Pos: 00-6800-01 | 0.2 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Comprobar firme asiento de tornillos y tuercas; reapretar en caso necesario",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "Pos: 00-3701-02 | 1.0 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Reapretar componentes del eje delantero, trasero, adicional, suspensión de cabina y cintas de depósitos",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Examinar estado, funcionamiento, fijación y juego de la quinta rueda",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": true,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "Pos: 00-4068 | 0.5 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Examinar estado, funcionamiento, fijación y juego del enganche para remolque",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": true,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.2 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Examinar estado de los fuelles de suspensión neumática/mecánica",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Controlar la presión y el estado de los neumáticos",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Verificar desgaste de los forros de frenos (pastillas o balatas)",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Comprobar estado conexiones y roces de cables en motor de partida, alternador y baterías",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Inspeccionar tuberías, tubos flexibles y cables de sensores",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Inspeccionar depósitos, aparatos neumáticos e hidráulicos, AdBlue, amortiguadores y cubiertas",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Inspeccionar componentes del sistema eléctrico",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Verificar sistemas de señales y testigos de control",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Verificar limpiaparabrisas, sistema lavaparabrisas y limpiafaros",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Elevador neumático del eje de arrastre: examinar visualmente respecto a holgura, desgaste, grietas y deformaciones",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": true,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "0.1 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Comprobar juego de rodamientos de rueda en el eje delantero",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "Pos: 33-2013 | 0.8 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Comprobar juego de rodamientos de rueda en el eje trasero",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "Pos: 35-5197 | 1.3 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Comprobar estado del reajuste automático del freno de tambor",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": true,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "0.3 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Compresor de aire y resonador: reemplazar retén del compresor y del resonador (Modelo 3344 - 958.471/472/478)",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "Pos: 13-8201 | 0.5 HH",
+      "codigo_sap": "A 002 998 69 01"
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Comprobar estado del freno de adaptación automática de carga",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": true,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "0.8 HH",
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Control final: realizar prueba de ruta y verificar correcto funcionamiento de sistemas del vehículo",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    },
+    {
+      "categoria_nombre": "CHASIS",
+      "nombre": "Lavado del vehículo",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null,
+      "codigo_sap": null
+    }
+  ],
+  "repuestos": [
+    {
+      "nombre": "Filtro de aceite OM 900 (906 LA / 926 LA)",
+      "codigo_zmc": "A 906 180 02 09",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de aceite OM 457 LA",
+      "codigo_zmc": "A 000 180 29 09",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de aire WDB (Codigo M97) - variante 1",
+      "codigo_zmc": "A 004 094 74 04",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de aire WDB (Codigo M97) - variante 2",
+      "codigo_zmc": "A 004 094 35 04",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de aire WDB (Codigo M67 / MG8)",
+      "codigo_zmc": "A 004 094 24 04",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de aire 9BM (Codigo M63 / M97) - variante 1",
+      "codigo_zmc": "A 476 094 01 04",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de aire 9BM (Codigo M63 / M97) - variante 2",
+      "codigo_zmc": "A 004 094 35 04",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de aire 9BM (Codigo M63 / MJ4) - variante 1",
+      "codigo_zmc": "A 476 094 01 04",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de aire 9BM (Codigo M63 / MJ4) - variante 2",
+      "codigo_zmc": "A 004 094 35 04",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de aire 9BM (Codigo MY1)",
+      "codigo_zmc": "A 958 528 09 06",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de aire 9BM (Codigo M97) - variante 1",
+      "codigo_zmc": "A 004 094 74 04",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de aire 9BM (Codigo M97) con tapa",
+      "codigo_zmc": "A 003 094 96 04",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de combustible OM 457 LA",
+      "codigo_zmc": "A 541 090 02 51",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de combustible OM 900 (906 LA / 926 LA)",
+      "codigo_zmc": "A 000 090 15 51",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro separador de agua (racor) - variante 1",
+      "codigo_zmc": "A 000 477 99 15",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro separador de agua (racor) - variante 2",
+      "codigo_zmc": "A 000 477 01 03",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro separador de agua (racor) - variante 3 (9BM)",
+      "codigo_zmc": "A 958 477 00 15",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro AdBlue (sistema asistido por aire)",
+      "codigo_zmc": "A 000 142 02 89",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro AdBlue (sistema estándar)",
+      "codigo_zmc": "A 000 470 08 92",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro secador de aire con separador de aceite",
+      "codigo_zmc": "A 000 429 57 95",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro secador de aire sin separador de aceite",
+      "codigo_zmc": "A 000 430 09 69",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro del retardador 115HV",
+      "codigo_zmc": "A 000 430 12 69",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de polvo de la calefacción/ventilación (codigo SAH03)",
+      "codigo_zmc": "A 940 835 04 47",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de polvo de la calefacción/ventilación (codigo SAHF1)",
+      "codigo_zmc": "A 940 835 03 47",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de dirección hidráulica",
+      "codigo_zmc": "A 000 460 47 83",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Junta tapa de válvulas OM 457 LA (juego x6)",
+      "codigo_zmc": "A 457 016 02 21",
+      "tipo": "EMPAQUETADURA"
+    },
+    {
+      "nombre": "Junta tapa de válvulas OM 900 - tipo 1 (x1)",
+      "codigo_zmc": "A 000 016 05 21",
+      "tipo": "EMPAQUETADURA"
+    },
+    {
+      "nombre": "Junta tapa de válvulas OM 900 - tipo 2 (juego x7)",
+      "codigo_zmc": "A 906 016 00 80",
+      "tipo": "EMPAQUETADURA"
+    },
+    {
+      "nombre": "Retén maza eje delantero",
+      "codigo_zmc": "A 013 997 73 46",
+      "tipo": "EMPAQUETADURA"
+    },
+    {
+      "nombre": "Sello maza eje delantero",
+      "codigo_zmc": "A 943 334 00 80",
+      "tipo": "EMPAQUETADURA"
+    },
+    {
+      "nombre": "Retén de eje trasero no propulsado 150x125x15mm (x2)",
+      "codigo_zmc": "A 022 997 52 47 28",
+      "tipo": "EMPAQUETADURA"
+    },
+    {
+      "nombre": "Retén de eje trasero no propulsado 160.5x120.7x28.6mm (x2)",
+      "codigo_zmc": "A 386 997 72 47",
+      "tipo": "EMPAQUETADURA"
+    },
+    {
+      "nombre": "Sello maza eje trasero no propulsado (x2)",
+      "codigo_zmc": "A 695 392 00 80",
+      "tipo": "EMPAQUETADURA"
+    },
+    {
+      "nombre": "Retén resonador compresor de aire",
+      "codigo_zmc": "A 002 998 69 01",
+      "tipo": "EMPAQUETADURA"
+    }
+  ]
+}
