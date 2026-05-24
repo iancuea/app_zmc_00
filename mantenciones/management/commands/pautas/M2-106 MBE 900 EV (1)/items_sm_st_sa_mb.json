@@ -1,0 +1,2989 @@
+[
+  {
+    "modelo": "M2-106 MBE 900",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "SIM",
+    "items": [
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del líquido del embrague hidráulico",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "25-03"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del aceite de la transmisión. Verificar estado de las uniones y abrazaderas de los flexibles del enfriador de aceite",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "26-01"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del aceite y verificar la estanqueidad de los cubos de rueda del eje delantero",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "33-05"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel de aceite de los ejes traseros y verificar el estado de los respiraderos en cuanto a daños y obstrucciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "35-01/-02"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del líquido de la dirección hidráulica",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "46-03"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el collarín del embrague Eaton Fuller",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eje transversal de liberación del embrague Eaton Fuller (solo en vehículos equipados con acoplamientos mecánicos)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar la quinta rueda",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "31-03"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el conector eléctrico del remolque",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "31-04"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar la suspensión",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "32-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el pivote de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "33-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar las rótulas de la barra de acoplamiento",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "33-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eje cardán",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "41-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los ajustadores de tensión de freno Haldex y Gunite",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-06"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el ajustador de tensión de freno Meritor",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-08"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el mecanismo de la dirección hidráulica",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "46-04"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eslabón de arrastre del sistema de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "46-05"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los sellos de las puertas",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "72-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar la estanqueidad del sistema de aire comprimido, drenar los depósitos de aire y verificar el funcionamiento y estado de las válvulas de purga automática o manual",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Ajustar del embrague (solo en vehículos equipados con transmisiones no sincronizadas y con embrague de ajuste manual)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-05"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado de los respiraderos de la transmisión Eaton Fuller o Allison, en cuanto a daños u obstrucciones. En caso de ser necesario, limpiar o reemplazar facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "26-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de los topes de eje, soportes traseros y de muñón del motor, soportes de escape, barras tensoras y sujetadores del chasis en general",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "31-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento, juego y fijación de la quinta rueda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "31-02"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado y controlar el par de apriete de los componentes y sujeciones de la suspensión delantera y trasera",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "32-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de los pernos U de la suspensión en los ejes delanteros y traseros",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "32-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de la tuerca de la chaveta de retención",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "33-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar la rótula de la barra de acoplamiento",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "33-04"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de las tuercas de rueda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "40-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado, juego y fijaciones del eje cardán y las crucetas",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "41-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado de la válvula Bendix del sistema de frenos de aire",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento de los frenos de estacionamiento",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-15"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de las tuercas de las bandas del tanque de combustible",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "47-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado del sistema de aire acondicionado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "83-01"
+      },
+      {
+        "categoria_nombre": "ADICIONALMENTE",
+        "nombre": "Prueba de ruta",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "ADICIONALMENTE",
+        "nombre": "Lavado",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 MBE 900",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "SM1",
+    "items": [
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del líquido del embrague hidráulico",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "25-03"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del aceite de la transmisión. Verificar estado de las uniones y abrazaderas de los flexibles del enfriador de aceite",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "26-01"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del aceite y verificar la estanqueidad de los cubos de rueda del eje delantero",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "33-05"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel de aceite de los ejes traseros y verificar el estado de los respiraderos en cuanto a daños y obstrucciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "35-01/-02"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del líquido de la dirección hidráulica",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "46-03"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el collarín (rodamiento de empuje) del embrague Eaton Fuller",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eje transversal de liberación del embrague Eaton Fuller (solo en vehículos equipados con acoplamientos mecánicos)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar la quinta rueda",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "31-03"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el conector eléctrico del remolque",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "31-04"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar la suspensión",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "32-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el pivote de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "33-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar las rótulas de la barra de acoplamiento",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "33-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eje cardán",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "41-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los ajustadores de tensión de freno Haldex y Gunite",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-06"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el soporte del eje leva Meritor",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-07"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el ajustador de tensión de freno Meritor",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-08"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el mecanismo de la dirección hidráulica",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "46-04"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eslabón de arrastre del sistema de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "46-05"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los sellos de las puertas",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "72-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los soportes traseros del capó",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "88-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado de saturación del filtro de aire mediante el indicador de restricción, según estado renovar facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "09-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Inspección del compresor de aire: comprobar los adaptadores de entrada del compresor en ambos extremos de la línea, revisar las mangueras de suministro y retorno de aceite y líquido refrigerante. Verificar el apriete de las conexiones e inspeccionar el estado de las aletas de enfriamiento en el cárter del compresor, si estas se encuentran sucias u obstruidas, realizar limpieza",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "13-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Revisar la tapa de alivio de presión del radiador",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "20-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Ajuste del embrague (solo en vehículos equipados con transmisiones no sincronizadas y con embrague de ajuste manual)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-05"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado de los respiraderos de la transmisión Eaton Fuller o Allison, en cuanto a daños u obstrucciones. En caso de ser necesario, limpiar o reemplazar facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "26-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento, juego y fijación de la quinta rueda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "31-02"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado y controlar el par de apriete de los componentes y sujeciones de la suspensión delantera y trasera",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "32-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Inspección del juego vertical del muñón (manual Meritor)",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar la rótula de la barra de acoplamiento",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "33-04"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de las tuercas de rueda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "40-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado, juego y fijaciones del eje cardán y las crucetas",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "41-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar la estanqueidad del sistema de aire comprimido, drenar los depósitos de aire y verificar el funcionamiento y estado de las válvulas de purga automática o manual",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado de la válvula Bendix del sistema de frenos de aire",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el estado y verificar el funcionamiento del secador de aire AD-9 o AD-IP/-IS",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-10"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el estado y funcionamiento de los frenos",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-15"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar que el respiradero del estanque de combustible no presente daños u obstrucciones. En caso de ser necesario realizar limpieza o reemplazar el elemento facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado del sistema de aire acondicionado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "83-01"
+      },
+      {
+        "categoria_nombre": "ADICIONALMENTE",
+        "nombre": "Prueba de ruta",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "ADICIONALMENTE",
+        "nombre": "Lavado",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 MBE 900",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "SM2",
+    "items": [
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del líquido del embrague hidráulico",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "25-03"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del aceite de la transmisión. Verificar estado de las uniones y abrazaderas de los flexibles del enfriador de aceite",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "26-01"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del aceite y verificar la estanqueidad de los cubos de rueda del eje delantero",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "33-05"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel de aceite de los ejes traseros y verificar el estado de los respiraderos en cuanto a daños y obstrucciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "35-01/-02"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del líquido de la dirección hidráulica",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "46-03"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el collarín (rodamiento de empuje) del embrague Eaton Fuller",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eje transversal de liberación del embrague Eaton Fuller (solo en vehículos equipados con acoplamientos mecánicos)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar la quinta rueda",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "31-03"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el conector eléctrico del remolque",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "31-04"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar la suspensión",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "32-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el pivote de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "33-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar las rótulas de la barra de acoplamiento",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "33-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eje cardán",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "41-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los ajustadores de tensión de freno Haldex y Gunite",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-06"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el soporte del eje leva Meritor",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-07"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el ajustador de tensión de freno Meritor",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-08"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el mecanismo de la dirección hidráulica",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "46-04"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eslabón de arrastre del sistema de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "46-05"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los sellos de las puertas",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "72-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los soportes traseros del capó",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "88-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado de saturación del filtro de aire mediante el indicador de restricción, según estado renovar facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "09-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Inspección del compresor de aire: comprobar los adaptadores de entrada del compresor en ambos extremos de la línea, revisar las mangueras de suministro y retorno de aceite y líquido refrigerante. Verificar el apriete de las conexiones e inspeccionar el estado de las aletas de enfriamiento en el cárter del compresor, si estas se encuentran sucias u obstruidas, realizar limpieza",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "13-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar visualmente el estado del sistema de accionamiento del ventilador Horton. En caso de existir reclamos referentes a exceso de temperatura o ruidos anormales, se deberá revisar los rodamientos, verificar que no existan fugas de aire, controlar el espesor del disco de fricción o pasta y descartar signos que evidencien ciclos excesivos o patinamiento (plato de embrague y/o disco de fricción torcido, fisurado o desgastado)",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Revisar la tapa de alivio de presión del radiador",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "20-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado del impulsor del ventilador",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "20-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Ajuste del embrague (solo en vehículos equipados con transmisiones no sincronizadas y con embrague de ajuste manual)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-05"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado de los respiraderos de la transmisión Eaton Fuller o Allison, en cuanto a daños u obstrucciones. En caso de ser necesario, limpiar o reemplazar facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "26-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Realizar limpieza y verificar el estado del filtro regulador de aire de la transmisión Eaton Fuller. En caso que el filtro presente daños, reemplazar facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "26-04"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de los topes de eje, soportes traseros y de muñón del motor, soportes de escape, barras tensoras y sujetadores del chasis en general",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "31-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento, juego y fijación de la quinta rueda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "31-02"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado y controlar el par de apriete de los componentes y sujeciones de la suspensión delantera y trasera",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "32-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de los pernos U de la suspensión en los ejes delanteros y traseros",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "32-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Inspección del juego vertical del muñón (manual Meritor)",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Inspeccionar el desgaste de los bujes superiores e inferiores del pasador del muñón (manual Meritor)",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar la rótula de la barra de acoplamiento",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "33-04"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de las tuercas de rueda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "40-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado, juego y fijaciones del eje cardán y las crucetas",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "41-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar la estanqueidad del sistema de aire comprimido, drenar los depósitos de aire y verificar el funcionamiento y estado de las válvulas de purga automática o manual",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado de la válvula Bendix del sistema de frenos de aire",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el estado y verificar el funcionamiento del secador de aire AD-9 o AD-IP/-IS",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-10"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y el estado del acoplamiento y placa de montaje del pedal de frenos",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-12"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el estado y funcionamiento de los frenos",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-15"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar que el respiradero del estanque de combustible no presente daños u obstrucciones. En caso de ser necesario realizar limpieza o reemplazar el elemento facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de las tuercas de las bandas del tanque de combustible",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "47-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado del sistema de escape, en cuanto a estanqueidad, corrosión, ruidos anormales y apriete de fijaciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "49-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado del sistema de aire acondicionado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "83-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Reemplazar el filtro del sistema de ventilación, calefacción y aire acondicionado HVAC",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "83-02"
+      },
+      {
+        "categoria_nombre": "ADICIONALMENTE",
+        "nombre": "Prueba de ruta",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "ADICIONALMENTE",
+        "nombre": "Lavado",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 MBE 900",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "SM3",
+    "items": [
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar el aceite de la transmisión manual Eaton Fuller y realizar limpieza de los tapones colectores magnéticos. Verificar el estado de las uniones y abrazaderas del flexible del enfriador de aceite. Aplicar solo en cajas de cambios que utilicen aceite mineral",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "26-02"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite en los cubos de rueda delanteros. Aplicar solo en ejes que utilicen aceite mineral",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite y filtro de los ejes traseros, realizar limpieza del tapón colector magnético. Aplicar solo en ejes que utilicen aceite mineral",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "35-03"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio del líquido y filtro de la dirección hidráulica",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "46-02/-06"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del líquido del embrague hidráulico",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "25-03"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del aceite de la transmisión (lubricante sintético). Verificar estado de las uniones y abrazaderas de los flexibles del enfriador de aceite",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "26-01"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del aceite (lubricante sintético) y verificar la estanqueidad de los cubos de rueda del eje delantero",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "33-05"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel de aceite (lubricante sintético) de los ejes traseros y verificar el estado de los respiraderos en cuanto a daños y obstrucciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "35-01/-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el collarín (rodamiento de empuje) del embrague Eaton Fuller",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eje transversal de liberación del embrague Eaton Fuller (solo en vehículos equipados con acoplamientos mecánicos)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar la quinta rueda",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "31-03"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el conector eléctrico del remolque",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "31-04"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar la suspensión",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "32-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el pivote de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "33-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar las rótulas de la barra de acoplamiento",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "33-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eje cardán",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "41-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los ajustadores de tensión de freno Haldex y Gunite",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-06"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el soporte del eje leva Meritor",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-07"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el ajustador de tensión de freno Meritor",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-08"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el mecanismo de la dirección hidráulica",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "46-04"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eslabón de arrastre del sistema de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "46-05"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los sellos de las puertas",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "72-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los soportes traseros del capó",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "88-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Reemplazar el elemento del filtro de aire",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "09-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Inspección del compresor de aire: comprobar los adaptadores de entrada del compresor en ambos extremos de la línea, revisar las mangueras de suministro y retorno de aceite y líquido refrigerante. Verificar el apriete de las conexiones e inspeccionar el estado de las aletas de enfriamiento en el cárter del compresor, si estas se encuentran sucias u obstruidas, realizar limpieza",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "13-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado de las conexiones y cableado del alternador, motor de partida y batería",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "15-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el estado del sistema de accionamiento del ventilador Horton, revisar los rodamientos, verificar que no existan fugas de aire, controlar el espesor del disco de fricción o pasta y descartar signos que evidencien ciclos excesivos o patinamiento (plato de embrague y/o disco de fricción torcido, fisurado o desgastado)",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Revisar la tapa de alivio de presión del radiador",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "20-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado del impulsor del ventilador",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "20-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Ajuste del embrague (solo en vehículos equipados con transmisiones no sincronizadas y con embrague de ajuste manual)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-05"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado de los respiraderos de la transmisión Eaton Fuller o Allison, en cuanto a daños u obstrucciones. En caso de ser necesario, limpiar o reemplazar facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "26-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Realizar limpieza y verificar el estado del filtro regulador de aire de la transmisión Eaton Fuller. En caso que el filtro presente daños, reemplazar facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "26-04"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de los topes de eje, soportes traseros y de muñón del motor, soportes de escape, barras tensoras y sujetadores del chasis en general",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "31-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento, juego y fijación de la quinta rueda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "31-02"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado y controlar el par de apriete de los componentes y sujeciones de la suspensión delantera y trasera",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "32-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de los pernos U de la suspensión en los ejes delanteros y traseros",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "32-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Inspección del juego vertical del muñón (manual Meritor)",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Inspeccionar el desgaste de los bujes superiores e inferiores del pasador del muñón (manual Meritor)",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de la tuerca de la chaveta de retención",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "33-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar la rótula de la barra de acoplamiento",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "33-04"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el juego axial de los cubos (masas) de los ejes delantero y trasero(s)",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de las tuercas de rueda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "40-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado, juego y fijaciones del eje cardán y las crucetas",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "41-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado de la válvula Bendix del sistema de frenos de aire",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Reemplazar el cartucho desecante del secador de aire Bendix AD-9",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-02"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado del regulador D-2A",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Reemplazar el cartucho desecante del secador de aire Bendix AD-IP",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-05"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Reemplazar el cartucho desecante del secador de aire Bendix AD-IS",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-09"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y el estado del acoplamiento y placa de montaje del pedal de frenos",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-12"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Drenar los depósitos de aire comprimido e inspeccionar estado y realizar prueba de fuga del sistema de frenos neumático",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-13"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el estado y funcionamiento de los frenos",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-15"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el estado del eslabón de arrastre del sistema de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "46-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar que el respiradero del estanque de combustible no presente daños u obstrucciones. En caso de ser necesario realizar limpieza o reemplazar el elemento facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de las tuercas de las bandas del tanque de combustible",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "47-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado del sistema de escape, en cuanto a estanqueidad, corrosión, ruidos anormales y apriete de fijaciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "49-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Inspeccionar componentes del sistema eléctrico: acumulación excesiva de suciedad/basuras, piezas sueltas, rotas, faltantes, pandeos, abombamiento, decoloración, calentamiento, cubiertas protectoras (grietas, rotos, sellados, deformaciones), etc",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "54-02"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado del sistema de aire acondicionado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "83-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Reemplazar el filtro del sistema de ventilación, calefacción y aire acondicionado HVAC",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "83-02"
+      },
+      {
+        "categoria_nombre": "ADICIONALMENTE",
+        "nombre": "Prueba de ruta",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "ADICIONALMENTE",
+        "nombre": "Lavado",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 MBE 900",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "SM4",
+    "items": [
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar el aceite de la transmisión Eaton Fuller y realizar limpieza de los tapones colectores magnéticos. Verificar el estado de las uniones y abrazaderas del flexible del enfriador de aceite. Aplicar solo en cajas de cambios que utilicen aceite mineral",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "26-02"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar el aceite de la transmisión Mercedes Benz y realizar limpieza del tapón colector magnético",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "26-06"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite en los cubos de rueda delanteros. Aplicar solo en ejes que utilicen aceite mineral",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite y filtro de los ejes traseros, realizar limpieza del tapón colector magnético. Aplicar solo en ejes que utilicen aceite mineral",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "35-03"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio del líquido y filtro de la dirección hidráulica",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "46-02/-06"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del líquido del embrague hidráulico",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "25-03"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del aceite de la transmisión (lubricante sintético). Verificar estado de las uniones y abrazaderas de los flexibles del enfriador",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "26-01"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del aceite (lubricante sintético) y verificar la estanqueidad de los cubos de rueda del eje delantero",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "33-05"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel de aceite (lubricante sintético) de los ejes traseros y verificar el estado de los respiraderos en cuanto a daños y obstrucciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "35-01/-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el collarín (rodamiento de empuje) del embrague Eaton Fuller",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eje transversal de liberación del embrague Eaton Fuller (solo en vehículos equipados con acoplamientos mecánicos)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar la quinta rueda",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "31-03"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el conector eléctrico del remolque",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "31-04"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar la suspensión",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "32-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el pivote de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "33-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar las rótulas de la barra de acoplamiento",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "33-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eje cardán",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "41-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los ajustadores de tensión de freno Haldex y Gunite",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-06"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el soporte del eje leva Meritor",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-07"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el ajustador de tensión de freno Meritor",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-08"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el mecanismo de la dirección hidráulica",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "46-04"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eslabón de arrastre del sistema de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "46-05"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los sellos de las puertas",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "72-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los soportes traseros del capó",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "88-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado y controlar el par de apriete de los sujetadores de los soportes del motor",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "01-02"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Reemplazar el elemento del filtro de aire",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "09-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Inspección del compresor de aire: comprobar los adaptadores de entrada del compresor en ambos extremos de la línea, revisar las mangueras de suministro y retorno de aceite y líquido refrigerante. Verificar el apriete de las conexiones e inspeccionar el estado de las aletas de enfriamiento en el cárter del compresor, si estas se encuentran sucias u obstruidas, realizar limpieza",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "13-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado de las conexiones y cableado del alternador, motor de partida y batería",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "15-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el estado del sistema de accionamiento del ventilador Horton, revisar los rodamientos, verificar que no existan fugas de aire, controlar el espesor del disco de fricción o pasta y descartar signos que evidencien ciclos excesivos o patinamiento (plato de embrague y/o disco de fricción torcido, fisurado o desgastado)",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Revisar la tapa de alivio de presión del radiador",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "20-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado del impulsor del ventilador",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "20-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Ajuste del embrague (solo en vehículos equipados con transmisiones no sincronizadas y con embrague de ajuste manual)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-05"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado de los respiraderos de la transmisión Eaton Fuller o Allison, en cuanto a daños u obstrucciones. En caso de ser necesario, limpiar o reemplazar facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "26-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Realizar limpieza y verificar el estado del filtro regulador de aire de la transmisión Eaton Fuller. En caso que el filtro presente daños, reemplazar facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "26-04"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de los topes de eje, soportes traseros y de muñón del motor, soportes de escape, barras tensoras y sujetadores del chasis en general",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "31-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento, juego y fijación de la quinta rueda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "31-02"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado y controlar el par de apriete de los componentes y sujeciones de la suspensión delantera y trasera",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "32-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de los pernos U de la suspensión en los ejes delanteros y traseros",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "32-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Inspección del juego vertical del muñón (manual Meritor)",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Inspeccionar el desgaste de los bujes superiores e inferiores del pasador del muñón (manual Meritor)",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de la tuerca de la chaveta de retención",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "33-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar la rótula de la barra de acoplamiento",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "33-04"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el juego axial de los cubos (masas) de los ejes delantero y trasero(s)",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de las tuercas de rueda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "40-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado, juego y fijaciones del eje cardán y las crucetas",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "41-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado de la válvula Bendix del sistema de frenos de aire",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Reemplazar el cartucho desecante del secador de aire Bendix AD-9",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-02"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado del regulador D-2A",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Reemplazar el cartucho desecante del secador de aire Bendix AD-IP",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-05"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Reemplazar el cartucho desecante del secador de aire Bendix AD-IS",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-09"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y el estado del acoplamiento y placa de montaje del pedal de frenos",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-12"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Drenar los depósitos de aire comprimido e inspeccionar estado y realizar prueba de fuga del sistema de frenos neumático",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-13"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado y lubricar la válvula del pedal de freno",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-14"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el estado y funcionamiento de los frenos",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-15"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el estado del eslabón de arrastre del sistema de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "46-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar que el respiradero del estanque de combustible no presente daños u obstrucciones. En caso de ser necesario realizar limpieza o reemplazar el elemento facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de las tuercas de las bandas del tanque de combustible",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "47-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado del sistema de escape, en cuanto a estanqueidad, corrosión, ruidos anormales y apriete de fijaciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "49-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado de los pivotes del espejo",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "60-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado del sistema de aire acondicionado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "83-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Reemplazar el filtro del sistema de ventilación, calefacción y aire acondicionado HVAC",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "83-02"
+      },
+      {
+        "categoria_nombre": "ADICIONALMENTE",
+        "nombre": "Prueba de ruta",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "ADICIONALMENTE",
+        "nombre": "Lavado",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 MBE 900",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "SM5",
+    "items": [
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio del líquido del embrague hidráulico",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-04"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar el aceite de la transmisión manual Eaton Fuller y realizar limpieza de los tapones colectores magnéticos. Verificar el estado de las uniones y abrazaderas del flexible del enfriador de aceite. Aplicar en cajas de cambios que utilicen aceite mineral o sintético",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "26-02"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar el aceite de la transmisión Mercedes Benz y realizar limpieza del tapón colector magnético",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "26-06"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite de los cubos de rueda delanteros. Aplicar solo en ejes que utilicen aceite mineral",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite y filtro de los ejes traseros, realizar limpieza del tapón colector magnético. Verificar el estado de los respiraderos en cuanto a daños y obstrucciones. Aplicar en ejes que utilicen aceite mineral o sintético",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "35-03/-02"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio del líquido y filtro de la dirección hidráulica",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "46-02/-06"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el collarín (rodamiento de empuje) del embrague Eaton Fuller",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eje transversal de liberación del embrague Eaton Fuller (solo en vehículos equipados con acoplamientos mecánicos)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar la quinta rueda",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "31-03"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el conector eléctrico del remolque",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "31-04"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar la suspensión",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "32-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el pivote de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "33-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar las rótulas de la barra de acoplamiento",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "33-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eje cardán",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "41-02"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los ajustadores de tensión de freno Haldex y Gunite",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-06"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el soporte del eje leva Meritor",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-07"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el ajustador de tensión de freno Meritor",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-08"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el mecanismo de la dirección hidráulica",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "46-04"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar el eslabón de arrastre del sistema de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "46-05"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los sellos de las puertas",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "72-01"
+      },
+      {
+        "categoria_nombre": "LUBRICAR",
+        "nombre": "Lubricar los soportes traseros del capó",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "88-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado y controlar el par de apriete de los sujetadores de los soportes del motor",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "01-02"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Reemplazar el elemento del filtro de aire",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "09-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Inspección del compresor de aire: comprobar los adaptadores de entrada del compresor en ambos extremos de la línea, revisar las mangueras de suministro y retorno de aceite y líquido refrigerante. Verificar el apriete de las conexiones e inspeccionar el estado de las aletas de enfriamiento en el cárter del compresor, si estas se encuentran sucias u obstruidas, realizar limpieza",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "13-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado de las conexiones y cableado del alternador, motor de partida y batería",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "15-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el estado del sistema de accionamiento del ventilador Horton, revisar los rodamientos, verificar que no existan fugas de aire, controlar el espesor del disco de fricción o pasta y descartar signos que evidencien ciclos excesivos o patinamiento (plato de embrague y/o disco de fricción torcido, fisurado o desgastado)",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Revisar la tapa de alivio de presión del radiador",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "20-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado del impulsor del ventilador",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "20-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Ajuste del embrague (solo en vehículos equipados con transmisiones no sincronizadas y con embrague de ajuste manual)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "25-05"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado de los respiraderos de la transmisión Eaton Fuller o Allison, en cuanto a daños u obstrucciones. En caso de ser necesario, limpiar o reemplazar facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "26-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Realizar limpieza y verificar el estado del filtro regulador de aire de la transmisión Eaton Fuller. En caso que el filtro presente daños, reemplazar facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "26-04"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar la estanqueidad de la caja de cambios Mercedes Benz",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "26-07"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de los topes de eje, soportes traseros y de muñón del motor, soportes de escape, barras tensoras y sujetadores del chasis en general",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "31-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento, juego y fijación de la quinta rueda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "31-02"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado y controlar el par de apriete de los componentes y sujeciones de la suspensión delantera y trasera",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "32-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de los pernos U de la suspensión en los ejes delanteros y traseros",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "32-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Inspección del juego vertical del muñón (manual Meritor)",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Inspeccionar el desgaste de los bujes superiores e inferiores del pasador del muñón (manual Meritor)",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de la tuerca de la chaveta de retención",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "33-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar la rótula de la barra de acoplamiento",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "33-04"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el juego axial de los cubos (masas) de los ejes delantero y trasero(s)",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de las tuercas de rueda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "40-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado, juego y fijaciones del eje cardán y las crucetas",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "41-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado de la válvula Bendix del sistema de frenos de aire",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Reemplazar el cartucho desecante del secador de aire Bendix AD-9",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-02"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado del regulador D-2A",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-03"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Reemplazar el cartucho desecante del secador de aire Bendix AD-IP",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-05"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Reemplazar el cartucho desecante del secador de aire Bendix AD-IS",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-09"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y el estado del acoplamiento y placa de montaje del pedal de frenos",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-12"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Drenar los depósitos de aire comprimido e inspeccionar estado y realizar prueba de fuga del sistema de frenos neumático",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-13"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado y lubricar la válvula del pedal de freno",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-14"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el estado y funcionamiento de los frenos",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-15"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el estado del eslabón de arrastre del sistema de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "46-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar que el respiradero del estanque de combustible no presente daños u obstrucciones. En caso de ser necesario realizar limpieza o reemplazar el elemento facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Controlar el par de apriete de las tuercas de las bandas del tanque de combustible",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "47-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Verificar el estado del sistema de escape, en cuanto a estanqueidad, corrosión, ruidos anormales y apriete de fijaciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "49-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Inspeccionar componentes del sistema eléctrico: acumulación excesiva de suciedad/basuras, piezas sueltas, rotas, faltantes, pandeos, abombamiento, decoloración, calentamiento, cubiertas protectoras (grietas, rotos, sellados, deformaciones), etc",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "54-02"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado de los pivotes del espejo",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "60-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Comprobar el funcionamiento y estado del sistema de aire acondicionado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "83-01"
+      },
+      {
+        "categoria_nombre": "CHASIS",
+        "nombre": "Reemplazar el filtro del sistema de ventilación, calefacción y aire acondicionado HVAC",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "83-02"
+      },
+      {
+        "categoria_nombre": "ADICIONALMENTE",
+        "nombre": "Prueba de ruta",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "ADICIONALMENTE",
+        "nombre": "Lavado",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 MBE 900",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "IMB",
+    "items": [
+      {
+        "categoria_nombre": "CONTROL",
+        "nombre": "Extraer reporte del motor mediante DDDL",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del aceite de motor",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del líquido refrigerante y la concentración de anticongelante, además verificar el nivel del inhibidor. Realizar este procedimiento cuando la temperatura del líquido refrigerante sea inferior a 50°C",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "COMPROBAR ESTANQUEIDAD",
+        "nombre": "Verificar que no existan fugas ni daños en el motor ni en conexiones, abrazaderas de los sistemas de admisión de aire, lubricación y refrigeración",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Drenar el filtro separador de combustible y agua",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Comprobar el estado y la tensión de las correas de transmisión",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Verificar el estado del tubo respiradero del cárter y eliminar todo tipo de obstrucciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Controlar visualmente el estado del múltiple de escape",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 MBE 900",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "MB1",
+    "items": [
+      {
+        "categoria_nombre": "CONTROL",
+        "nombre": "Extraer reporte del motor mediante DDDL",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de filtro y aceite de motor",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVEL",
+        "nombre": "Controlar el nivel del líquido refrigerante y la concentración de anticongelante, además verificar el nivel del inhibidor. Realizar este procedimiento cuando la temperatura del líquido refrigerante sea inferior a 50°C",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "COMPROBAR ESTANQUEIDAD",
+        "nombre": "Verificar que no existan fugas ni daños en el motor ni en conexiones, abrazaderas de los sistemas de admisión de aire, lubricación y refrigeración",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Reemplazar el filtro de combustible",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Reemplazar el elemento separador de combustible y agua. Tarea indicada en la operación 47-02 del manual de mantenimiento Business Class M2",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Controlar y/o regular juego de válvulas motor. Realizar en 1er servicio de 60.000km. luego servicio por medio cada 60.000km. MB1 o MB2 según corresponda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Realizar inspección visual de las fijaciones del turboalimentador y verificar la estanqueidad de las conexiones, ductos y mangueras de aire y aceite. Verificar que el intercooler no presente acumulación de suciedad, en caso de ser necesario realizar limpieza",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Comprobar el estado y la tensión de las correas de transmisión",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Verificar el estado del tubo respiradero del cárter y eliminar todo tipo de obstrucciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Controlar visualmente el estado del múltiple de escape",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 MBE 900",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "MB2",
+    "items": [
+      {
+        "categoria_nombre": "CONTROL",
+        "nombre": "Extraer reporte del motor mediante DDDL",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de filtro y aceite de motor",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de líquido refrigerante",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "COMPROBAR ESTANQUEIDAD",
+        "nombre": "Verificar que no existan fugas ni daños en el motor ni en conexiones, abrazaderas de los sistemas de admisión de aire, lubricación y refrigeración",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Reemplazar el filtro de combustible",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Reemplazar el elemento separador de combustible y agua. Tarea indicada en la operación 47-02 del manual de mantenimiento Business Class M2",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Controlar y/o regular juego de válvulas motor. Realizar en 1er servicio de 60.000km. luego servicio por medio cada 60.000km. MB1 o MB2 según corresponda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Realizar inspección visual de las fijaciones del turboalimentador y verificar la estanqueidad de las conexiones, ductos y mangueras de aire y aceite. Verificar que el intercooler no presente acumulación de suciedad, en caso de ser necesario realizar limpieza",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambio de correas de la transmisión del motor",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Verificar el estado del tubo respiradero del cárter y eliminar todo tipo de obstrucciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Controlar visualmente el estado del múltiple de escape",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Verificar el estado del radiador y comprobar que no presente acumulación de suciedad, en caso de ser necesario realizar limpieza",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Verificar el estado y el apriete de las fijaciones del motor y la transmisión",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 MBE 900",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "MB3",
+    "items": [
+      {
+        "categoria_nombre": "CONTROL",
+        "nombre": "Extraer reporte del motor mediante DDDL",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de filtro y aceite de motor",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Reemplazar el líquido refrigerante",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "COMPROBAR ESTANQUEIDAD",
+        "nombre": "Verificar que no existan fugas ni daños en el motor ni en conexiones, abrazaderas de los sistemas de admisión de aire, lubricación y refrigeración",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Reemplazar el filtro de combustible",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Reemplazar el elemento separador de combustible y agua. Tarea indicada en la operación 47-02 del manual de mantenimiento Business Class M2",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Controlar y/o regular juego de válvulas motor. Realizar en 1er servicio de 60.000km. luego servicio por medio cada 60.000km. MB1 o MB2 según corresponda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Realizar inspección visual de las fijaciones del turboalimentador y verificar la estanqueidad de las conexiones, ductos y mangueras de aire y aceite. Verificar que el intercooler no presente acumulación de suciedad, en caso de ser necesario realizar limpieza",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambio de correas de la transmisión del motor",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Verificar el estado del tubo respiradero del cárter y eliminar todo tipo de obstrucciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Controlar visualmente el estado del múltiple de escape",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Verificar el estado del radiador y comprobar que no presente acumulación de suciedad, en caso de ser necesario realizar limpieza",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Verificar el estado y el apriete de las fijaciones del motor y la transmisión",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Comprobar el estado y funcionamiento del motor de partida y alternador",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "DTNAConnect"
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 MBE 900",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "ST1",
+    "items": [
+      {
+        "categoria_nombre": "TRANSMISION ALLISON",
+        "nombre": "Renovar los filtros de la transmisión Allison 3000 RDS",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "accessfreightliner"
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 MBE 900",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "ST2",
+    "items": [
+      {
+        "categoria_nombre": "TRANSMISION ALLISON",
+        "nombre": "Cambio de aceite y filtros de la transmisión Allison 3000 RDS. Al realizar el drenaje del lubricante, verificar que dicho fluido no presente indicios de contaminación por agua o polvo",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "accessfreightliner"
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 MBE 900",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "SA1",
+    "items": [
+      {
+        "categoria_nombre": "SERVICIO ANUAL",
+        "nombre": "Reemplazar el cartucho desecante del secador de aire Bendix AD-9 (No coalescente)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-02"
+      },
+      {
+        "categoria_nombre": "SERVICIO ANUAL",
+        "nombre": "Comprobar el funcionamiento y estado del regulador D-2A",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "42-03"
+      },
+      {
+        "categoria_nombre": "SERVICIO ANUAL",
+        "nombre": "Reemplazar el cartucho desecante del secador de aire Bendix AD-IP",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-05"
+      },
+      {
+        "categoria_nombre": "SERVICIO ANUAL",
+        "nombre": "Reemplazar el cartucho desecante del secador de aire Bendix AD-IS",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "42-09"
+      },
+      {
+        "categoria_nombre": "ADICIONALMENTE",
+        "nombre": "Prueba de ruta",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "SERVICIO ANUAL"
+      },
+      {
+        "categoria_nombre": "ADICIONALMENTE",
+        "nombre": "Lavado",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "SERVICIO ANUAL"
+      }
+    ]
+  }
+]

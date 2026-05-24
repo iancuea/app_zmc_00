@@ -1,0 +1,91 @@
+{
+  "modelo": "M2-106 ISL",
+  "marca": "Freightliner",
+  "componentes": [
+    {
+      "nombre": "Aceite Motor Cummins ISL Euro V",
+      "capacidad_litros": 28.4,
+      "tipo_lubricante": "SAE 15W-40 Mineral"
+    },
+    {
+      "nombre": "Refrigerante Cummins ISL",
+      "capacidad_litros": 68.0,
+      "tipo_lubricante": "Krynex HD Ultra ELC 50-50"
+    },
+    {
+      "nombre": "Transmisión Allison 3000 EVS 4TH CARTER 2 pulgadas",
+      "capacidad_litros": 16.0,
+      "tipo_lubricante": "TES 295 Sintético"
+    },
+    {
+      "nombre": "Transmisión Allison 3000 EVS 4TH CARTER 4 pulgadas",
+      "capacidad_litros": 18.0,
+      "tipo_lubricante": "TES 295 Sintético"
+    },
+    {
+      "nombre": "Transmisión Eaton Fuller FS 8406A",
+      "capacidad_litros": 9.2,
+      "tipo_lubricante": "PS-154 Rev. 7 SAE 50 Sintético"
+    },
+    {
+      "nombre": "Eje trasero simple RS-23-186",
+      "capacidad_litros": 22.4,
+      "tipo_lubricante": "SAE 75W-90 Mineral/Sintético"
+    },
+    {
+      "nombre": "Primer eje trasero RT-40-145/RT-40-145P",
+      "capacidad_litros": 14.3,
+      "tipo_lubricante": "0-76-E / 0-76-N SAE 75W-90 Mineral/Sintético"
+    },
+    {
+      "nombre": "Segundo eje trasero RT-40-145/RT-40-145P",
+      "capacidad_litros": 12.2,
+      "tipo_lubricante": "0-76-E / 0-76-N SAE 75W-90 Mineral/Sintético"
+    },
+    {
+      "nombre": "Primer eje trasero RT-40-160",
+      "capacidad_litros": 18.5,
+      "tipo_lubricante": "0-76-E / 0-76-N SAE 75W-90 Mineral/Sintético"
+    },
+    {
+      "nombre": "Segundo eje trasero RT-40-160",
+      "capacidad_litros": 16.3,
+      "tipo_lubricante": "0-76-E / 0-76-N SAE 75W-90 Mineral/Sintético"
+    },
+    {
+      "nombre": "Primer eje trasero RT-44-145/RT-44-145P",
+      "capacidad_litros": 13.9,
+      "tipo_lubricante": "0-76-E / 0-76-N SAE 75W-90 Mineral/Sintético"
+    },
+    {
+      "nombre": "Segundo eje trasero RT-44-145/RT-44-145P",
+      "capacidad_litros": 11.9,
+      "tipo_lubricante": "0-76-E / 0-76-N SAE 75W-90 Mineral/Sintético"
+    },
+    {
+      "nombre": "Primer eje trasero RT-46-160",
+      "capacidad_litros": 18.5,
+      "tipo_lubricante": "0-76-E / 0-76-N SAE 75W-90 Mineral/Sintético"
+    },
+    {
+      "nombre": "Segundo eje trasero RT-46-160",
+      "capacidad_litros": 16.3,
+      "tipo_lubricante": "0-76-E / 0-76-N SAE 75W-90 Mineral/Sintético"
+    },
+    {
+      "nombre": "Primer eje trasero RT-52-185",
+      "capacidad_litros": 26.5,
+      "tipo_lubricante": "0-76-E / 0-76-N SAE 75W-90 Mineral/Sintético"
+    },
+    {
+      "nombre": "Segundo eje trasero RT-52-185",
+      "capacidad_litros": 17.1,
+      "tipo_lubricante": "0-76-E / 0-76-N SAE 75W-90 Mineral/Sintético"
+    },
+    {
+      "nombre": "Líquido de dirección hidráulica",
+      "capacidad_litros": 3.5,
+      "tipo_lubricante": "Dexron III Sintético"
+    }
+  ]
+}

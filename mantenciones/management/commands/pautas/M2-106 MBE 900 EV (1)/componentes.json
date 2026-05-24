@@ -1,0 +1,141 @@
+{
+  "modelo": "M2-106 MBE 900",
+  "marca": "Freightliner",
+  "componentes": [
+    {
+      "nombre": "Motor Detroit MBE 900 Euro V - Aceite Motor",
+      "capacidad_litros": 38.0,
+      "tipo_lubricante": "10W30 Base-Sintética"
+    },
+    {
+      "nombre": "Motor Detroit MBE 900 Euro V - Refrigerante",
+      "capacidad_litros": 35.0,
+      "tipo_lubricante": "MBE EV 900"
+    },
+    {
+      "nombre": "Transmisión MBT 660S-6O",
+      "capacidad_litros": 9.0,
+      "tipo_lubricante": "235.13"
+    },
+    {
+      "nombre": "Transmisión Allison Series 3000",
+      "capacidad_litros": 28.0,
+      "tipo_lubricante": "TES 295"
+    },
+    {
+      "nombre": "Transmisión Eaton Fuller FS 6406A",
+      "capacidad_litros": 9.2,
+      "tipo_lubricante": null
+    },
+    {
+      "nombre": "Transmisión Eaton Fuller FS 8406A",
+      "capacidad_litros": 9.2,
+      "tipo_lubricante": null
+    },
+    {
+      "nombre": "Transmisión Eaton Fuller FRO-11210 C",
+      "capacidad_litros": 11.1,
+      "tipo_lubricante": "SAE 50 Sintético"
+    },
+    {
+      "nombre": "Transmisión Eaton Fuller RT-8908 LL",
+      "capacidad_litros": 13.2,
+      "tipo_lubricante": null
+    },
+    {
+      "nombre": "Transmisión Eaton Fuller RTLO-11908LL",
+      "capacidad_litros": 13.2,
+      "tipo_lubricante": null
+    },
+    {
+      "nombre": "Transmisión Eaton Fuller RTLO-11909LL",
+      "capacidad_litros": 13.2,
+      "tipo_lubricante": null
+    },
+    {
+      "nombre": "Transmisión Eaton Fuller RTLO-14909ALL",
+      "capacidad_litros": 28.0,
+      "tipo_lubricante": "SAE 40 Sintético"
+    },
+    {
+      "nombre": "Eje MFS 14 - Cubos eje delantero",
+      "capacidad_litros": 7.5,
+      "tipo_lubricante": "SAE 75W-90 Sintético"
+    },
+    {
+      "nombre": "Eje sencillo trasero RS-23-161",
+      "capacidad_litros": 18.7,
+      "tipo_lubricante": null
+    },
+    {
+      "nombre": "Eje sencillo trasero RS-23-186",
+      "capacidad_litros": 22.4,
+      "tipo_lubricante": "SAE 75W-90 Sintético"
+    },
+    {
+      "nombre": "Eje sencillo trasero RS-26-185",
+      "capacidad_litros": 22.0,
+      "tipo_lubricante": null
+    },
+    {
+      "nombre": "Primer eje trasero RT-40-145/RT-40-145P",
+      "capacidad_litros": 14.3,
+      "tipo_lubricante": null
+    },
+    {
+      "nombre": "Segundo eje trasero RT-40-145/RT-40-145P",
+      "capacidad_litros": 12.2,
+      "tipo_lubricante": null
+    },
+    {
+      "nombre": "Primer eje trasero RT-40-160",
+      "capacidad_litros": 18.5,
+      "tipo_lubricante": null
+    },
+    {
+      "nombre": "Segundo eje trasero RT-40-160",
+      "capacidad_litros": 16.3,
+      "tipo_lubricante": null
+    },
+    {
+      "nombre": "Primer eje trasero RT-44-145/RT-44-145P",
+      "capacidad_litros": 13.9,
+      "tipo_lubricante": null
+    },
+    {
+      "nombre": "Segundo eje trasero RT-44-145/RT-44-145P",
+      "capacidad_litros": 11.9,
+      "tipo_lubricante": "SAE 75W-90 Mineral/Sintético"
+    },
+    {
+      "nombre": "Primer eje trasero RT-46-160",
+      "capacidad_litros": 18.5,
+      "tipo_lubricante": null
+    },
+    {
+      "nombre": "Segundo eje trasero RT-46-160",
+      "capacidad_litros": 16.3,
+      "tipo_lubricante": null
+    },
+    {
+      "nombre": "Primer eje trasero RT-52-185",
+      "capacidad_litros": 26.5,
+      "tipo_lubricante": null
+    },
+    {
+      "nombre": "Segundo eje trasero RT-52-185",
+      "capacidad_litros": 17.1,
+      "tipo_lubricante": null
+    },
+    {
+      "nombre": "Sistema de Embrague - Líquido de Embrague",
+      "capacidad_litros": 0.5,
+      "tipo_lubricante": "DOT-4"
+    },
+    {
+      "nombre": "Sistema de Dirección Hidráulica - Líquido de dirección hidráulica",
+      "capacidad_litros": 3.5,
+      "tipo_lubricante": "Dexron® II y III Sintético"
+    }
+  ]
+}

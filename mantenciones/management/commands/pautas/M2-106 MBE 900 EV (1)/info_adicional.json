@@ -1,0 +1,345 @@
+{
+  "modelo": "M2-106 MBE 900",
+  "marca": "Freightliner",
+  "items_checklist": [
+    {
+      "categoria_nombre": "CONTROL INICIAL",
+      "nombre": "Control de niveles",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SIM",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "LUBRICACIÓN",
+      "nombre": "Trabajos de lubricación",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SIM",
+      "referencia_tecnica": "0.4 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS Y CARROCERÍA",
+      "nombre": "Operaciones de mantenimiento chasis y carrocería",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SIM",
+      "referencia_tecnica": "1.8 HH"
+    },
+    {
+      "categoria_nombre": "CONTROL DE NIVELES",
+      "nombre": "Nivel del líquido del embrague hidráulico",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "CONTROL DE NIVELES",
+      "nombre": "Nivel de aceite de la transmisión",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "CONTROL DE NIVELES",
+      "nombre": "Nivel de aceite de los cubos de rueda del eje delantero",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "CONTROL DE NIVELES",
+      "nombre": "Nivel de aceite en ejes traseros",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "CONTROL DE NIVELES",
+      "nombre": "Nivel del líquido de la dirección hidráulica",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "LUBRICACIÓN",
+      "nombre": "Trabajos de lubricación",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS Y CARROCERÍA",
+      "nombre": "Operaciones de mantenimiento chasis y carrocería",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "1.5 HH"
+    },
+    {
+      "categoria_nombre": "REPUESTOS",
+      "nombre": "Filtro de aire sistema HVAC",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "REPUESTOS",
+      "nombre": "Líquido y filtro de dirección hidráulico",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "0.4 HH"
+    },
+    {
+      "categoria_nombre": "REPUESTOS",
+      "nombre": "Filtro de aire sistema HVAC",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "REPUESTOS",
+      "nombre": "Filtro de aire",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "0.1 HH"
+    },
+    {
+      "categoria_nombre": "REPUESTOS",
+      "nombre": "Filtro secador de aire",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS Y CARROCERÍA",
+      "nombre": "Verificar estado del sistema de accionamiento del ventilador Horton",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "2.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS Y CARROCERÍA",
+      "nombre": "Controlar el juego de masas delanteras y traseras",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "1.0 HH"
+    },
+    {
+      "categoria_nombre": "OPERACIONES DE FLUIDOS",
+      "nombre": "Aceite de transmisión",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "OPERACIONES DE FLUIDOS",
+      "nombre": "Aceite de cubos de rueda",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "OPERACIONES DE FLUIDOS",
+      "nombre": "Aceite eje trasero",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": true,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "TRANSMISION ALLISON",
+      "nombre": "Filtro Aceite transmisión Allison",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "ST1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "TRANSMISION ALLISON",
+      "nombre": "Aceite y filtro transmisión Allison",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "ST2",
+      "referencia_tecnica": "1.0 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR DETROIT",
+      "nombre": "Extraer el reporte del motor mediante DDDL",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "IMB",
+      "referencia_tecnica": "0.4 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR DETROIT",
+      "nombre": "Control de niveles",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "IMB",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR DETROIT",
+      "nombre": "Control de estanqueidad",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "IMB",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR DETROIT",
+      "nombre": "Aceite y filtro de motor",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "MB1",
+      "referencia_tecnica": "0.6 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR DETROIT",
+      "nombre": "Filtro de combustible",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "MB1",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR DETROIT",
+      "nombre": "Filtro separador de combustible y agua",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "MB1",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR DETROIT",
+      "nombre": "Controlar el juego de las válvulas",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "MB1",
+      "referencia_tecnica": "1.4 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR DETROIT",
+      "nombre": "Cambiar líquido refrigerante",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "MB2",
+      "referencia_tecnica": "0.6 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR DETROIT",
+      "nombre": "Cambio de correas de la transmisión del motor",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "MB2",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR DETROIT",
+      "nombre": "Verificar el estado del radiador",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "MB2",
+      "referencia_tecnica": "0.1 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR DETROIT",
+      "nombre": "Comprobar el estado y funcionamiento del motor de partida y alternador",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "MB3",
+      "referencia_tecnica": "1.0 HH"
+    }
+  ],
+  "repuestos": [
+    {
+      "nombre": "Filtro de Aceite Detroit",
+      "codigo_zmc": "A0001801709",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de Combustible",
+      "codigo_zmc": "A0000901551",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro Separador de Combustible y Agua",
+      "codigo_zmc": "RAI R61709",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro Aceite Eje Trasero",
+      "codigo_zmc": "TDA 3280V8394",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de Aire Sistema HVAC",
+      "codigo_zmc": "VCC 36000006",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de Dirección",
+      "codigo_zmc": "14-17927-000",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de Aire",
+      "codigo_zmc": "DN P621097",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro Secador de Aire",
+      "codigo_zmc": "BW 107796",
+      "tipo": "FILTRO"
+    }
+  ]
+}

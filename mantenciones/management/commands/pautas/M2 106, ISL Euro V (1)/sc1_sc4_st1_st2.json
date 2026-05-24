@@ -1,0 +1,764 @@
+[
+  {
+    "modelo": "M2-106 ISL",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "SC1",
+    "items": [
+      {
+        "categoria_nombre": "CONTROL INICIAL",
+        "nombre": "Extraer reporte de entrada del motor mediante Insite",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE ACEITE",
+        "nombre": "Cambio de aceite y filtro de motor, solo servicio severo",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "007-002"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVELES",
+        "nombre": "Controlar el nivel del líquido refrigerante y la concentración de anticongelante (50/50 mediante refractómetro), además verificar el aditivo complementario. Realizar este procedimiento cuando la temperatura del líquido refrigerante sea inferior a 50°C",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-066/-115"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVELES",
+        "nombre": "Controlar el nivel de aceite del motor",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "COMPROBAR VISUALMENTE ESTADO Y ESTANQUEIDAD",
+        "nombre": "Verificar que no existan fugas ni daños en el motor y en las conexiones, ductos o mangueras de los sistemas de admisión de aire, lubricación, refrigeración y EGR",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Inspeccionar el tubo del respiradero del cárter por presencia de grietas, daños, sedimentos, desechos o hielo, en caso de ser necesario realizar limpieza",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "003-018"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Renovar el filtro de combustible (tipo atornillable)",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "006-015"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Renovar el filtro separador de agua y combustible",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Controlar las fijaciones, el estado del ventilador de enfriamiento y del radiador, descartar la presencia de grietas, remaches flojos y aspas dobladas o sueltas",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-040"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado del sello de goma del tapón de presión del radiador en conjunto con el cuello de llenado de este último, por grietas u otro daño. Realizar prueba de presión de sellado del tapón",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-047"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado del enfriador de carga de aire (intercooler) por grietas, agujeros u otro tipo de daños. Verificar el grado de suciedad, en caso de ser necesario realizar limpieza externa",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "010-027"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Controlar el estado de la tubería de admisión de aire en cuanto a puntos de desgaste, daño, abrazaderas flojas o perforaciones que puedan dañar el motor. Verificar que no exista corrosión bajo las abrazaderas",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "010-028/-058"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado del tubo de escape en cuanto a fugas, grietas o conexiones flojas. En caso de ser necesario reapretar las conexiones y fijaciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "011-053"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Drenar los tanques y depósitos del sistema de aire comprimido. Si se encuentran rastros de aceite, el compresor de aire deberá ser revisado facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "012-021"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar la carga de las baterías mediante herramienta de diagnóstico, según resultado, cargar o cambiar dicho componente facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "013-007"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado de los cables y conexiones de las baterías por grietas o corrosión. Lubricar los terminales",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "013-009"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Drenar el agua y eliminar los sedimentos del separador de agua y combustible",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "CONTROL FINAL",
+        "nombre": "Extraer reporte de salida del motor mediante Insite. Verificar Saturación de DPF, si este excede o se encuentra cercana a un 80%, programar limpieza",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 ISL",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "SC2",
+    "items": [
+      {
+        "categoria_nombre": "CONTROL INICIAL",
+        "nombre": "Extraer reporte de entrada del motor mediante Insite",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE ACEITE",
+        "nombre": "Cambio de aceite y filtro de motor",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "007-002"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVELES",
+        "nombre": "Controlar el nivel del líquido refrigerante y la concentración de anticongelante (50/50 mediante refractómetro), además verificar el aditivo complementario. Realizar este procedimiento cuando la temperatura del líquido refrigerante sea inferior a 50°C",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-066/-115"
+      },
+      {
+        "categoria_nombre": "COMPROBAR VISUALMENTE ESTADO Y ESTANQUEIDAD",
+        "nombre": "Verificar que no existan fugas ni daños en el motor y en las conexiones, ductos o mangueras de los sistemas de admisión de aire, lubricación, refrigeración y EGR",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Inspeccionar el tubo del respiradero del cárter por presencia de grietas, daños, sedimentos, desechos o hielo, en caso de ser necesario realizar limpieza",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "003-018"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Renovar el filtro de combustible (tipo atornillable)",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "006-015"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Renovar el filtro separador de agua y combustible",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar la tensión y el estado de la correa Poli-V por daños, deshilachamiento o pedazos faltantes. Grietas transversales son aceptables, en tanto que las grietas longitudinales no son aceptables. En caso de ser necesario, reemplazar facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-002"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado del brazo y de la polea del tensor de la correa del ventilador por grietas u otros daños",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-087"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Controlar las fijaciones, el estado del ventilador de enfriamiento y del radiador, descartar la presencia de grietas, remaches flojos y aspas dobladas o sueltas",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-040"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado del sello de goma del tapón de presión del radiador en conjunto con el cuello de llenado de este último, por grietas u otro daño. Realizar prueba de presión de sellado del tapón",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-047"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado del enfriador de carga de aire (intercooler) por grietas, agujeros u otro tipo de daños. Verificar el grado de suciedad, en caso de ser necesario realizar limpieza externa",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "010-027"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Controlar el estado de la tubería de admisión de aire en cuanto a puntos de desgaste, daño, abrazaderas flojas o perforaciones que puedan dañar el motor. Verificar que no exista corrosión bajo las abrazaderas",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "010-028/-058"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado del tubo de escape en cuanto a fugas, grietas o conexiones flojas. En caso de ser necesario reapretar las conexiones y fijaciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "011-053"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar la estanqueidad y el estado de las líneas de descarga del compresor de aire, verificar que la capa de carbón presente en estas no exceda los 2 mm, de ser así, realizar limpieza y verificar el estado del cilindro, pistón y válvulas del compresor",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "012-015"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Drenar los tanques y depósitos del sistema de aire comprimido. Si se encuentran rastros de aceite, el compresor de aire deberá ser revisado facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "012-021"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar la carga de las baterías mediante herramienta de diagnóstico, según resultado, cargar o cambiar dicho componente facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "013-007"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado de los cables y conexiones de las baterías por grietas o corrosión. Lubricar los terminales",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "013-009"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar estado del intercooler",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Verificar el estado del amortiguador de vibración viscoso",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "CONTROL FINAL",
+        "nombre": "Extraer reporte de salida del motor mediante Insite. Verificar Saturación de DPF, si este excede o se encuentra cercana a un 80%, programar limpieza",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 ISL",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "SC3",
+    "items": [
+      {
+        "categoria_nombre": "CONTROL INICIAL",
+        "nombre": "Extraer reporte de entrada del motor mediante Insite",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE ACEITE",
+        "nombre": "Cambio de aceite y filtro de motor",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "007-002"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVELES",
+        "nombre": "Controlar el nivel del líquido refrigerante y la concentración de anticongelante (50/50 mediante refractómetro), además verificar el aditivo complementario. Realizar este procedimiento cuando la temperatura del líquido refrigerante sea inferior a 50°C",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-066/-115"
+      },
+      {
+        "categoria_nombre": "COMPROBAR VISUALMENTE ESTADO Y ESTANQUEIDAD",
+        "nombre": "Verificar que no existan fugas ni daños en el motor y en las conexiones, ductos o mangueras de los sistemas de admisión de aire, lubricación, refrigeración y EGR",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Verificar el estado del amortiguador de vibración viscoso en cuanto a estanqueidad, daños u oscilaciones, además controlar el espesor",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "001-052"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Inspeccionar el tubo del respiradero del cárter por presencia de grietas, daños, sedimentos, desechos o hielo, en caso de ser necesario realizar limpieza",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "003-018"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Controlar ajuste de válvulas (solo servicio severo)",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "003-004"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Renovar el filtro de combustible (tipo atornillable)",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "006-015"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Renovar el filtro separador de agua y combustible",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Renovar filtro ventilación del cárter del motor",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar la tensión y el estado de la correa Poli-V por daños, deshilachamiento o pedazos faltantes. Grietas transversales son aceptables, en tanto que las grietas longitudinales no son aceptables. En caso de ser necesario, reemplazar facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-002"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado del brazo y de la polea del tensor de la correa del ventilador por grietas u otros daños",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-087"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Realizar limpieza del sistema de enfriamiento y verificar el estado del radiador, mangueras por grietas o cortes y abrazaderas flojas o dañadas",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "008-018"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Controlar las fijaciones, el estado del ventilador de enfriamiento y del radiador, descartar la presencia de grietas, remaches flojos y aspas dobladas o sueltas",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-040"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado del sello de goma del tapón de presión del radiador en conjunto con el cuello de llenado de este último, por grietas u otro daño. Realizar prueba de presión de sellado del tapón",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-047"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado del enfriador de carga de aire (intercooler) por grietas, agujeros u otro tipo de daños. Verificar el grado de suciedad, en caso de ser necesario realizar limpieza externa",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "010-027"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Controlar el estado de la tubería de admisión de aire en cuanto a puntos de desgaste, daño, abrazaderas flojas o perforaciones que puedan dañar el motor. Verificar que no exista corrosión bajo las abrazaderas",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "010-028/-058"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado del tubo de escape en cuanto a fugas, grietas o conexiones flojas. En caso de ser necesario reapretar las conexiones y fijaciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "011-053"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar la estanqueidad y el estado de las líneas de descarga del compresor de aire, verificar que la capa de carbón presente en estas no exceda los 2 mm, de ser así, realizar limpieza y verificar el estado del cilindro, pistón y válvulas del compresor",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "012-015"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Drenar los tanques y depósitos del sistema de aire comprimido. Si se encuentran rastros de aceite, el compresor de aire deberá ser revisado facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "012-021"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar la carga de las baterías mediante herramienta de diagnóstico, según resultado, cargar o cambiar dicho componente facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "013-007"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado de los cables y conexiones de las baterías por grietas o corrosión. Lubricar los terminales",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "013-009"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Realizar limpieza del motor con vapor. Proteger todos los componentes eléctricos, aberturas y cableado",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "000-009"
+      },
+      {
+        "categoria_nombre": "CONTROL FINAL",
+        "nombre": "Extraer reporte de salida del motor mediante Insite. Verificar Saturación de DPF, si este excede o se encuentra cercana a un 80%, programar limpieza",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 ISL",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "SC4",
+    "items": [
+      {
+        "categoria_nombre": "CONTROL INICIAL",
+        "nombre": "Extraer reporte de entrada del motor mediante Insite",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE ACEITE",
+        "nombre": "Cambio de aceite y filtro de motor",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "007-002"
+      },
+      {
+        "categoria_nombre": "SERVICIO DE ACEITE",
+        "nombre": "Cambio del líquido refrigerante. Realizar limpieza del sistema de enfriamiento y verificar el estado del radiador, mangueras por grietas o cortes y abrazaderas flojas o dañadas",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "008-018"
+      },
+      {
+        "categoria_nombre": "COMPROBAR NIVELES",
+        "nombre": "Controlar el nivel del líquido refrigerante y la concentración de anticongelante (50/50 mediante refractómetro), además verificar el aditivo complementario. Realizar este procedimiento cuando la temperatura del líquido refrigerante sea inferior a 50°C",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-066/-115"
+      },
+      {
+        "categoria_nombre": "COMPROBAR VISUALMENTE ESTADO Y ESTANQUEIDAD",
+        "nombre": "Verificar que no existan fugas ni daños en el motor y en las conexiones, ductos o mangueras de los sistemas de admisión de aire, lubricación, refrigeración y EGR",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Renovar el filtro de ventilación del cárter del motor",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "003-021"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Inspeccionar el tubo del respiradero del cárter por presencia de grietas, daños, sedimentos, desechos o hielo, en caso de ser necesario realizar limpieza",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "003-018"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Controlar ajuste de válvulas",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "003-004"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Renovar el filtro de combustible (tipo atornillable)",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "006-015"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Renovar el filtro separador de agua y combustible",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar la tensión y el estado de la correa Poli-V por daños, deshilachamiento o pedazos faltantes. Grietas transversales son aceptables, en tanto que las grietas longitudinales no son aceptables. En caso de ser necesario, reemplazar facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-002"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado del brazo y de la polea del tensor de la correa del ventilador por grietas u otros daños",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-087"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Controlar las fijaciones, el estado del ventilador de enfriamiento y del radiador, descartar la presencia de grietas, remaches flojos y aspas dobladas o sueltas",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-040"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado del sello de goma del tapón de presión del radiador en conjunto con el cuello de llenado de este último, por grietas u otro daño. Realizar prueba de presión de sellado del tapón",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "008-047"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado del enfriador de carga de aire (intercooler) por grietas, agujeros u otro tipo de daños. Verificar el grado de suciedad, en caso de ser necesario realizar limpieza externa",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "010-027"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Controlar el estado de la tubería de admisión de aire en cuanto a puntos de desgaste, daño, abrazaderas flojas o perforaciones que puedan dañar el motor. Verificar que no exista corrosión bajo las abrazaderas",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "010-028/-058"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado del tubo de escape en cuanto a fugas, grietas o conexiones flojas. En caso de ser necesario reapretar las conexiones y fijaciones",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "011-053"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Renovar el filtro de aire de la unidad de dosificación de AdBlue",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "011-060"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar la estanqueidad y el estado de las líneas de descarga del compresor de aire, verificar que la capa de carbón presente en estas no exceda los 2 mm, de ser así, realizar limpieza y verificar el estado del cilindro, pistón y válvulas del compresor",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "012-015"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Drenar los tanques y depósitos del sistema de aire comprimido. Si se encuentran rastros de aceite, el compresor de aire deberá ser revisado facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "012-021"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar la carga de las baterías mediante herramienta de diagnóstico, según resultado, cargar o cambiar dicho componente facturando por separado",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "013-007"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Comprobar el estado de los cables y conexiones de las baterías por grietas o corrosión. Lubricar los terminales",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "013-009"
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Realizar limpieza del motor con vapor",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "MOTOR CUMMINS",
+        "nombre": "Realizar limpieza del sistema de refrigeración",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      },
+      {
+        "categoria_nombre": "CONTROL FINAL",
+        "nombre": "Extraer reporte de salida del motor mediante Insite. Verificar Saturación de DPF, si este excede o se encuentra cercana a un 80%, programar limpieza",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 ISL",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "ST1",
+    "items": [
+      {
+        "categoria_nombre": "TRANSMISION ALLISON",
+        "nombre": "Renovar los filtros de la transmisión Allison 3000 EVS",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "accessfreightliner"
+      }
+    ]
+  },
+  {
+    "modelo": "M2-106 ISL",
+    "marca": "Freightliner",
+    "nivel_servicio_global": "ST2",
+    "items": [
+      {
+        "categoria_nombre": "TRANSMISION ALLISON",
+        "nombre": "Cambio de aceite y filtros de la transmisión Allison 3000 EVS. Al realizar el drenaje del lubricante, verificar que dicho fluido no presente indicios de contaminación por agua o polvo",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "accessfreightliner"
+      }
+    ]
+  }
+]

@@ -1,0 +1,2129 @@
+[
+  {
+    "modelo": "Axor",
+    "marca": "Mercedes-Benz",
+    "nivel_servicio_global": "SM2",
+    "items": [
+      {
+        "categoria_nombre": "STAR DIAGNOSIS",
+        "nombre": "Conectar y desconectar equipo Star Diagnosis, realizar comprobación breve, imprimir datos y borrar memoria de averías",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite y filtro de motor OM 457.9",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP18.00-B-0101TGA, AP18.00-W-0101C, AP18.00-W-0101B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite y filtro de motor OM 906.9 / 926.9",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP18.00-B-0101TB",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar aceite de la caja de cambios (lubricante mineral) - Chasis WDB",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP26.00-W-2601A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar aceite de la caja de cambios (lubricante mineral) - Chasis 9BM",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP26.00-B-2601A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar aceite de la caja de transferencia",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP28.00-W-2801A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje delantero (lubricante mineral)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP33.00-W-3301A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 748.2 - Chasis WDB (lubricante mineral)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.00-W-3501A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 742.5/746.2/746.3/770.0/771.0/771.1 - Chasis WDB (lubricante mineral)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.00-W-3501B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 741.9 - Chasis 9BM (lubricante mineral)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.00-B-3501A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 740.6/740.7/740.8 - Chasis 9BM (lubricante mineral)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.00-B-3501D",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 746.230/231 con código ZC8 - Chasis 958.4 (lubricante mineral)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.00-B-3501RV",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 741.7 sin código ZC8 y 748.590/594 con motor 457.9 - Modelo 958.4 (lubricante mineral)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.00-B-3501RVI",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 746.213 - Modelo 958.2 Chasis 9BM (lubricante mineral)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.00-B-3501TGA",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 746.210/213 (HL6) y 771.180/181 (HD4) (lubricante mineral)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.00-W-3501B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 740.8 HD7/HL7 (lubricante mineral)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.00-W-3501G",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 741.710/934/935 HL4/HD4/HL6 (lubricante mineral)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.00-W-3501GA",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite en cárter del árbol de paso del eje trasero 748.2 HL7/HD7 (lubricante mineral)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.00-W-3502A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite en cárter del árbol de paso del eje trasero 740.8 HD7/HL7 (lubricante mineral)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.00-W-3502G",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del retardador Voith R 115H",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP43.30-B-4301TG, AP43.30-W-4301B, AP43.30-W-4301A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Controlar nivel de líquido refrigerante y concentración de anticongelante (-37°C) con refractómetro",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP20.00-B-2010TA, AP20.00-W-2010A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Verificar nivel de fluidos: motor, caja, dirección, eje trasero, embrague, eje delantero, transferencia",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE LUBRICACION",
+        "nombre": "Lubricar manguetas, compensación de carga sobre el eje (vehículos sobre 4 ejes), articulaciones de cruceta del árbol de transmisión, ejes de freno (freno de tambor), enganche para remolque y sistema de volqueo",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0020TA, AP00.20-W-0020A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Comprobar visualmente estanqueidad y estado de motor, cambio, toma de fuerza, eje trasero, primer eje trasero no propulsado, dirección, bomba de servodirección, accionamiento hidrostático del ventilador e instalación de basculamiento de cabina",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0050TA, AP00.20-W-0050A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Comprobar visualmente todas las tuberías y tubos flexibles de aire comprimido, aceite, líquido de frenos, combustible, AdBlue, líquido refrigerante, retardador y cables de sensores ABS e indicación de desgaste de forros de freno",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0051TA, AP00.20-W-0051A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Comprobar visualmente todos los depósitos de aire comprimido, AdBlue, líquido de frenos, aparatos neumáticos e hidráulicos, amortiguadores, cubiertas, guarniciones y caperuzas protectoras",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0052TA, AP00.20-W-0052A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Comprobar estanqueidad y estado de conductos de admisión entre filtro de aire, intercooler y motor",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP49.00-B-4950A, AP09.00-W-0953A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Sistema de escape: verificar fugas, estado y fijación",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP49.00-B-4950A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Sistema de refrigeración y calefacción: verificar estado de radiador, tuberías y tubos flexibles; controlar suciedad exterior de radiador e intercooler",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0050TA, AP20.00-W-2050A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Inspeccionar componentes del sistema eléctrico: suciedad excesiva, piezas sueltas, rotas o faltantes, pandeos, abombamiento, decoloración, calentamiento y cubiertas protectoras",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Comprobar y ajustar juego de válvulas motor OM 457.9",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP05.30-B-0560G, AP05.30-W-0560C",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Comprobar y ajustar juego de válvulas motor OM 906.9 / 926.9",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP05.30-B-0560TG, AP05.30-W-0560B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Eliminar suciedad de la válvula de evacuación de polvo del filtro de aire",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP09.10-W-0931A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Comprobar estado de la correa de nervios trapezoidal en cuanto a desgaste o daños; verificar estado de tensores; renovar según estado facturando por separado",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP13.22-B-1351TA, AP13.22-W-1351A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Limpiar el prefiltro de combustible (motor OM 906 LA)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP47.20-W-0730B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - filtro estándar con tornillo central (Chasis WDB)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-W-0980A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - filtro de placas (Chasis WDB)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-W-0980B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - filtro estándar sin tornillo central (Chasis WDB)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-W-0980C",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - filtro tándem (Chasis WDB)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-W-0980E",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - filtro redondo (Chasis WDB)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-W-0980F",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - Chasis 9BM",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-B-0980TGA",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Renovar el filtro de combustible motor OM 457.9",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP47.20-B-0780TGA, AP47.20-W-0780A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Renovar el filtro de combustible motor OM 906.9 / 926.9",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP47.20-B-0780TG, AP47.20-W-0780B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Renovar el elemento del prefiltro de combustible con separador de agua",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP47.20-B-0783TG, AP47.20-W-0783A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Compresor de aire y resonador: reemplazar retén del compresor de aire y del resonador (Solo vehículos Modelo 3344 - 958.471/472/478)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AR13.10-B-5840A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SISTEMA SCR",
+        "nombre": "Renovar el filtro AdBlue (Euro IV / Euro V)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP14.40-B-1481TA, AP14.40-W-1481A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SISTEMA SCR",
+        "nombre": "Unidad de alimentación AdBlue: llenar acumulador de presión con valor nominal de 3.2 bar",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP14.40-B-1490TA, AP14.40-W-1490A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Comprobar roces, asiento correcto y estado de conexiones de cables en motor de partida, alternador y polos de batería",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Controlar asiento y par de apriete de tornillos y tuercas: soporte del cojinete intermedio del árbol de transmisión, travesaños con apoyos de ballesta, travesaño tras el cambio, soportes de caja de cambios y motor, brazos longitudinales de ejes traseros, compensación de muelles en vehículos 6x2, estabilizador en eje trasero y delantero, eje detrás del eje propulsor, cintas de sujeción del depósito de combustible, amortiguadores, abrazaderas en U de paquete de resorte",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0071D, AP00.20-W-0073A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Examinar funcionamiento, juego y fijación de la quinta rueda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP31.10-B-3150TA, AP31.10-W-3150A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Examinar funcionamiento, juego y fijación del enganche para remolque",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP31.10-B-3151TA, AP31.10-W-3151A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Examinar visualmente estado de los fuelles de suspensión neumática/mecánica",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP32.20-B-3255A, AP32.20-W-3255A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Controlar presión de inflado y estado de neumáticos incluyendo rueda de repuesto",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP40.15-W-4060A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Elevador neumático del eje de arrastre: examinar visualmente",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.50-B-3591TA",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Eje de transmisión: verificar juego y desgaste de crucetas, buje desplazable y cojinete central",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP41.10-B-4150A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Verificar en visualizador el desgaste de forros de freno en porcentaje (Telligent) - Chasis WDB 944/050.5/954.5 con carrocería 944.899",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP42.00-W-4293B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Verificar en visualizador el desgaste de forros de freno en porcentaje (Telligent) - Chasis WDB 940/943/944/950.5/950.6/952.5/952.6/954.5 con carrocería 944.890",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP42.00-W-4293D",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Verificar espesor de forros de freno (sin sistema Telligent): medir y registrar medida de control (freno disco) o espesor restante (freno tambor) en ejes VA1, HA1 y HA2",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP42.10-W-4253A, AP42.10-B-4253B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Examinar estado del sistema mecánico de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP46.00-B-4650TA, AP46.00-W-4650A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Comprobar juego de rodamientos de rueda en ejes delanteros - Chasis WDB (múltiples variantes)",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AR33.20-W-0310D, AR33.20-W-0310A, AR33.20-W-0310H, AR33.20-W-0310G, AR33.20-W-0310F, AR33.20-W-0310C, AR33.20-B-0310TD, AR33.20-B-0310TDW, AR33.20-B-0310TAW, AR33.20-B-0310TJ",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Comprobar juego de rodamientos de rueda en ejes delanteros - Chasis 9BM",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AR33.20-B-0310B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Comprobar juego de rodamientos de rueda en ejes traseros no propulsados - Chasis WDB (múltiples variantes)",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AR35.50-W-0003D, AR35.50-W-0003C, AR35.50-W-0003E, AR35.50-W-0003A, AR35.50-W-0003B, AR35.50-T-0005A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Comprobar juego de rodamientos de rueda en ejes traseros no propulsados - Chasis 9BM",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AR35.50-B-0003A, AR35.50-B-0003LA",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Reajuste automático del freno: comprobar carrera de desembrague de los cilindros de freno de rueda (freno de tambor)",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP42.10-W-4291A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Freno de adaptación automática a la carga: comprobar juego y ajuste - Suspensión mecánica Chasis 9BM",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP42.80-B-4263TG",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Cambiar cartuchos de granulado del secador de aire comprimido",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP42.60-W-4381A, AP42.60-B-4381TG",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Renovar el filtro de polvo de la calefacción/ventilación",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP83.00-W-8381B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE FUNCIONAMIENTO",
+        "nombre": "Verificar sistema de señales y testigos de control",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP54.00-W-5451B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE FUNCIONAMIENTO",
+        "nombre": "Verificar funcionamiento de limpiaparabrisas, sistema lavaparabrisas y sistema limpiafaros",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP82.30-W-8252A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "TRABAJOS FINALES",
+        "nombre": "Sistema de mantenimiento Telligent: elaborar datos de servicio en pantalla - Chasis WDB",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP00.20-W-0041A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "TRABAJOS FINALES",
+        "nombre": "Sistema de mantenimiento Telligent: elaborar datos de servicio en pantalla - Chasis 9BM",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP00.20-B-0041TG",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "TRABAJOS FINALES",
+        "nombre": "Control final: realizar prueba de ruta y verificar correcto funcionamiento de frenos de servicio y estacionamiento, dirección, iluminación, testigos de control y rendimiento general",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "TRABAJOS FINALES",
+        "nombre": "Lavado del vehículo",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      }
+    ]
+  },
+  {
+    "modelo": "Axor",
+    "marca": "Mercedes-Benz",
+    "nivel_servicio_global": "SM3",
+    "items": [
+      {
+        "categoria_nombre": "STAR DIAGNOSIS",
+        "nombre": "Conectar y desconectar equipo Star Diagnosis, realizar comprobación breve, imprimir datos y borrar memoria de averías",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite y filtro de motor OM 457.9",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP18.00-B-0101TGA, AP18.00-W-0101C, AP18.00-W-0101B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite y filtro de motor OM 906.9 / 926.9",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP18.00-B-0101TB",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar aceite de la caja de cambios (lubricante mineral o sintético) - Chasis WDB",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP26.00-W-2601A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar aceite de la caja de cambios (lubricante mineral o sintético) - Chasis 9BM",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP26.00-B-2601A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar aceite de la caja de transferencia",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP28.00-W-2801A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje delantero (lubricante mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP33.00-W-3301A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 748.2 - Chasis WDB (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-W-3501A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 742.5/746.2/746.3/770.0/771.0/771.1 - Chasis WDB (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-W-3501B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 741.9 - Chasis 9BM (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-B-3501A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 740.6/740.7/740.8 - Chasis 9BM (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-B-3501D",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 746.230/231 con código ZC8 - Chasis 958.4 (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-B-3501RV",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 741.7 sin código ZC8 y 748.590/594 con motor 457.9 - Modelo 958.4 (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-B-3501RVI",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 746.213 - Modelo 958.2 Chasis 9BM (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-B-3501TGA",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 746.210/213 (HL6) y 771.180/181 (HD4) (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-W-3501B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 740.8 HD7/HL7 (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-W-3501G",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 741.710/934/935 HL4/HD4/HL6 (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-W-3501GA",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite en cárter del árbol de paso del eje trasero 748.2 HL7/HD7 (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-W-3502A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite en cárter del árbol de paso del eje trasero 740.8 HD7/HL7 (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-W-3502G",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar separador de aceite del retardador Voith",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP43.30-B-4382TG, AP43.30-W-4382A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del retardador Voith R 115H",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP43.30-B-4301TG, AP43.30-W-4301B, AP43.30-W-4301A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar el líquido de dirección y filtro",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AR46.25-B-3001AX",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambiar el líquido del mando hidráulico del cambio (código SA GS3) - Solo chasis WDB con DOT 4 Plus (no aplicar con aceite hidráulico 345.0/Pentosin CHF 11S tapa verde)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP26.60-W-2685A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambiar el líquido de frenos del acoplamiento del embrague - Solo vehículos con DOT 4 Plus, Caja 715.5 Chasis WDB",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP25.20-W-2981A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambiar el líquido de frenos del acoplamiento del embrague - Solo vehículos con DOT 4 Plus, Caja 715.060/712.63 Chasis WDB",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP25.20-W-2981C",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambiar el líquido de frenos del acoplamiento del embrague - Solo vehículos con DOT 4 Plus, Caja 715.320 Chasis WDB",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP25.20-W-2981D",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambiar el líquido de frenos del acoplamiento del embrague - Solo vehículos con DOT 4 Plus, Chasis 9BM 958.2/4",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP25.20-B-2981TG",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Controlar nivel de líquido refrigerante y concentración de anticongelante (-37°C) con refractómetro",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP20.00-B-2010TA, AP20.00-W-2010A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Verificar nivel de fluidos: motor, caja, dirección, eje trasero, embrague, eje delantero, transferencia",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE LUBRICACION",
+        "nombre": "Lubricar manguetas, compensación de carga sobre el eje (vehículos sobre 4 ejes), articulaciones de cruceta del árbol de transmisión, ejes de freno (freno de tambor), enganche para remolque y sistema de volqueo",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0020TA, AP00.20-W-0020A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Comprobar visualmente estanqueidad y estado de motor, cambio, toma de fuerza, eje trasero, primer eje trasero no propulsado, dirección, bomba de servodirección, accionamiento hidrostático del ventilador e instalación de basculamiento de cabina",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0050TA, AP00.20-W-0050A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Comprobar visualmente todas las tuberías y tubos flexibles de aire comprimido, aceite, líquido de frenos, combustible, AdBlue, líquido refrigerante, retardador y cables de sensores ABS e indicación de desgaste de forros de freno",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0051TA, AP00.20-W-0051A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Comprobar visualmente todos los depósitos de aire comprimido, AdBlue, líquido de frenos, aparatos neumáticos e hidráulicos, amortiguadores, cubiertas, guarniciones y caperuzas protectoras",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0052TA, AP00.20-W-0052A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Comprobar estanqueidad y estado de conductos de admisión entre filtro de aire, intercooler y motor",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP49.00-B-4950A, AP09.00-W-0953A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Sistema de escape: verificar fugas, estado y fijación",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP49.00-B-4950A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Sistema de refrigeración y calefacción: verificar estado de radiador, tuberías y tubos flexibles; controlar suciedad exterior de radiador e intercooler",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0050TA, AP20.00-W-2050A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Inspeccionar componentes del sistema eléctrico: suciedad excesiva, piezas sueltas, rotas o faltantes, pandeos, abombamiento, decoloración, calentamiento y cubiertas protectoras",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Comprobar y ajustar juego de válvulas motor OM 457.9",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP05.30-B-0560G, AP05.30-W-0560C",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Comprobar y ajustar juego de válvulas motor OM 906.9 / 926.9",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP05.30-B-0560TG, AP05.30-W-0560B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - filtro estándar con tornillo central (Chasis WDB)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-W-0980A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - filtro de placas (Chasis WDB)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-W-0980B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - filtro estándar sin tornillo central (Chasis WDB)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-W-0980C",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - filtro tándem (Chasis WDB)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-W-0980E",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - filtro redondo (Chasis WDB)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-W-0980F",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - Chasis 9BM",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-B-0980TGA",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Eliminar suciedad de la válvula de evacuación de polvo del filtro de aire",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP09.10-W-0931A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Comprobar estado de la correa de nervios trapezoidal en cuanto a desgaste o daños; verificar estado de tensores; renovar según estado facturando por separado",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP13.22-B-1351TA, AP13.22-W-1351A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Limpiar el prefiltro de combustible (motor OM 906 LA)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP47.20-W-0730B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Renovar el filtro de combustible motor OM 457.9",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP47.20-B-0780TGA, AP47.20-W-0780A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Renovar el filtro de combustible motor OM 906.9 / 926.9",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP47.20-B-0780TG, AP47.20-W-0780B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Renovar el elemento del prefiltro de combustible con separador de agua",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP47.20-B-0783TG, AP47.20-W-0783A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Compresor de aire y resonador: reemplazar retén del compresor de aire y del resonador (Solo vehículos Modelo 3344 - 958.471/472/478)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AR13.10-B-5840A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SISTEMA SCR",
+        "nombre": "Renovar el filtro AdBlue (Euro IV / Euro V)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP14.40-B-1481TA, AP14.40-W-1481A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SISTEMA SCR",
+        "nombre": "Unidad de alimentación AdBlue: llenar acumulador de presión con valor nominal de 3.2 bar",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP14.40-B-1490TA, AP14.40-W-1490A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Comprobar roces, asiento correcto y estado de conexiones de cables en motor de partida, alternador y polos de batería",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Controlar asiento y par de apriete de tornillos y tuercas: soporte del cojinete intermedio del árbol de transmisión, travesaños con apoyos de ballesta, travesaño tras el cambio, soportes de caja de cambios y motor, brazos longitudinales de ejes traseros, compensación de muelles en vehículos 6x2, estabilizador en eje trasero y delantero, eje detrás del eje propulsor, cintas de sujeción del depósito de combustible, amortiguadores, abrazaderas en U de paquete de resorte",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0071D, AP00.20-W-0073A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Examinar funcionamiento, juego y fijación de la quinta rueda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP31.10-W-3150A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Examinar funcionamiento, juego y fijación del enganche para remolque",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP31.10-B-3151TA, AP31.10-W-3151A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Examinar visualmente estado de los fuelles de suspensión neumática/mecánica",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP32.20-B-3255A, AP32.20-W-3255A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Controlar presión de inflado y estado de neumáticos incluyendo rueda de repuesto",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP40.15-W-4060A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Elevador neumático del eje de arrastre: examinar visualmente",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.50-B-3591TA",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Eje de transmisión: verificar juego y desgaste de crucetas, buje desplazable y cojinete central",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP41.10-B-4150A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Verificar en visualizador el desgaste de forros de freno en porcentaje (Telligent) - Chasis WDB 944/050.5/954.5 con carrocería 944.899",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP42.00-W-4293B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Verificar en visualizador el desgaste de forros de freno en porcentaje (Telligent) - Chasis WDB 940/943/944/950.5/950.6/952.5/952.6/954.5 con carrocería 944.890",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP42.00-W-4293D",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Verificar espesor de forros de freno (sin sistema Telligent): medir y registrar medida de control (freno disco) o espesor restante (freno tambor) en ejes VA1, HA1 y HA2",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP42.10-W-4253A, AP42.10-B-4253B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Examinar estado del sistema mecánico de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP46.00-B-4650TA, AP46.00-W-4650A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Cambiar grasa de los cubos de rueda de ejes delanteros y controlar rodamientos de rodillos cónicos (no aplicar en vehículos con cojinete compacto) - Chasis WDB",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP33.20-W-3350A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Cambiar grasa de los cubos de rueda de ejes delanteros y controlar rodamientos de rodillos cónicos (no aplicar en vehículos con cojinete compacto) - Chasis 9BM",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP33.20-B-3350TG",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Cambiar grasa de los cubos de rueda del primer eje trasero no propulsado/eje de arrastre y controlar rodamientos de rodillos cónicos (no aplicar en vehículos con cojinete compacto) - Chasis WDB",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.50-W-3553A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Cambiar grasa de los cubos de rueda del primer eje trasero no propulsado/eje de arrastre y controlar rodamientos de rodillos cónicos (no aplicar en vehículos con cojinete compacto) - Chasis 9BM",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.50-B-3553TG",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Reajuste automático del freno: comprobar carrera de desembrague de los cilindros de freno de rueda (freno de tambor)",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP42.10-W-4291A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Freno de adaptación automática a la carga: comprobar juego y ajuste - Suspensión mecánica Chasis 9BM",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP42.80-B-4263TG",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Cambiar cartuchos de granulado del secador de aire comprimido",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP42.60-W-4381A, AP42.60-B-4381TG",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Renovar el filtro de polvo de la calefacción/ventilación",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP83.00-B-8381TG, AP83.00-W-8381B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE FUNCIONAMIENTO",
+        "nombre": "Verificar sistema de señales y testigos de control",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP54.00-W-5451B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE FUNCIONAMIENTO",
+        "nombre": "Verificar funcionamiento de limpiaparabrisas, sistema lavaparabrisas y sistema limpiafaros",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP82.30-W-8252A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "TRABAJOS FINALES",
+        "nombre": "Sistema de mantenimiento Telligent: elaborar datos de servicio en pantalla - Chasis WDB",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP00.20-W-0041A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "TRABAJOS FINALES",
+        "nombre": "Sistema de mantenimiento Telligent: elaborar datos de servicio en pantalla - Chasis 9BM",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP00.20-B-0041TG",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "TRABAJOS FINALES",
+        "nombre": "Control final: realizar prueba de ruta y verificar correcto funcionamiento de frenos de servicio y estacionamiento, dirección, iluminación, testigos de control y rendimiento general",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "TRABAJOS FINALES",
+        "nombre": "Lavado del vehículo",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      }
+    ]
+  },
+  {
+    "modelo": "Axor",
+    "marca": "Mercedes-Benz",
+    "nivel_servicio_global": "SM4",
+    "items": [
+      {
+        "categoria_nombre": "STAR DIAGNOSIS",
+        "nombre": "Conectar y desconectar equipo Star Diagnosis, realizar comprobación breve, imprimir datos y borrar memoria de averías",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite y filtro de motor OM 457.9",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP18.00-B-0101TGA, AP18.00-W-0101C, AP18.00-W-0101B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite y filtro de motor OM 906.9 / 926.9",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP18.00-B-0101TB",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar aceite de la caja de cambios (lubricante mineral o sintético) - Chasis WDB",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP26.00-W-2601A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar aceite de la caja de cambios (lubricante mineral o sintético) - Chasis 9BM",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP26.00-B-2601A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar aceite de la caja de transferencia",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP28.00-W-2801A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje delantero (lubricante mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP33.00-W-3301A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 748.2 - Chasis WDB (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-W-3501A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 742.5/746.2/746.3/770.0/771.0/771.1 - Chasis WDB (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-W-3501B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 741.9 - Chasis 9BM (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-B-3501A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 740.6/740.7/740.8 - Chasis 9BM (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-B-3501D",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 746.230/231 con código ZC8 - Chasis 958.4 (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-B-3501RV",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 741.7 sin código ZC8 y 748.590/594 con motor 457.9 - Modelo 958.4 (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-B-3501RVI",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 746.213 - Modelo 958.2 Chasis 9BM (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-B-3501TGA",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 746.210/213 (HL6) y 771.180/181 (HD4) (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-W-3501B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 740.8 HD7/HL7 (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-W-3501G",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del eje trasero 741.710/934/935 HL4/HD4/HL6 (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-W-3501GA",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite en cárter del árbol de paso del eje trasero 748.2 HL7/HD7 (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-W-3502A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite en cárter del árbol de paso del eje trasero 740.8 HD7/HL7 (mineral o sintético)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP35.00-W-3502G",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar separador de aceite del retardador Voith",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP43.30-B-4382TG, AP43.30-W-4382A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambio de aceite del retardador Voith R 115H",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP43.30-B-4301TG, AP43.30-W-4301B, AP43.30-W-4301A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar el líquido de dirección y filtro",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AR46.25-B-3001AX",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambiar el líquido del mando hidráulico del cambio (código SA GS3) - Solo chasis WDB con DOT 4 Plus (no aplicar con aceite hidráulico 345.0/Pentosin CHF 11S tapa verde)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP26.60-W-2685A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambiar el líquido de frenos del acoplamiento del embrague - Solo vehículos con DOT 4 Plus, Caja 715.5 Chasis WDB",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP25.20-W-2981A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambiar el líquido de frenos del acoplamiento del embrague - Solo vehículos con DOT 4 Plus, Caja 715.060/712.63 Chasis WDB",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP25.20-W-2981C",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambiar el líquido de frenos del acoplamiento del embrague - Solo vehículos con DOT 4 Plus, Caja 715.320 Chasis WDB",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP25.20-W-2981D",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Cambiar el líquido de frenos del acoplamiento del embrague - Solo vehículos con DOT 4 Plus, Chasis 9BM 958.2/4",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP25.20-B-2981TG",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Renovar el líquido refrigerante",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP20.00-B-2010TA, AP20.00-W-2080A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Controlar nivel de líquido refrigerante y concentración de anticongelante (-37°C) con refractómetro",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP20.00-B-2010TA, AP20.00-W-2010A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE FLUIDOS",
+        "nombre": "Verificar nivel de fluidos: motor, caja, dirección, eje trasero, embrague, eje delantero, transferencia",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SERVICIO DE LUBRICACION",
+        "nombre": "Lubricar manguetas, compensación de carga sobre el eje (vehículos sobre 4 ejes), articulaciones de cruceta del árbol de transmisión, ejes de freno (freno de tambor), enganche para remolque y sistema de volqueo",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0020TA, AP00.20-W-0020A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Comprobar visualmente estanqueidad y estado de motor, cambio, toma de fuerza, eje trasero, primer eje trasero no propulsado, dirección, bomba de servodirección, accionamiento hidrostático del ventilador e instalación de basculamiento de cabina",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0050TA, AP00.20-W-0050A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Comprobar visualmente todas las tuberías y tubos flexibles de aire comprimido, aceite, líquido de frenos, combustible, AdBlue, líquido refrigerante, retardador y cables de sensores ABS e indicación de desgaste de forros de freno",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0051TA, AP00.20-W-0051A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Comprobar visualmente todos los depósitos de aire comprimido, AdBlue, líquido de frenos, aparatos neumáticos e hidráulicos, amortiguadores, cubiertas, guarniciones y caperuzas protectoras",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0052TA, AP00.20-W-0052A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Comprobar estanqueidad y estado de conductos de admisión entre filtro de aire, intercooler y motor",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP49.00-B-4950A, AP09.00-W-0953A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Sistema de escape: verificar fugas, estado y fijación",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP49.00-B-4950A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Sistema de refrigeración y calefacción: verificar estado de radiador, tuberías y tubos flexibles; controlar suciedad exterior de radiador e intercooler",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0050TA, AP20.00-W-2050A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE ESTANQUEIDAD Y ESTADO",
+        "nombre": "Inspeccionar componentes del sistema eléctrico: suciedad excesiva, piezas sueltas, rotas o faltantes, pandeos, abombamiento, decoloración, calentamiento y cubiertas protectoras",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Comprobar y ajustar juego de válvulas motor OM 457.9",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP05.30-B-0560G, AP05.30-W-0560C",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Comprobar y ajustar juego de válvulas motor OM 906.9 / 926.9",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP05.30-B-0560TG, AP05.30-W-0560B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - filtro estándar con tornillo central (Chasis WDB)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-W-0980A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - filtro de placas (Chasis WDB)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-W-0980B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - filtro estándar sin tornillo central (Chasis WDB)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-W-0980C",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - filtro tándem (Chasis WDB)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-W-0980E",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - filtro redondo (Chasis WDB)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-W-0980F",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Cambiar elemento del filtro de aire - Chasis 9BM",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP09.10-B-0980TGA",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Eliminar suciedad de la válvula de evacuación de polvo del filtro de aire",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP09.10-W-0931A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Comprobar estado de la correa de nervios trapezoidal en cuanto a desgaste o daños; verificar estado de tensores; renovar según estado facturando por separado",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP13.22-B-1351TA, AP13.22-W-1351A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Limpiar el prefiltro de combustible (motor OM 906 LA)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP47.20-W-0730B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Renovar el filtro de combustible motor OM 457.9",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP47.20-B-0780TGA, AP47.20-W-0780A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Renovar el filtro de combustible motor OM 906.9 / 926.9",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP47.20-B-0780TG, AP47.20-W-0780B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Renovar el elemento del prefiltro de combustible con separador de agua",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP47.20-B-0783TG, AP47.20-W-0783A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "MOTOR",
+        "nombre": "Compresor de aire y resonador: reemplazar retén del compresor de aire y del resonador (Solo vehículos Modelo 3344 - 958.471/472/478)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AR13.10-B-5840A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SISTEMA SCR",
+        "nombre": "Renovar el filtro AdBlue (Euro IV / Euro V)",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP14.40-B-1481TA, AP14.40-W-1481A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "SISTEMA SCR",
+        "nombre": "Unidad de alimentación AdBlue: llenar acumulador de presión con valor nominal de 3.2 bar",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP14.40-B-1490TA, AP14.40-W-1490A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Comprobar roces, asiento correcto y estado de conexiones de cables en motor de partida, alternador y polos de batería",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Controlar asiento y par de apriete de tornillos y tuercas: soporte del cojinete intermedio del árbol de transmisión, travesaños con apoyos de ballesta, travesaño tras el cambio, soportes de caja de cambios y motor, brazos longitudinales de ejes traseros, compensación de muelles en vehículos 6x2, estabilizador en eje trasero y delantero, eje detrás del eje propulsor, cintas de sujeción del depósito de combustible, amortiguadores, abrazaderas en U de paquete de resorte",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP00.20-B-0071D, AP00.20-W-0073A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Examinar funcionamiento, juego y fijación de la quinta rueda",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP31.10-W-3150A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Examinar funcionamiento, juego y fijación del enganche para remolque",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP31.10-B-3151TA, AP31.10-W-3151A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Examinar visualmente estado de los fuelles de suspensión neumática/mecánica",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP32.20-B-3255A, AP32.20-W-3255A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Controlar presión de inflado y estado de neumáticos incluyendo rueda de repuesto",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP40.15-W-4060A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Elevador neumático del eje de arrastre: examinar visualmente",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.50-B-3591TA",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Eje de transmisión: verificar juego y desgaste de crucetas, buje desplazable y cojinete central",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP41.10-B-4150A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Verificar en visualizador el desgaste de forros de freno en porcentaje (Telligent) - Chasis WDB 944/050.5/954.5 con carrocería 944.899",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP42.00-W-4293B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Verificar en visualizador el desgaste de forros de freno en porcentaje (Telligent) - Chasis WDB 940/943/944/950.5/950.6/952.5/952.6/954.5 con carrocería 944.890",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP42.00-W-4293D",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Verificar espesor de forros de freno (sin sistema Telligent): medir y registrar medida de control (freno disco) o espesor restante (freno tambor) en ejes VA1, HA1 y HA2",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP42.10-W-4253A, AP42.10-B-4253B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Examinar estado del sistema mecánico de dirección",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP46.00-B-4650TA, AP46.00-W-4650A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Cambiar grasa de los cubos de rueda de ejes delanteros y controlar rodamientos de rodillos cónicos (no aplicar en vehículos con cojinete compacto) - Chasis WDB",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP33.20-W-3350A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Cambiar grasa de los cubos de rueda de ejes delanteros y controlar rodamientos de rodillos cónicos (no aplicar en vehículos con cojinete compacto) - Chasis 9BM",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP33.20-B-3350TG",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Cambiar grasa de los cubos de rueda del primer eje trasero no propulsado/eje de arrastre y controlar rodamientos de rodillos cónicos (no aplicar en vehículos con cojinete compacto) - Chasis WDB",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.50-W-3553A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Cambiar grasa de los cubos de rueda del primer eje trasero no propulsado/eje de arrastre y controlar rodamientos de rodillos cónicos (no aplicar en vehículos con cojinete compacto) - Chasis 9BM",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP35.50-B-3553TG",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Reajuste automático del freno: comprobar carrera de desembrague de los cilindros de freno de rueda (freno de tambor)",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP42.10-W-4291A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Freno de adaptación automática a la carga: comprobar juego y ajuste - Suspensión mecánica Chasis 9BM",
+        "es_critico": true,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": true,
+        "referencia_tecnica": "AP42.80-B-4263TG",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Cambiar cartuchos de granulado del secador de aire comprimido",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP42.60-W-4381A, AP42.60-B-4381TG",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CHASIS Y CARROCERIA",
+        "nombre": "Renovar el filtro de polvo de la calefacción/ventilación",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": "AP83.00-B-8381TG, AP83.00-W-8381B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE FUNCIONAMIENTO",
+        "nombre": "Verificar sistema de señales y testigos de control",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP54.00-W-5451B",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "CONTROL DE FUNCIONAMIENTO",
+        "nombre": "Verificar funcionamiento de limpiaparabrisas, sistema lavaparabrisas y sistema limpiafaros",
+        "es_critico": false,
+        "tipo_respuesta": "ESCALA",
+        "es_opcional": false,
+        "referencia_tecnica": "AP82.30-W-8252A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "TRABAJOS FINALES",
+        "nombre": "Sistema de mantenimiento Telligent: elaborar datos de servicio en pantalla - Chasis WDB",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP00.20-W-0041A",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "TRABAJOS FINALES",
+        "nombre": "Sistema de mantenimiento Telligent: elaborar datos de servicio en pantalla - Chasis 9BM",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": true,
+        "referencia_tecnica": "AP00.20-B-0041TG",
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "TRABAJOS FINALES",
+        "nombre": "Control final: realizar prueba de ruta y verificar correcto funcionamiento de frenos de servicio y estacionamiento, dirección, iluminación, testigos de control y rendimiento general",
+        "es_critico": true,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      },
+      {
+        "categoria_nombre": "TRABAJOS FINALES",
+        "nombre": "Lavado del vehículo",
+        "es_critico": false,
+        "tipo_respuesta": "BINARIO",
+        "es_opcional": false,
+        "referencia_tecnica": null,
+        "codigo_sap": null
+      }
+    ]
+  }
+]

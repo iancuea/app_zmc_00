@@ -1,0 +1,936 @@
+{
+  "modelo": "M2-106 ISL",
+  "marca": "Freightliner",
+  "items_checklist": [
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - FLUIDOS",
+      "nombre": "Cambio aceite motor y filtros",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SC2",
+      "referencia_tecnica": "0.4 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - FLUIDOS",
+      "nombre": "Cambio filtro de combustible",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - FLUIDOS",
+      "nombre": "Cambio filtro separador de combustible y agua",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - FLUIDOS",
+      "nombre": "Cambio filtro de ventilacion del carter del motor",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SC3",
+      "referencia_tecnica": "0.1 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - FLUIDOS",
+      "nombre": "Cambio filtro de la unidad de dosificacion de AdBlue",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SC4",
+      "referencia_tecnica": "0.1 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - FLUIDOS",
+      "nombre": "Cambio liquido refrigerante",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SC4",
+      "referencia_tecnica": "1.0 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - CONTROL INICIAL",
+      "nombre": "Extraer reporte de entrada del motor mediante Insite",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - CONTROL INICIAL",
+      "nombre": "Extraer reporte de salida del motor mediante Insite",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - NIVELES",
+      "nombre": "Controlar nivel del refrigerante y concentracion de anticongelante",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - NIVELES",
+      "nombre": "Controlar nivel de aceite del motor",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - ESTANQUEIDAD",
+      "nombre": "Verificar estanqueidad del motor y conexiones del sistema de admision de aire, lubricacion, refrigeracion y EGR",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Verificar el estado del tubo del respiradero del carter",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Comprobar las fijaciones y el estado del ventilador y del radiador",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Comprobar el estado de la tapa del radiador",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Comprobar el estado del intercooler",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Comprobar el estado de la tuberia del aire de admision",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Comprobar el estado del tubo de escape",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Drenar los tanques y depositos del sistema de aire comprimido",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.4 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Comprobar la carga de la bateria",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Comprobar el estado de los cables y conexiones de las baterias",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Comprobar la estanqueidad y el estado de las lineas de descarga del compresor",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SC2",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Verificar el estado del amortiguador de vibracion viscoso",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SC2",
+      "referencia_tecnica": "0.1 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Comprobar el estado de la correa Poly V",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SC2",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Comprobar el estado del tensor de la correa del ventilador",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SC2",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Realizar limpieza del motor con vapor",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SC3",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Drenar el agua y eliminar sedimentos del separador de agua y combustible",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SC1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Verificar y ajustar el juego de valvulas",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SC3",
+      "referencia_tecnica": "2.0 HH"
+    },
+    {
+      "categoria_nombre": "MOTOR CUMMINS ISL - INSPECCION",
+      "nombre": "Realizar limpieza del sistema de enfriamiento",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SC4",
+      "referencia_tecnica": "1.0 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FLUIDOS",
+      "nombre": "Cambio aceite transmision Allison 3000 EVS y filtros",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "1.0 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FLUIDOS",
+      "nombre": "Cambio aceite transmision Eaton Fuller y limpieza colector magnetico",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FLUIDOS",
+      "nombre": "Cambio aceite cubos de rueda en eje delantero",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FLUIDOS",
+      "nombre": "Cambio aceite eje trasero",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FLUIDOS",
+      "nombre": "Cambio liquido del embrague hidraulico",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FLUIDOS",
+      "nombre": "Cambio liquido de direccion hidraulica y filtro",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FILTROS",
+      "nombre": "Cambio filtro secador de aire",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FILTROS",
+      "nombre": "Cambio filtro aceite eje trasero",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FILTROS",
+      "nombre": "Cambio filtro de aire sistema HVAC",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "0.1 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FILTROS",
+      "nombre": "Cambio filtro de aire del motor",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "0.1 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FILTROS",
+      "nombre": "Cambio filtro de direccion hidraulica",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FILTROS",
+      "nombre": "Cambio filtros transmision Allison 3000 EVS",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - NIVELES",
+      "nombre": "Controlar nivel del liquido del embrague hidraulico",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - NIVELES",
+      "nombre": "Controlar nivel de aceite de la transmision",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - NIVELES",
+      "nombre": "Controlar nivel de aceite de los cubos de rueda del eje delantero",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - NIVELES",
+      "nombre": "Controlar nivel de aceite en ejes traseros",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - NIVELES",
+      "nombre": "Controlar nivel del liquido de la direccion hidraulica",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - LUBRICACION",
+      "nombre": "Lubricar el collarin del embrague Eaton Fuller",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - LUBRICACION",
+      "nombre": "Lubricar el eje transversal de liberacion del eje Eaton Fuller",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - LUBRICACION",
+      "nombre": "Lubricar la quinta rueda",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - LUBRICACION",
+      "nombre": "Lubricar el conector electrico del remolque",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - LUBRICACION",
+      "nombre": "Lubricar la suspension",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - LUBRICACION",
+      "nombre": "Lubricar el pivote de direccion",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - LUBRICACION",
+      "nombre": "Lubricar rotulas de la barra de acoplamiento",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - LUBRICACION",
+      "nombre": "Lubricar el eje cardan",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - LUBRICACION",
+      "nombre": "Lubricar los ajustadores de tension de freno Haldex y Gunite 42-06",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - LUBRICACION",
+      "nombre": "Lubricar el soporte del eje de leva Meritor",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - LUBRICACION",
+      "nombre": "Lubricar el ajustador de tension de freno Meritor",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - LUBRICACION",
+      "nombre": "Lubricar el mecanismo de la direccion hidraulica",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - LUBRICACION",
+      "nombre": "Lubricar el eslabon de arrastre del sistema de direccion",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - LUBRICACION",
+      "nombre": "Lubricar los sellos de las puertas",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - LUBRICACION",
+      "nombre": "Lubricar los soportes traseros del capo",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Inspeccionar el estado del compresor de aire",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.1 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Revisar la tapa de alivio de presion del radiador",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.4 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Verificar el estado de los respiraderos de la transmision Eaton Fuller o Allison",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Verificar la estanqueidad de la caja de cambios Mercedes Benz",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": true,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Controlar el par de apriete de topes de ejes, soportes de escape, barras tensoras, etc.",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.6 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Comprobar el funcionamiento, juego y fijacion de la quinta rueda",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.2 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Controlar el par de apriete de componentes y sujeciones de la suspension delantera y trasera",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "1.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Inspeccion del juego vertical del munon",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "1.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Verificar el estado de la rotula de acoplamiento",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "1.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Controlar el par de apriete de las tuercas de rueda",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "1.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Verificar el estado y el juego del eje cardan y crucetas",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "1.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FRENOS",
+      "nombre": "Comprobar el funcionamiento y estado de la valvula Bendix del sistema de frenos de aire",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "1.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FRENOS",
+      "nombre": "Drenar los depositos de aire y realizar inspeccion del sistema de frenos neumatico",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "1.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FRENOS",
+      "nombre": "Comprobar el funcionamiento de los frenos de estacionamiento",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "1.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FRENOS",
+      "nombre": "Inspeccionar y lubricar la valvula del pedal de freno",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "0.1 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FRENOS",
+      "nombre": "Comprobar el funcionamiento y estado del acoplamiento y placa de montaje del pedal de frenos",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FRENOS",
+      "nombre": "Comprobar el funcionamiento y estado del regulador D-2A",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "0.4 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FRENOS",
+      "nombre": "Comprobar el funcionamiento y verificar el estado del secador de aire AD-9 o AD-IP/IS",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - FRENOS",
+      "nombre": "Comprobar la estanqueidad del sistema de aire comprimido y drenar depositos de aire",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Verificar el estado del respiradero del estanque de combustible",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "1.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Verificar el estado y la estanqueidad del sistema de escape",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "1.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Verificar el estado del sistema de aire acondicionado",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "1.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Verificar el estado del impulsor del ventilador",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Verificar el desgaste de los bujes superiores e inferiores del pasador del munon",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Verificar el estado de las conexiones del cableado del alternador, baterias y motor de partida",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM2",
+      "referencia_tecnica": "0.5 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Controlar el par de apriete de la tuerca de la chaveta de retencion",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "0.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Verificar visualmente el estado del sistema de accionamiento del ventilador Horton",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM3",
+      "referencia_tecnica": "0.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Comprobar el funcionamiento y el estado de los pivotes del espejo",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM4",
+      "referencia_tecnica": "0.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Controlar el par de apriete de las bandas del tanque de combustible",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM4",
+      "referencia_tecnica": "0.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Comprobar el estado del eslabon de arrastre del sistema de direccion",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM4",
+      "referencia_tecnica": "0.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Controlar el juego de las masas delanteras y traseras",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM4",
+      "referencia_tecnica": "0.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Controlar el par de apriete de los pernos U de la suspension",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM4",
+      "referencia_tecnica": "0.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Verificar el estado del filtro regulador de aire de la transmision Eaton Fuller",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM4",
+      "referencia_tecnica": "0.9 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Verificar el estado de saturacion del filtro de aire",
+      "es_critico": false,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.1 HH"
+    },
+    {
+      "categoria_nombre": "CHASIS FREIGHTLINER M2-106 - INSPECCION",
+      "nombre": "Controlar el par de apriete de los sujetadores de los soportes del motor",
+      "es_critico": true,
+      "tipo_respuesta": "ESCALA",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": "0.3 HH"
+    },
+    {
+      "categoria_nombre": "TRABAJOS ADICIONALES",
+      "nombre": "Prueba de ruta",
+      "es_critico": true,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null
+    },
+    {
+      "categoria_nombre": "TRABAJOS ADICIONALES",
+      "nombre": "Lavado del vehiculo",
+      "es_critico": false,
+      "tipo_respuesta": "BINARIO",
+      "es_opcional": false,
+      "nivel_servicio": "SM1",
+      "referencia_tecnica": null
+    }
+  ],
+  "repuestos": [
+    {
+      "nombre": "Filtro de Aceite",
+      "codigo_zmc": "LF9009",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de Combustible",
+      "codigo_zmc": "FF5488",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro Separador de Agua",
+      "codigo_zmc": "FS1003",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Respiradero del Carter",
+      "codigo_zmc": "BR9216-03",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro Secador de Aire",
+      "codigo_zmc": "BW800202",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de Aire de Motor",
+      "codigo_zmc": "DN P621097",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Respiradero Diferencial",
+      "codigo_zmc": "TDA A2297C8765",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro Aire Acondicionado (HVAC)",
+      "codigo_zmc": "VCC 36000006",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro Transmision (Carter 2 pulgadas)",
+      "codigo_zmc": "29548987",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro Transmision (Carter 4 pulgadas)",
+      "codigo_zmc": "29548988",
+      "tipo": "FILTRO"
+    },
+    {
+      "nombre": "Filtro de Direccion Hidraulica",
+      "codigo_zmc": "14-17927-000",
+      "tipo": "FILTRO"
+    }
+  ]
+}
