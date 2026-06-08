@@ -20,9 +20,11 @@ from .models import (
 )
 from core.models import DocumentoMantencion, EstadoCamion, Mantencion, Camion, Remolque, AsignacionTractoRemolque
 from mantenciones import models
-from django.db.models import Q
+from django.db.models import Q, Max, Min
 from django.core.mail import EmailMessage
 from django.conf import settings
+from datetime import datetime, timedelta
+
 import os
 
 @login_required
@@ -199,6 +201,11 @@ def crear_inspeccion(request):
     categorias = CategoriaChecklist.objects.all().order_by('orden')
     return render(request, 'mantenciones/crear_inspeccion.html', {'form': form, 'categorias': categorias})
 
+@login_required 
+def vista_gantt_mvp(request):
+    """Renderiza el contenedor básico del MVP de la Carta Gantt"""
+    return render(request, 'mantenciones/gantt_mvp.html')
+
 @require_http_methods(["GET"])
 def api_datos_autocompletado(request, camion_id):
     """
@@ -340,3 +347,106 @@ def api_remolque_asignado(request, camion_id):
             'error': str(e)
         }, status=400)
     
+@require_http_methods(["GET"])
+def api_gantt_proyeccion(request):
+    """
+    Genera la proyección predictiva de mantenciones preventivas para la flota
+    desde el día de hoy hasta el 31 de Enero de 2027 basada en telemetría diaria.
+    """
+    fecha_hoy = timezone.now()
+    fecha_limite = datetime(2027, 1, 31, 23, 59, 59)
+    
+    # Validar zona horaria para evitar choques entre objetos Aware y Naive
+    if timezone.is_aware(fecha_hoy):
+        fecha_limite = timezone.make_aware(fecha_limite)
+        
+    data_gantt = []
+    
+    # 1. Obtener todos los camiones activos usando tu modelo Camion
+    camiones_activos = Camion.objects.filter(activo=True)
+    
+    for camion in camiones_activos:
+        # 2. Punto de partida: Kilometraje desde tu modelo EstadoCamion
+        estado = EstadoCamion.objects.filter(camion=camion).first()
+        if not estado or estado.kilometraje is None:
+            continue  # Si no tiene estado operativo base, saltar para evitar caídas
+            
+        km_simulado = float(estado.kilometraje)
+        
+        # 3. Calcular la Tasa de Uso Diaria Real usando tu modelo RegistroDiario (Últimos 30 días)
+        fecha_hace_mes = fecha_hoy - timedelta(days=30)
+        registros_mes = RegistroDiario.objects.filter(
+            vehiculo=camion,
+            fecha__gte=fecha_hace_mes
+        ).order_by('fecha')
+        
+        if registros_mes.count() >= 2:
+            agg = registros_mes.aggregate(
+                km_max=Max('km_actual'),
+                km_min=Min('km_actual'),
+                fecha_max=Max('fecha'),
+                fecha_min=Min('fecha')
+            )
+            delta_km = agg['km_max'] - agg['km_min']
+            delta_dias = (agg['fecha_max'] - agg['fecha_min']).days or 1
+            
+            # Si el cálculo da 0 o negativo por error de tipeo, resguardamos con fallback seguro
+            km_diario_promedio = float(delta_km / delta_dias)
+            if km_diario_promedio <= 0:
+                km_diario_promedio = 150.0
+        else:
+            # Coeficiente estándar de uso diario si el camión es nuevo o no registra rutas
+            km_diario_promedio = 150.0 
+            
+        # 4. Cargar la matriz de pautas teóricas desde tu modelo CronogramaPlan
+        plan_maestro = CronogramaPlan.objects.filter(modelo=camion.modelo).first()
+        if plan_maestro and plan_maestro.paquetes_json:
+            ciclo_planes = plan_maestro.paquetes_json  # Lee directo el array jsonb de Postgres
+            intervalo = int(plan_maestro.intervalo_teorico or camion.intervalo_mantencion or 25000)
+        else:
+            # Respaldo secuencial clásico si el modelo no tiene cronograma asociado
+            ciclo_planes = ["SM1", "SM2", "SM3", "SM4"]
+            intervalo = int(camion.intervalo_mantencion or 25000)
+            
+        # 5. Buscar último hito real en taller usando tu modelo Mantencion
+        ultima_mantencion = Mantencion.objects.filter(
+            camion=camion, 
+            tipo_mantencion='TALLER'
+        ).order_by('-fecha_mantencion').first()
+        
+        if ultima_mantencion and ultima_mantencion.km_proxima_mantencion:
+            proximo_km_mantencion = float(ultima_mantencion.km_proxima_mantencion)
+        else:
+            # Si arranca limpio, calculamos matemáticamente el próximo umbral teórico
+            proximo_km_mantencion = float(((int(km_simulado) // intervalo) + 1) * intervalo)
+            
+        fecha_simulada = fecha_hoy
+        
+        # 6. Simulación matemática temporal día a día hacia el horizonte de Enero 2027
+        while fecha_simulada <= fecha_limite:
+            km_simulado += km_diario_promedio
+            fecha_simulada += timedelta(days=1)
+            
+            # Condición de activación preventiva: El camión alcanzó los kilómetros del servicio
+            if km_simulado >= proximo_km_mantencion:
+                # Calcular la pauta técnica correspondiente según el ciclo dinámico
+                posicion_en_ciclo = int(proximo_km_mantencion // intervalo) - 1
+                nombre_plan = ciclo_planes[posicion_en_ciclo % len(ciclo_planes)]
+                
+                # Seteo estético para la Gantt: Diferenciar motores/cajas (MB, SC, ST) de Chasis estándar (SM, SIM)
+                color_render = "#e056fd" if any(x in nombre_plan for x in ["MB", "SC", "ST"]) else "#30336b"
+                
+                data_gantt.append({
+                    "id": f"pred_{camion.id_camion}_{int(proximo_km_mantencion)}",
+                    "text": f"🚚 {camion.patente} - Mantención {nombre_plan}",
+                    "start_date": fecha_simulada.strftime("%Y-%m-%d"),
+                    "end_date": (fecha_simulada + timedelta(days=1)).strftime("%Y-%m-%d"),
+                    "km_proyectado": int(proximo_km_mantencion),
+                    "patente": camion.patente,
+                    "color": color_render
+                })
+                
+                # Desplazar el objetivo al siguiente servicio preventivo
+                proximo_km_mantencion += intervalo
+                
+    return JsonResponse(data_gantt, safe=False)
