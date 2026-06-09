@@ -285,3 +285,27 @@ class InsumoUtilizado(models.Model):
     def __str__(self):
         return f"{self.cantidad_usada} {self.repuesto.unidad_medida} de {self.repuesto.nombre}"
     
+class CicloEstadoCamion(models.Model):
+    """
+    Registra en qué posición del ciclo de mantención está cada camión.
+    Reemplaza el conteo frágil de inspecciones del sistema anterior.
+    """
+    camion = models.OneToOneField(
+        'core.Camion',
+        on_delete=models.CASCADE,
+        related_name='ciclo_estado',
+        db_column='camion_id'
+    )
+    posicion_actual       = models.IntegerField(default=1)
+    km_ultimo_servicio    = models.IntegerField(default=0)
+    fecha_ultimo_servicio = models.DateField(null=True, blank=True)
+    ultimo_plan_realizado = models.CharField(max_length=20, null=True, blank=True)
+
+    class Meta:
+        db_table = 'mantenciones_cicloestadocamion'
+        managed  = False  # La tabla ya existe, Django no la toca
+        verbose_name = 'Estado de Ciclo'
+
+    def __str__(self):
+        return f"{self.camion.patente} — Posición {self.posicion_actual}"
+    

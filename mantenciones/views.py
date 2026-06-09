@@ -350,103 +350,122 @@ def api_remolque_asignado(request, camion_id):
 @require_http_methods(["GET"])
 def api_gantt_proyeccion(request):
     """
-    Genera la proyección predictiva de mantenciones preventivas para la flota
-    desde el día de hoy hasta el 31 de Enero de 2027 basada en telemetría diaria.
+    Motor predictivo de mantenciones preventivas.
+    Genera la Carta Gantt desde hoy hasta el 31/01/2027.
+    
+    Correcciones vs versión anterior:
+    - Usa CicloEstadoCamion como fuente de verdad del ciclo
+    - Calcula fechas por aritmética directa (no loop día a día)
+    - Elimina N+1 queries con prefetch/select_related
+    - Lee CronogramaPlan fila por fila (no solo la primera)
     """
-    fecha_hoy = timezone.now()
-    fecha_limite = datetime(2027, 1, 31, 23, 59, 59)
-    
-    # Validar zona horaria para evitar choques entre objetos Aware y Naive
-    if timezone.is_aware(fecha_hoy):
-        fecha_limite = timezone.make_aware(fecha_limite)
-        
+    from datetime import date, timedelta
+    from mantenciones.models import CicloEstadoCamion, CronogramaPlan
+
+    FECHA_HOY   = date.today()
+    FECHA_LIMITE = date(2027, 1, 31)
+    KM_DIARIO_FALLBACK = 150.0
+
+    # ── 1. Cargar toda la flota activa en UNA sola query ──────────────────
+    camiones = (
+        Camion.objects
+        .filter(activo=True)
+        .select_related('modelo', 'estado_actual', 'ciclo_estado')
+    )
+
+    # ── 2. Cargar todos los planes del cronograma en UNA sola query ────────
+    # Estructura: { modelo_id: { posicion: [paquetes] } }
+    planes_raw = CronogramaPlan.objects.select_related('modelo').all()
+    planes_por_modelo = {}
+    for plan in planes_raw:
+        mid = plan.modelo_id
+        if mid not in planes_por_modelo:
+            planes_por_modelo[mid] = {}
+        planes_por_modelo[mid][plan.posicion_ciclo] = plan.paquetes_json
+
     data_gantt = []
-    
-    # 1. Obtener todos los camiones activos usando tu modelo Camion
-    camiones_activos = Camion.objects.filter(activo=True)
-    
-    for camion in camiones_activos:
-        # 2. Punto de partida: Kilometraje desde tu modelo EstadoCamion
-        estado = EstadoCamion.objects.filter(camion=camion).first()
-        if not estado or estado.kilometraje is None:
-            continue  # Si no tiene estado operativo base, saltar para evitar caídas
-            
-        km_simulado = float(estado.kilometraje)
-        
-        # 3. Calcular la Tasa de Uso Diaria Real usando tu modelo RegistroDiario (Últimos 30 días)
-        fecha_hace_mes = fecha_hoy - timedelta(days=30)
-        registros_mes = RegistroDiario.objects.filter(
-            vehiculo=camion,
-            fecha__gte=fecha_hace_mes
-        ).order_by('fecha')
-        
-        if registros_mes.count() >= 2:
-            agg = registros_mes.aggregate(
-                km_max=Max('km_actual'),
-                km_min=Min('km_actual'),
-                fecha_max=Max('fecha'),
-                fecha_min=Min('fecha')
+
+    for camion in camiones:
+
+        # ── 3. Validaciones de datos mínimos ──────────────────────────────
+        estado = getattr(camion, 'estado_actual', None)
+        ciclo  = getattr(camion, 'ciclo_estado', None)
+
+        if not estado or not ciclo or not camion.modelo_id:
+            continue  # Sin datos suficientes, saltar
+
+        km_actual = float(estado.kilometraje or 0)
+        if km_actual <= 0:
+            continue
+
+        # ── 4. Tasa de uso diaria real ────────────────────────────────────
+        # Usamos los datos del Excel que ya cargamos: km ganados desde último servicio
+        km_ganados  = km_actual - ciclo.km_ultimo_servicio
+        dias_transcurridos = (
+            (FECHA_HOY - ciclo.fecha_ultimo_servicio).days
+            if ciclo.fecha_ultimo_servicio else 0
+        )
+
+        if km_ganados > 0 and dias_transcurridos > 0:
+            km_diario = km_ganados / dias_transcurridos
+        else:
+            km_diario = KM_DIARIO_FALLBACK
+
+        # Límite de sensatez: entre 50 y 600 km/día para un camión de alto tonelaje
+        km_diario = max(50.0, min(km_diario, 600.0))
+
+        # ── 5. Leer el ciclo del modelo ────────────────────────────────────
+        planes = planes_por_modelo.get(camion.modelo_id)
+        if not planes:
+            continue  # Modelo sin cronograma cargado aún (ACTROS, NEW-ACTROS, Freightliner)
+
+        total_posiciones = len(planes)
+        intervalo        = float(camion.intervalo_mantencion or 20000)
+
+        # ── 6. Punto de partida del ciclo ──────────────────────────────────
+        posicion   = ciclo.posicion_actual
+        km_proximo = float(ciclo.km_ultimo_servicio) + intervalo
+
+        # Si el camión ya superó el km del próximo servicio, está atrasado
+        # Lo registramos igual con fecha de hoy para que aparezca en el Gantt
+        if km_proximo < km_actual:
+            km_proximo = km_actual + 1  # Disparar el primer evento inmediatamente
+
+        # ── 7. Proyección matemática directa (sin loop día a día) ──────────
+        while True:
+            # Días hasta alcanzar ese km
+            dias_hasta_servicio = (km_proximo - km_actual) / km_diario
+            fecha_evento        = FECHA_HOY + timedelta(days=dias_hasta_servicio)
+
+            if fecha_evento > FECHA_LIMITE:
+                break  # Ya pasamos el horizonte, terminamos este camión
+
+            # Paquetes de la posición actual del ciclo
+            paquetes = planes.get(posicion, ["SM?"])
+            nombre_plan = ", ".join(paquetes)
+
+            # Color por tipo de servicio
+            es_servicio_mayor = any(
+                x in p for p in paquetes for x in ["SM3", "SM4", "SM5", "SC3", "SC4", "MB2", "MB3"]
             )
-            delta_km = agg['km_max'] - agg['km_min']
-            delta_dias = (agg['fecha_max'] - agg['fecha_min']).days or 1
-            
-            # Si el cálculo da 0 o negativo por error de tipeo, resguardamos con fallback seguro
-            km_diario_promedio = float(delta_km / delta_dias)
-            if km_diario_promedio <= 0:
-                km_diario_promedio = 150.0
-        else:
-            # Coeficiente estándar de uso diario si el camión es nuevo o no registra rutas
-            km_diario_promedio = 150.0 
-            
-        # 4. Cargar la matriz de pautas teóricas desde tu modelo CronogramaPlan
-        plan_maestro = CronogramaPlan.objects.filter(modelo=camion.modelo).first()
-        if plan_maestro and plan_maestro.paquetes_json:
-            ciclo_planes = plan_maestro.paquetes_json  # Lee directo el array jsonb de Postgres
-            intervalo = int(plan_maestro.intervalo_teorico or camion.intervalo_mantencion or 25000)
-        else:
-            # Respaldo secuencial clásico si el modelo no tiene cronograma asociado
-            ciclo_planes = ["SM1", "SM2", "SM3", "SM4"]
-            intervalo = int(camion.intervalo_mantencion or 25000)
-            
-        # 5. Buscar último hito real en taller usando tu modelo Mantencion
-        ultima_mantencion = Mantencion.objects.filter(
-            camion=camion, 
-            tipo_mantencion='TALLER'
-        ).order_by('-fecha_mantencion').first()
-        
-        if ultima_mantencion and ultima_mantencion.km_proxima_mantencion:
-            proximo_km_mantencion = float(ultima_mantencion.km_proxima_mantencion)
-        else:
-            # Si arranca limpio, calculamos matemáticamente el próximo umbral teórico
-            proximo_km_mantencion = float(((int(km_simulado) // intervalo) + 1) * intervalo)
-            
-        fecha_simulada = fecha_hoy
-        
-        # 6. Simulación matemática temporal día a día hacia el horizonte de Enero 2027
-        while fecha_simulada <= fecha_limite:
-            km_simulado += km_diario_promedio
-            fecha_simulada += timedelta(days=1)
-            
-            # Condición de activación preventiva: El camión alcanzó los kilómetros del servicio
-            if km_simulado >= proximo_km_mantencion:
-                # Calcular la pauta técnica correspondiente según el ciclo dinámico
-                posicion_en_ciclo = int(proximo_km_mantencion // intervalo) - 1
-                nombre_plan = ciclo_planes[posicion_en_ciclo % len(ciclo_planes)]
-                
-                # Seteo estético para la Gantt: Diferenciar motores/cajas (MB, SC, ST) de Chasis estándar (SM, SIM)
-                color_render = "#e056fd" if any(x in nombre_plan for x in ["MB", "SC", "ST"]) else "#30336b"
-                
-                data_gantt.append({
-                    "id": f"pred_{camion.id_camion}_{int(proximo_km_mantencion)}",
-                    "text": f"🚚 {camion.patente} - Mantención {nombre_plan}",
-                    "start_date": fecha_simulada.strftime("%Y-%m-%d"),
-                    "end_date": (fecha_simulada + timedelta(days=1)).strftime("%Y-%m-%d"),
-                    "km_proyectado": int(proximo_km_mantencion),
-                    "patente": camion.patente,
-                    "color": color_render
-                })
-                
-                # Desplazar el objetivo al siguiente servicio preventivo
-                proximo_km_mantencion += intervalo
-                
+            color = "#e056fd" if es_servicio_mayor else "#30336b"
+
+            data_gantt.append({
+                "id":            f"pred_{camion.id_camion}_{int(km_proximo)}",
+                "text":          f"🚚 {camion.patente} — {nombre_plan}",
+                "start_date":    fecha_evento.strftime("%Y-%m-%d"),
+                "end_date":      (fecha_evento + timedelta(days=1)).strftime("%Y-%m-%d"),
+                "km_proyectado": int(km_proximo),
+                "patente":       camion.patente,
+                "plan":          nombre_plan,
+                "color":         color,
+            })
+
+            # ── 8. Avanzar el ciclo correctamente ──────────────────────────
+            posicion   = (posicion % total_posiciones) + 1
+            km_proximo += intervalo
+
+    # Ordenar por fecha para que el Gantt lo reciba limpio
+    data_gantt.sort(key=lambda x: x["start_date"])
+
     return JsonResponse(data_gantt, safe=False)
