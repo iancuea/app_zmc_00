@@ -789,3 +789,509 @@ body {
     font-weight: 700;
     line-height: 1;
 }
+/* ==========================================================================
+   FLEET GRID V2 — Reemplaza secciones 3, 4, 5, 9 del CSS anterior
+   Pegar AL FINAL de camiones.css (no borrar lo anterior por ahora,
+   las clases nuevas tienen nombres distintos y no chocan)
+   ========================================================================== */
+
+/* ── FILTROS ────────────────────────────────────────────────────────────── */
+
+.filter-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.filter-bar .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.filter-bar .filter-group label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--text-muted-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filter-input {
+    padding: 7px 10px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-light);
+    background: var(--bg-card);
+    font-family: var(--font-family);
+    font-size: 0.8rem;
+    color: var(--text-on-light);
+    min-width: 130px;
+    transition: border-color 0.2s;
+}
+
+.filter-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(14, 48, 93, 0.08);
+}
+
+.filter-input.search-input {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+    letter-spacing: 1px;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.btn-filter {
+    height: 34px;
+    padding: 0 14px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-primary);
+    background: var(--color-primary);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--font-family);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.btn-filter:hover {
+    background: var(--color-primary-dark);
+}
+
+.btn-filter-clear {
+    background: transparent;
+    color: var(--text-muted-light);
+    border-color: var(--border-light);
+    font-size: 1.1rem;
+    padding: 0 10px;
+}
+
+.btn-filter-clear:hover {
+    background: var(--error-tint);
+    color: var(--color-error);
+    border-color: var(--color-error);
+}
+
+/* ── FLEET GRID ─────────────────────────────────────────────────────────── */
+
+.fleet-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem 3rem;
+}
+
+.base-section {
+    margin-bottom: 1.5rem;
+}
+
+.base-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    padding: 0 2px;
+}
+
+.base-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--color-primary);
+    background: rgba(14, 48, 93, 0.06);
+    padding: 3px 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(14, 48, 93, 0.12);
+}
+
+.base-counter {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--text-muted-light);
+    background: var(--border-light);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+/* ── TRUCK CARD ─────────────────────────────────────────────────────────── */
+
+.truck-card {
+    display: grid;
+    grid-template-columns: 240px 200px 1fr;
+    align-items: start;
+    gap: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 14px 18px;
+    margin-bottom: 6px;
+    border-left: 4px solid var(--border-light);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.truck-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border-left-color: var(--color-primary);
+}
+
+.truck-card.estado-vencida {
+    border-left-color: var(--color-error);
+    background: linear-gradient(90deg, var(--error-tint) 0%, var(--bg-card) 30%);
+}
+
+.truck-card.estado-critica {
+    border-left-color: var(--color-warning);
+    background: linear-gradient(90deg, var(--secondary-tint) 0%, var(--bg-card) 30%);
+}
+
+.truck-card.estado-ok {
+    border-left-color: var(--color-success);
+}
+
+/* ── LEFT: Identidad ────────────────────────────────────────────────────── */
+
+.truck-card-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.truck-patente {
+    display: inline-block;
+    background: var(--color-primary);
+    color: white;
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-decoration: none;
+    width: fit-content;
+    transition: background 0.15s;
+}
+
+.truck-patente:hover {
+    background: var(--color-primary-dark);
+}
+
+.truck-patente-trailer {
+    background: var(--text-muted-light);
+    font-size: 0.8rem;
+    padding: 4px 10px;
+}
+
+.truck-patente-trailer:hover {
+    background: #4b5a6a;
+}
+
+.truck-meta {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2px;
+}
+
+.truck-type {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-on-light);
+    line-height: 1.3;
+}
+
+.truck-model {
+    font-size: 0.68rem;
+    color: var(--text-muted-light);
+    font-family: var(--font-mono);
+}
+
+.truck-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.tag {
+    font-size: 0.58rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+}
+
+.tag-rol {
+    background: rgba(14, 48, 93, 0.06);
+    color: var(--color-primary);
+    border: 1px solid rgba(14, 48, 93, 0.15);
+}
+
+.tag-contrato {
+    background: var(--secondary-tint);
+    color: #7a6000;
+    border: 1px solid rgba(243, 198, 19, 0.25);
+}
+
+.tag-op {
+    border: 1px solid transparent;
+}
+
+.tag-op.operativo,
+.tag-op.disponible {
+    background: var(--success-tint);
+    color: #1a7a3a;
+    border-color: rgba(46, 204, 113, 0.2);
+}
+
+.tag-op.en_taller,
+.tag-op.mantencion {
+    background: var(--secondary-tint);
+    color: var(--color-warning-text);
+    border-color: rgba(245, 158, 11, 0.2);
+}
+
+.tag-op.fuera_de_servicio,
+.tag-op.siniestrado {
+    background: var(--error-tint);
+    color: var(--color-error);
+    border-color: rgba(231, 76, 60, 0.2);
+}
+
+/* ── CENTER: Mantención ─────────────────────────────────────────────────── */
+
+.truck-card-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+    padding: 0 12px;
+    border-left: 1px solid var(--border-light);
+    border-right: 1px solid var(--border-light);
+    min-height: 70px;
+    justify-content: center;
+}
+
+.maint-status {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 10px;
+    border-radius: var(--radius-sm);
+}
+
+.maint-status.estado-vencida {
+    background: var(--error-tint);
+    color: var(--color-error);
+}
+
+.maint-status.estado-critica {
+    background: var(--secondary-tint);
+    color: #92400e;
+}
+
+.maint-status.estado-ok {
+    background: var(--success-tint);
+    color: #166534;
+}
+
+.maint-detail {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.maint-date {
+    font-size: 0.7rem;
+    color: var(--text-muted-light);
+    font-family: var(--font-mono);
+}
+
+.maint-doc-link {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    background: var(--primary-tint);
+    border: 1px solid var(--primary-border);
+    padding: 1px 5px;
+    border-radius: 3px;
+    text-decoration: none;
+    transition: all 0.15s;
+}
+
+.maint-doc-link:hover {
+    background: var(--color-primary);
+    color: white;
+}
+
+.maint-km {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.km-num {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.km-label {
+    font-size: 0.6rem;
+    color: var(--text-muted-light);
+    text-transform: uppercase;
+}
+
+.km-ok   { color: var(--color-success); }
+.km-warn { color: #b8920e; }
+.km-crit { color: var(--color-error); }
+
+.km-neg {
+    color: var(--color-error);
+    background: var(--error-tint);
+    padding: 1px 6px;
+    border-radius: 3px;
+}
+
+.km-na { color: var(--text-muted-light); }
+
+/* ── RIGHT: Alertas ──────────────────────────────────────────────────────── */
+
+.truck-card-right {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding-left: 12px;
+}
+
+.alert-line {
+    font-size: 0.72rem;
+    font-weight: 500;
+    line-height: 1.4;
+    padding: 3px 0 3px 12px;
+    position: relative;
+}
+
+.alert-line::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+}
+
+.alert-line-warn {
+    color: #991b1b;
+}
+
+.alert-line-warn::before {
+    background: var(--color-error);
+}
+
+.alert-line-ok {
+    color: var(--color-success);
+}
+
+.alert-line-ok::before {
+    background: var(--color-success);
+}
+
+/* ── TRAILER ─────────────────────────────────────────────────────────────── */
+
+.trailer-card {
+    margin-left: 32px;
+    margin-top: -2px;
+    border-left-width: 3px;
+    position: relative;
+    padding: 10px 18px;
+}
+
+.trailer-connector {
+    position: absolute;
+    left: -28px;
+    top: -4px;
+    width: 24px;
+    height: 28px;
+    border-left: 2px solid var(--border-light-2);
+    border-bottom: 2px solid var(--border-light-2);
+    border-bottom-left-radius: 8px;
+}
+
+.trailer-card.estado-vencida .trailer-connector {
+    border-color: var(--color-error);
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+    .truck-card {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .truck-card-center {
+        border-left: none;
+        border-right: none;
+        border-top: 1px solid var(--border-light);
+        border-bottom: 1px solid var(--border-light);
+        padding: 10px 0;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .trailer-card {
+        margin-left: 16px;
+    }
+
+    .fleet-grid {
+        padding: 0 1rem 2rem;
+    }
+
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-input {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard-header {
+        padding: 0 1rem;
+    }
+
+    .page-title {
+        font-size: 1.3rem;
+    }
+
+    .truck-patente {
+        font-size: 0.85rem;
+    }
+
+    .trailer-card {
+        margin-left: 8px;
+    }
+}

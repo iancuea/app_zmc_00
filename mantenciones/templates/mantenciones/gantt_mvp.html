@@ -1,427 +1,436 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Predictivo — ZMC Flota</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.29.0/dist/tabler-icons.min.css">
-    <style>
-        :root {
-            --bg:         #0d1117;
-            --surface:    #161b22;
-            --surface-2:  #1c2128;
-            --border:     #30363d;
-            --grid:       #21262d;
-            --t1:         #e6edf3;
-            --t2:         #8b949e;
-            --t3:         #484f58;
-            --red:        #f85149;
-            --red-bg:     rgba(248,81,73,0.1);
-            --amber:      #d29922;
-            --amber-bg:   rgba(210,153,34,0.1);
-            --blue:       #388bfd;
-            --blue-bg:    rgba(56,139,253,0.1);
-            --purple:     #8957e5;
-            --purple-bg:  rgba(137,87,229,0.1);
-            --green:      #3fb950;
-        }
- 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
-        body {
-            background: var(--bg);
-            color: var(--t1);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            font-size: 13px;
-            line-height: 1.5;
-            padding: 20px 24px;
-            min-height: 100vh;
-        }
- 
-        /* HEADER */
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 18px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--border);
-        }
- 
-        .page-title {
-            font-size: 18px;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
- 
-        .page-title i { color: var(--t2); font-size: 18px; }
- 
-        .page-meta {
-            font-size: 11px;
-            color: var(--t3);
-            font-family: 'Courier New', monospace;
-            margin-top: 4px;
-        }
- 
-        .header-ts {
-            font-size: 11px;
-            color: var(--t3);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
- 
-        /* STATS */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 18px;
-        }
- 
-        .stat-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 12px 14px;
-            transition: border-color 0.2s;
-        }
- 
-        .stat-label {
-            font-size: 10px;
-            color: var(--t3);
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
- 
-        .stat-value {
-            font-size: 30px;
-            font-weight: 700;
-            font-variant-numeric: tabular-nums;
-            line-height: 1;
-        }
- 
-        .stat-sub {
-            font-size: 10px;
-            color: var(--t3);
-            margin-top: 4px;
-        }
- 
-        /* GANTT PANEL */
-        .gantt-panel {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-        }
- 
-        .gantt-toolbar {
-            padding: 10px 14px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
- 
-        .gantt-toolbar-title {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--t2);
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
- 
-        .legend {
-            display: flex;
-            gap: 14px;
-        }
- 
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 11px;
-            color: var(--t2);
-        }
- 
-        .legend-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 2px;
-            flex-shrink: 0;
-        }
- 
-        /* RULER */
-        .ruler-row {
-            display: flex;
-            border-bottom: 1px solid var(--border);
-            background: var(--surface-2);
-        }
- 
-        .col-truck {
-            width: 178px;
-            min-width: 178px;
-            border-right: 1px solid var(--border);
-            padding: 6px 12px;
-            font-size: 10px;
-            color: var(--t3);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-        }
- 
-        .ruler-tl {
-            flex: 1;
-            position: relative;
-            height: 28px;
-        }
- 
-        .month-tick {
-            position: absolute;
-            top: 0;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            padding-left: 4px;
-        }
- 
-        .month-tick-lbl {
-            font-size: 10px;
-            color: var(--t3);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-family: 'Courier New', monospace;
-        }
- 
-        /* TRUCK ROW */
-        .truck-row {
-            display: flex;
-            border-bottom: 1px solid var(--grid);
-            min-height: 58px;
-            border-left: 3px solid transparent;
-            transition: background 0.1s;
-        }
- 
-        .truck-row:last-child { border-bottom: none; }
-        .truck-row:hover { background: var(--surface-2); }
- 
-        .truck-info {
-            width: 175px;
-            min-width: 175px;
-            border-right: 1px solid var(--border);
-            padding: 9px 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 4px;
-        }
- 
-        .truck-patente {
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            font-family: 'Courier New', monospace;
-            color: var(--t1);
-        }
- 
-        .status-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            font-size: 9px;
-            font-weight: 600;
-            letter-spacing: 0.4px;
-            text-transform: uppercase;
-            padding: 2px 6px;
-            border-radius: 3px;
-            width: fit-content;
-            border: 1px solid transparent;
-        }
- 
-        .pill-red    { background: var(--red-bg);    color: var(--red);    border-color: rgba(248,81,73,0.3); }
-        .pill-amber  { background: var(--amber-bg);  color: var(--amber);  border-color: rgba(210,153,34,0.3); }
-        .pill-blue   { background: var(--blue-bg);   color: var(--blue);   border-color: rgba(56,139,253,0.3); }
- 
-        /* TIMELINE */
-        .truck-tl {
-            flex: 1;
-            position: relative;
-            overflow: visible;
-        }
- 
-        .vgrid {
-            position: absolute;
-            top: 0; bottom: 0;
-            width: 1px;
-            background: var(--grid);
-            pointer-events: none;
-        }
- 
-        .today-line {
-            position: absolute;
-            top: 0; bottom: 0;
-            width: 1px;
-            background: var(--green);
-            opacity: 0.4;
-            pointer-events: none;
-            left: 0;
-        }
- 
-        /* EVENT CHIP */
-        .ev {
-            position: absolute;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            z-index: 2;
-        }
- 
-        .ev-chip {
-            padding: 3px 7px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.2px;
-            border: 1px solid transparent;
-            white-space: nowrap;
-            font-family: 'Courier New', monospace;
-            cursor: default;
-        }
- 
-        .c-red    { background: var(--red-bg);    border-color: var(--red);    color: var(--red);    }
-        .c-amber  { background: var(--amber-bg);  border-color: var(--amber);  color: var(--amber);  }
-        .c-purple { background: var(--purple-bg); border-color: var(--purple); color: var(--purple); }
-        .c-blue   { background: var(--blue-bg);   border-color: var(--blue);   color: var(--blue);   }
- 
-        .ev-sub {
-            font-size: 9px;
-            color: var(--t3);
-            font-family: 'Courier New', monospace;
-            white-space: nowrap;
-        }
- 
-        /* TOOLTIP */
-        .ev .tip {
-            display: none;
-            position: absolute;
-            bottom: calc(100% + 6px);
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1c2333;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 8px 10px;
-            white-space: nowrap;
-            z-index: 200;
-            pointer-events: none;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
-        }
- 
-        .ev:hover .tip { display: block; }
- 
-        .tip-plan {
-            font-size: 13px;
-            font-weight: 700;
-            font-family: 'Courier New', monospace;
-            color: var(--t1);
-            margin-bottom: 5px;
-        }
- 
-        .tip-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 14px;
-            font-size: 11px;
-            color: var(--t2);
-            margin-bottom: 2px;
-        }
- 
-        .tip-val {
-            color: var(--t1);
-            font-family: 'Courier New', monospace;
-        }
- 
-        /* LOADING / ERROR */
-        .state-msg {
-            padding: 48px;
-            text-align: center;
-            color: var(--t3);
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-        }
- 
-        .state-msg i { font-size: 22px; display: block; margin-bottom: 10px; }
- 
-        /* No-plan note */
-        .no-plan {
-            position: absolute;
-            top: 50%;
-            left: 12px;
-            transform: translateY(-50%);
-            font-size: 11px;
-            color: var(--t3);
-            font-style: italic;
-        }
-    </style>
-</head>
-<body>
- 
-<div class="page-header">
-    <div>
-        <div class="page-title">
-            <i class="ti ti-tools" aria-hidden="true"></i>
-            Panel Predictivo de Mantenciones
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Carta Gantt — ZMC{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.29.0/dist/tabler-icons.min.css">
+
+<div class="gantt-page">
+
+    <div class="gp-header">
+        <div>
+            <div class="gp-title">
+                <i class="ti ti-tools" aria-hidden="true"></i>
+                Panel Predictivo de Mantenciones
+            </div>
+            <div class="gp-meta">Flota Magallanes · Jun 2026 — Ene 2027</div>
         </div>
-        <div class="page-meta">ZMC · Flota Magallanes · Jun 2026 — Ene 2027</div>
-    </div>
-    <div class="header-ts">
-        <i class="ti ti-clock" style="font-size:13px;" aria-hidden="true"></i>
-        <span id="ts">Cargando...</span>
-    </div>
-</div>
- 
-<div class="stats-grid" id="stats"></div>
- 
-<div class="gantt-panel">
-    <div class="gantt-toolbar">
-        <span class="gantt-toolbar-title">
-            <i class="ti ti-calendar-stats" style="font-size:14px;" aria-hidden="true"></i>
-            Carta Gantt — Preventivos proyectados
-        </span>
-        <div class="legend">
-            <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>Vencido</div>
-            <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div>Próximo ≤ 30 días</div>
-            <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>Servicio mayor</div>
-            <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Programado</div>
+        <div class="gp-ts">
+            <i class="ti ti-clock" style="font-size:13px;" aria-hidden="true"></i>
+            <span id="ts">Cargando...</span>
         </div>
     </div>
-    <div id="gantt">
-        <div class="state-msg">
-            <i class="ti ti-refresh" aria-hidden="true"></i>
-            Calculando telemetría y proyectando pautas preventivas...
+
+    <div class="gp-stats" id="stats"></div>
+
+    <div class="gp-panel">
+        <div class="gp-toolbar">
+            <span class="gp-toolbar-title">
+                <i class="ti ti-calendar-stats" style="font-size:14px;" aria-hidden="true"></i>
+                Carta Gantt — Preventivos proyectados
+            </span>
+            <div class="gp-legend">
+                <div class="gp-legend-item"><div class="gp-legend-dot gp-dot-red"></div>Vencido</div>
+                <div class="gp-legend-item"><div class="gp-legend-dot gp-dot-amber"></div>Próximo</div>
+                <div class="gp-legend-item"><div class="gp-legend-dot gp-dot-purple"></div>Servicio mayor</div>
+                <div class="gp-legend-item"><div class="gp-legend-dot gp-dot-blue"></div>Programado</div>
+            </div>
+        </div>
+        <div id="gantt">
+            <div class="gp-state-msg">
+                <i class="ti ti-refresh" aria-hidden="true"></i>
+                Calculando telemetría y proyectando pautas preventivas...
+            </div>
         </div>
     </div>
 </div>
- 
+
+<style>
+    .gantt-page {
+        background: var(--bg-dark, #121212);
+        color: #e8ecf0;
+        font-family: var(--font-family, 'Inter', system-ui, sans-serif);
+        font-size: 13px;
+        line-height: 1.5;
+        padding: 20px 24px;
+        min-height: calc(100vh - 52px);
+    }
+
+    body.app-layout { background: var(--bg-dark, #121212); }
+
+    .gp-header {
+        max-width: 1400px;
+        margin: 0 auto 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding-bottom: 14px;
+        border-bottom: 1px solid #2e2e2e;
+    }
+
+    .gp-title {
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: -0.3px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #e8ecf0;
+    }
+
+    .gp-title i { color: #9ba3ae; }
+
+    .gp-meta {
+        font-size: 11px;
+        color: #555f6b;
+        font-family: var(--font-mono, 'Courier New', monospace);
+        margin-top: 4px;
+    }
+
+    .gp-ts {
+        font-size: 11px;
+        color: #555f6b;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .gp-stats {
+        max-width: 1400px;
+        margin: 0 auto 18px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+
+    .gp-stat {
+        background: var(--bg-surface, #1E1E1E);
+        border: 1px solid #2e2e2e;
+        border-radius: 6px;
+        padding: 12px 14px;
+        transition: border-color 0.2s;
+    }
+
+    .gp-stat-label {
+        font-size: 10px;
+        color: #555f6b;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .gp-stat-value {
+        font-size: 28px;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+    }
+
+    .gp-stat-sub {
+        font-size: 10px;
+        color: #555f6b;
+        margin-top: 4px;
+    }
+
+    .gp-panel {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: var(--bg-surface, #1E1E1E);
+        border: 1px solid #2e2e2e;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .gp-toolbar {
+        padding: 10px 14px;
+        border-bottom: 1px solid #2e2e2e;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .gp-toolbar-title {
+        font-size: 11px;
+        font-weight: 600;
+        color: #9ba3ae;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .gp-legend { display: flex; gap: 14px; }
+
+    .gp-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        color: #9ba3ae;
+    }
+
+    .gp-legend-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 2px;
+        flex-shrink: 0;
+    }
+
+    .gp-dot-red    { background: var(--color-error, #E74C3C); }
+    .gp-dot-amber  { background: var(--color-secondary, #F3C613); }
+    .gp-dot-purple { background: #8957e5; }
+    .gp-dot-blue   { background: #6ba3d6; }
+
+    .gp-ruler {
+        display: flex;
+        border-bottom: 1px solid #2e2e2e;
+        background: #252525;
+    }
+
+    .gp-col-label {
+        width: 178px;
+        min-width: 178px;
+        border-right: 1px solid #2e2e2e;
+        padding: 6px 12px;
+        font-size: 10px;
+        color: #555f6b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+    }
+
+    .gp-ruler-tl {
+        flex: 1;
+        position: relative;
+        height: 28px;
+    }
+
+    .gp-month {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding-left: 4px;
+    }
+
+    .gp-month-lbl {
+        font-size: 10px;
+        color: #555f6b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-family: var(--font-mono, monospace);
+    }
+
+    .gp-row {
+        display: flex;
+        border-bottom: 1px solid #252525;
+        min-height: 58px;
+        border-left: 3px solid transparent;
+        transition: background 0.1s;
+    }
+
+    .gp-row:last-child { border-bottom: none; }
+    .gp-row:hover { background: #252525; }
+
+    .gp-row-info {
+        width: 175px;
+        min-width: 175px;
+        border-right: 1px solid #2e2e2e;
+        padding: 9px 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .gp-row-patente {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        font-family: var(--font-mono, monospace);
+        color: #e8ecf0;
+    }
+
+    .gp-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        padding: 2px 6px;
+        border-radius: 3px;
+        width: fit-content;
+        border: 1px solid transparent;
+    }
+
+    .gp-pill-red {
+        background: rgba(231, 76, 60, 0.12);
+        color: var(--color-error, #E74C3C);
+        border-color: rgba(231, 76, 60, 0.3);
+    }
+
+    .gp-pill-amber {
+        background: rgba(243, 198, 19, 0.1);
+        color: var(--color-secondary, #F3C613);
+        border-color: rgba(243, 198, 19, 0.25);
+    }
+
+    .gp-pill-blue {
+        background: rgba(107, 163, 214, 0.12);
+        color: #6ba3d6;
+        border-color: rgba(107, 163, 214, 0.25);
+    }
+
+    .gp-tl {
+        flex: 1;
+        position: relative;
+        overflow: visible;
+    }
+
+    .gp-vgrid {
+        position: absolute;
+        top: 0; bottom: 0;
+        width: 1px;
+        background: #252525;
+        pointer-events: none;
+    }
+
+    .gp-today {
+        position: absolute;
+        top: 0; bottom: 0;
+        width: 1px;
+        background: var(--color-success, #2ECC71);
+        opacity: 0.4;
+        pointer-events: none;
+        left: 0;
+    }
+
+    .gp-ev {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        z-index: 2;
+    }
+
+    .gp-ev-chip {
+        padding: 3px 7px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        border: 1px solid transparent;
+        white-space: nowrap;
+        font-family: var(--font-mono, monospace);
+        cursor: default;
+    }
+
+    .gp-chip-red {
+        background: rgba(231, 76, 60, 0.12);
+        border-color: var(--color-error, #E74C3C);
+        color: var(--color-error, #E74C3C);
+    }
+
+    .gp-chip-amber {
+        background: rgba(243, 198, 19, 0.1);
+        border-color: var(--color-secondary, #F3C613);
+        color: var(--color-secondary, #F3C613);
+    }
+
+    .gp-chip-purple {
+        background: rgba(137, 87, 229, 0.12);
+        border-color: #8957e5;
+        color: #a87ff0;
+    }
+
+    .gp-chip-blue {
+        background: rgba(107, 163, 214, 0.1);
+        border-color: #6ba3d6;
+        color: #6ba3d6;
+    }
+
+    .gp-ev-sub {
+        font-size: 9px;
+        color: #555f6b;
+        font-family: var(--font-mono, monospace);
+        white-space: nowrap;
+    }
+
+    .gp-ev .gp-tip {
+        display: none;
+        position: absolute;
+        bottom: calc(100% + 6px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1a2433;
+        border: 1px solid #2e2e2e;
+        border-radius: 6px;
+        padding: 8px 10px;
+        white-space: nowrap;
+        z-index: 200;
+        pointer-events: none;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    }
+
+    .gp-ev:hover .gp-tip { display: block; }
+
+    .gp-tip-plan {
+        font-size: 13px;
+        font-weight: 700;
+        font-family: var(--font-mono, monospace);
+        color: #e8ecf0;
+        margin-bottom: 5px;
+    }
+
+    .gp-tip-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        font-size: 11px;
+        color: #9ba3ae;
+        margin-bottom: 2px;
+    }
+
+    .gp-tip-val {
+        color: #e8ecf0;
+        font-family: var(--font-mono, monospace);
+    }
+
+    .gp-state-msg {
+        padding: 48px;
+        text-align: center;
+        color: #555f6b;
+        font-family: var(--font-mono, monospace);
+        font-size: 12px;
+    }
+
+    .gp-state-msg i { font-size: 22px; display: block; margin-bottom: 10px; }
+
+    @media (max-width: 900px) {
+        .gp-stats { grid-template-columns: repeat(2, 1fr); }
+        .gp-legend { display: none; }
+        .gp-row-info { width: 120px; min-width: 120px; }
+        .gp-col-label { width: 120px; min-width: 120px; }
+    }
+</style>
+
 <script>
 const T0   = new Date('2026-06-09');
 const T1   = new Date('2027-01-31');
 const SPAN = T1 - T0;
- 
+
 const MESES = [
     { l:'JUN', d:'2026-06-09' },
     { l:'JUL', d:'2026-07-01' },
@@ -432,41 +441,41 @@ const MESES = [
     { l:'DIC', d:'2026-12-01' },
     { l:'ENE', d:'2027-01-01' },
 ];
- 
+
 const pct = s => Math.max(0, Math.min(100, ((new Date(s) - T0) / SPAN) * 100)).toFixed(2);
- 
+
 function chipCls(plan, dateStr) {
     const hoy  = new Date(); hoy.setHours(0,0,0,0);
     const diff = Math.floor((new Date(dateStr) - hoy) / 86400000);
-    if (diff <= 0)  return 'c-red';
-    if (diff <= 30) return 'c-amber';
-    if (/SM[3-9]|SC[34]|MB[23]/.test(plan)) return 'c-purple';
-    return 'c-blue';
+    if (diff <= 0)  return 'gp-chip-red';
+    if (diff <= 30) return 'gp-chip-amber';
+    if (/SM[3-9]|SC[34]|MB[23]/.test(plan)) return 'gp-chip-purple';
+    return 'gp-chip-blue';
 }
- 
+
 function fmtDate(s) {
     const [y,m,d] = s.split('-');
     const mn = ['','ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
     return `${d} ${mn[+m]} ${y}`;
 }
- 
+
 function gridHtml() {
-    let h = '<div class="today-line"></div>';
+    let h = '<div class="gp-today"></div>';
     MESES.forEach((m,i) => {
         if (i === 0) return;
-        h += `<div class="vgrid" style="left:${pct(m.d)}%"></div>`;
+        h += `<div class="gp-vgrid" style="left:${pct(m.d)}%"></div>`;
     });
     return h;
 }
- 
+
 fetch('/mantenciones/api/gantt-proyeccion/')
     .then(r => r.json())
     .then(data => {
         const hoy = new Date(); hoy.setHours(0,0,0,0);
- 
+
         const grupos = {};
         data.forEach(t => (grupos[t.patente] = grupos[t.patente] || []).push(t));
- 
+
         const vencidos = data.filter(t => new Date(t.start_date) <= hoy).length;
         const proximos = data.filter(t => {
             const diff = Math.floor((new Date(t.start_date) - hoy) / 86400000);
@@ -474,41 +483,41 @@ fetch('/mantenciones/api/gantt-proyeccion/')
         }).length;
         const nCam  = Object.keys(grupos).length;
         const total = data.length;
- 
+
         document.getElementById('ts').textContent = `Actualizado ${hoy.toLocaleDateString('es-CL')}`;
- 
+
         document.getElementById('stats').innerHTML = `
-            <div class="stat-card" style="border-color:${vencidos ? 'var(--red)' : 'var(--border)'}">
-                <div class="stat-label"><i class="ti ti-alert-triangle" aria-hidden="true"></i>Mantenciones vencidas</div>
-                <div class="stat-value" style="color:${vencidos ? 'var(--red)' : 'var(--t3)'}">${vencidos}</div>
-                <div class="stat-sub">Atención inmediata</div>
+            <div class="gp-stat" style="border-color:${vencidos ? 'var(--color-error)' : '#2e2e2e'}">
+                <div class="gp-stat-label"><i class="ti ti-alert-triangle" aria-hidden="true"></i>Mantenciones vencidas</div>
+                <div class="gp-stat-value" style="color:${vencidos ? 'var(--color-error)' : '#555f6b'}">${vencidos}</div>
+                <div class="gp-stat-sub">Atención inmediata</div>
             </div>
-            <div class="stat-card" style="border-color:${proximos ? 'var(--amber)' : 'var(--border)'}">
-                <div class="stat-label"><i class="ti ti-clock" aria-hidden="true"></i>Próximas ≤ 30 días</div>
-                <div class="stat-value" style="color:${proximos ? 'var(--amber)' : 'var(--t3)'}">${proximos}</div>
-                <div class="stat-sub">Coordinar con taller</div>
+            <div class="gp-stat" style="border-color:${proximos ? 'var(--color-secondary)' : '#2e2e2e'}">
+                <div class="gp-stat-label"><i class="ti ti-clock" aria-hidden="true"></i>Próximas en 30 días</div>
+                <div class="gp-stat-value" style="color:${proximos ? 'var(--color-secondary)' : '#555f6b'}">${proximos}</div>
+                <div class="gp-stat-sub">Coordinar con taller</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-label"><i class="ti ti-truck" aria-hidden="true"></i>Unidades en proyección</div>
-                <div class="stat-value" style="color:var(--blue)">${nCam}</div>
-                <div class="stat-sub">Flota activa AXOR</div>
+            <div class="gp-stat">
+                <div class="gp-stat-label"><i class="ti ti-truck" aria-hidden="true"></i>Unidades en proyección</div>
+                <div class="gp-stat-value" style="color:#6ba3d6">${nCam}</div>
+                <div class="gp-stat-sub">Con cronograma activo</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-label"><i class="ti ti-calendar" aria-hidden="true"></i>Total eventos proyectados</div>
-                <div class="stat-value" style="color:var(--t2)">${total}</div>
-                <div class="stat-sub">Hasta enero 2027</div>
+            <div class="gp-stat">
+                <div class="gp-stat-label"><i class="ti ti-calendar" aria-hidden="true"></i>Total eventos</div>
+                <div class="gp-stat-value" style="color:#9ba3ae">${total}</div>
+                <div class="gp-stat-sub">Hasta enero 2027</div>
             </div>
         `;
- 
+
         const ruler = `
-            <div class="ruler-row">
-                <div class="col-truck">Unidad</div>
-                <div class="ruler-tl">
-                    ${MESES.map(m => `<div class="month-tick" style="left:${pct(m.d)}%"><span class="month-tick-lbl">${m.l}</span></div>`).join('')}
+            <div class="gp-ruler">
+                <div class="gp-col-label">Unidad</div>
+                <div class="gp-ruler-tl">
+                    ${MESES.map(m => `<div class="gp-month" style="left:${pct(m.d)}%"><span class="gp-month-lbl">${m.l}</span></div>`).join('')}
                 </div>
             </div>
         `;
- 
+
         let rows = '';
         for (const pat in grupos) {
             const evs = grupos[pat].sort((a,b) => new Date(a.start_date) - new Date(b.start_date));
@@ -517,51 +526,50 @@ fetch('/mantenciones/api/gantt-proyeccion/')
                 const d = Math.floor((new Date(e.start_date) - hoy) / 86400000);
                 return d > 0 && d <= 30;
             });
- 
-            const pillCls  = hasV ? 'pill-red' : hasP ? 'pill-amber' : 'pill-blue';
+
+            const pillCls  = hasV ? 'gp-pill-red' : hasP ? 'gp-pill-amber' : 'gp-pill-blue';
             const pillTxt  = hasV ? 'Vencido'  : hasP ? 'Próximo'   : 'Programado';
-            const rowBdr   = hasV ? 'var(--red)' : hasP ? 'var(--amber)' : 'var(--border)';
- 
+            const rowBdr   = hasV ? 'var(--color-error)' : hasP ? 'var(--color-secondary)' : '#2e2e2e';
+
             const chips = evs.map(ev => {
                 const p    = pct(ev.start_date);
                 const cls  = chipCls(ev.plan, ev.start_date);
                 const diff = Math.floor((new Date(ev.start_date) - hoy) / 86400000);
                 const sub  = diff <= 0 ? 'HOY' : `+${diff}d`;
                 return `
-                    <div class="ev" style="left:${p}%">
-                        <div class="ev-chip ${cls}">${ev.plan}</div>
-                        <div class="ev-sub">${sub}</div>
-                        <div class="tip">
-                            <div class="tip-plan">${ev.plan}</div>
-                            <div class="tip-row">Fecha <span class="tip-val">${fmtDate(ev.start_date)}</span></div>
-                            <div class="tip-row">Gatillo <span class="tip-val">${ev.km_proyectado.toLocaleString('es-CL')} km</span></div>
+                    <div class="gp-ev" style="left:${p}%">
+                        <div class="gp-ev-chip ${cls}">${ev.plan}</div>
+                        <div class="gp-ev-sub">${sub}</div>
+                        <div class="gp-tip">
+                            <div class="gp-tip-plan">${ev.plan}</div>
+                            <div class="gp-tip-row">Fecha <span class="gp-tip-val">${fmtDate(ev.start_date)}</span></div>
+                            <div class="gp-tip-row">Gatillo <span class="gp-tip-val">${ev.km_proyectado.toLocaleString('es-CL')} km</span></div>
                         </div>
                     </div>`;
             }).join('');
- 
+
             rows += `
-                <div class="truck-row" style="border-left-color:${rowBdr}">
-                    <div class="truck-info">
-                        <div class="truck-patente">${pat}</div>
-                        <span class="status-pill ${pillCls}">
+                <div class="gp-row" style="border-left-color:${rowBdr}">
+                    <div class="gp-row-info">
+                        <div class="gp-row-patente">${pat}</div>
+                        <span class="gp-pill ${pillCls}">
                             <i class="ti ${hasV ? 'ti-alert-circle' : hasP ? 'ti-clock' : 'ti-check'}" style="font-size:9px;" aria-hidden="true"></i>
                             ${pillTxt}
                         </span>
                     </div>
-                    <div class="truck-tl">${gridHtml()}${chips}</div>
+                    <div class="gp-tl">${gridHtml()}${chips}</div>
                 </div>`;
         }
- 
+
         document.getElementById('gantt').innerHTML = ruler + rows;
     })
     .catch(err => {
         document.getElementById('gantt').innerHTML = `
-            <div class="state-msg" style="color:var(--red)">
+            <div class="gp-state-msg" style="color:var(--color-error)">
                 <i class="ti ti-wifi-off" aria-hidden="true"></i>
                 Error al conectar con la API<br>
-                <span style="font-size:11px;color:var(--t3)">${err.message}</span>
+                <span style="font-size:11px;color:#555f6b">${err.message}</span>
             </div>`;
     });
 </script>
-</body>
-</html>
+{% endblock %}

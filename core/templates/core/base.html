@@ -6,23 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}ZMC{% endblock %}</title>
 
+    <link rel="icon" href="https://fav.farm/🚛">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'core/css/tokens.css' %}">
-    <link rel="stylesheet" href="{% static 'core/css/camiones.css' %}?v=1.1">
+    <link rel="stylesheet" href="{% static 'core/css/tokens.css' %}?v=1.0">
+    <link rel="stylesheet" href="{% static 'core/css/camiones.css' %}?v=1.2">
+
+    {% block extra_css %}{% endblock %}
 </head>
 <body class="app-layout">
 
 <header class="navbar-pro">
     <div class="navbar-container">
         <div class="brand">
-            <span class="brand-icon">🚛</span>
             <span class="brand-name">ZMC<strong> APP</strong></span>
         </div>
         <nav class="main-nav">
-            <a href="/camiones/" class="nav-link active">Panel de Flota</a>
-            <a href="#" class="nav-link">Historial</a>
-            <a href="#" class="nav-link">Reportes</a>
+            <a href="/camiones/" class="nav-link {% if request.path == '/camiones/' %}active{% endif %}">Panel de Flota</a>
+            <a href="/mantenciones/gantt-panel/" class="nav-link {% if request.path == '/mantenciones/gantt-panel/' %}active{% endif %}">Carta Gantt</a>
+            <a href="/mantenciones/nueva/" class="nav-link {% if request.path == '/mantenciones/nueva/' %}active{% endif %}">Nueva Inspección</a>
         </nav>
     </div>
 </header>
@@ -31,6 +33,8 @@
     {% block content %}
     {% endblock %}
 </main>
+
+{% block extra_js %}{% endblock %}
 
 </body>
 </html>

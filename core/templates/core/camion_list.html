@@ -6,161 +6,145 @@
 <div class="dashboard-header">
     <div class="title-section">
         <h1 class="page-title">Gestión de Unidades</h1>
-        <p class="page-subtitle">Monitoreo de estado técnico y documentación en tiempo real.</p>
+        <p class="page-subtitle">Estado técnico y documentación — Flota Magallanes</p>
     </div>
-    <form method="get" class="filter-card filter-compact">
-    <div class="filter-group group-small">
-        <label>Unidad</label>
-        <input type="text" name="q" value="{{ request.GET.q|default:'' }}" 
-               placeholder="Patente..." class="pro-input input-compact">
-    </div>
-
-    <div class="filter-group group-small">
-        <label>Estado</label>
-        <select name="estado" class="pro-input input-compact">
-            <option value="">Todos</option>
-            <option value="VENCIDA" {% if request.GET.estado == 'VENCIDA' %}selected{% endif %}>🔴 Vencida</option>
-            <option value="CRITICA" {% if request.GET.estado == 'CRITICA' %}selected{% endif %}>🟡 Crítica</option>
-            <option value="OK" {% if request.GET.estado == 'OK' %}selected{% endif %}>🟢 OK</option>
-        </select>
-    </div>
-
-    <div class="filter-group group-small">
-        <label>Orden</label>
-        <select name="orden" class="pro-input input-compact">
-            <option value="">Base</option>
-            <option value="urgencia" {% if request.GET.orden == 'urgencia' %}selected{% endif %}>🚨 Urgencia</option>
-        </select>
-    </div>
-
-    <div class="filter-actions-compact">
-        <button type="submit" class="btn-primary-compact" title="Aplicar">🔍</button>
-        <a href="{% url 'core:camion_list' %}" class="btn-reset-compact" title="Limpiar">✕</a>
-    </div>
-</form>
+    <form method="get" class="filter-bar">
+        <div class="filter-group">
+            <label>Unidad</label>
+            <input type="text" name="q" value="{{ request.GET.q|default:'' }}" 
+                   placeholder="Buscar patente..." class="filter-input search-input">
+        </div>
+        <div class="filter-group">
+            <label>Estado</label>
+            <select name="estado" class="filter-input">
+                <option value="">Todos</option>
+                <option value="VENCIDA" {% if request.GET.estado == 'VENCIDA' %}selected{% endif %}>Vencida</option>
+                <option value="CRITICA" {% if request.GET.estado == 'CRITICA' %}selected{% endif %}>Crítica</option>
+                <option value="OK" {% if request.GET.estado == 'OK' %}selected{% endif %}>OK</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Orden</label>
+            <select name="orden" class="filter-input">
+                <option value="">Por base</option>
+                <option value="urgencia" {% if request.GET.orden == 'urgencia' %}selected{% endif %}>Por urgencia</option>
+            </select>
+        </div>
+        <div class="filter-actions">
+            <button type="submit" class="btn-filter" title="Aplicar">Filtrar</button>
+            <a href="{% url 'core:camion_list' %}" class="btn-filter btn-filter-clear" title="Limpiar">&times;</a>
+        </div>
+    </form>
 </div>
 
-<div class="table-container-pro">
-    <table class="tabla-pro">
-        <thead>
-            <tr>
-                <th class="text-left" style="width: 15%;">Unidad</th>
-                <th class="text-left" style="width: 25%;">Especificaciones</th>
-                <th style="width: 15%;">Estado Operativo</th>
-                <th class="text-center" style="width: 20%;">Mantención</th> <th class="text-left" style="width: 25%;">Alertas Detalladas</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for grupo in camiones_por_base %}
-                <tr class="base-row-divider">
-                    <td colspan="5">Base Actual: <strong>{{ grupo.base }}</strong></td>
-                </tr>
+<div class="fleet-grid">
+    {% for grupo in camiones_por_base %}
+    <div class="base-section">
+        <div class="base-header">
+            <span class="base-tag">{{ grupo.base }}</span>
+            <span class="base-counter">{{ grupo.camiones|length }}</span>
+        </div>
 
-                {% for camion in grupo.camiones %}
-                    <tr class="unit-row {{ camion.salud_calculada.css }}" data-camion-id="{{ camion.id_camion }}">
-                        <td class="col-patente text-left"> 
-                            <a href="{% url 'core:camion_detail' camion.id_camion %}" class="patente-pill">{{ camion.patente }}</a>
-                        </td>
-
-                        <td class="text-left">
-                            <div class="unit-specs">
-                                <span class="spec-type" style="display:block; font-weight:700;">{{ camion.tipo_camion }}</span>
-                                <span class="spec-rol" style="font-size:0.75rem; color:var(--text-muted);">{{ camion.get_rol_operativo_display }}</span>
-                            </div>
-                        </td>
-
-                        <td class="text-center">
-                            <span class="badge-op-status">{{ camion.estado_actual.get_estado_operativo_display|default:"Sin Datos" }}</span>
-                        </td>
-
-                        <td class="col-health flex-center">
-                            <div class="health-info-bundle">
-                                <strong class="health-status-text">{{ camion.salud_calculada.label }}</strong>
-                                
-                                <div class="last-maint-row">
-                                    <span class="fecha-um">📅 {{ camion.ultima_m.fecha_mantencion|date:"d/m/y"|default:"S/D" }}</span>
-                                    {% if camion.docs_drive %}
-                                        {% for doc in camion.docs_drive %}
-                                            <a href="{{ doc.ruta_archivo }}" target="_blank" class="btn-drive-inline">📄</a>
-                                        {% endfor %}
-                                    {% endif %}
-                                </div>
-
-                                <div class="next-maint-row">
-                                    {% with resto=camion.salud_calculada.km_restantes %}
-                                        <span class="km-label">Faltan:</span>
-                                        <span class="km-remaining {% if resto <= 1000 %}km-urgente{% endif %}">
-                                            {% if resto is not None %}
-                                                {{ resto|intcomma }} km
-                                            {% else %}
-                                                --
-                                            {% endif %}
-                                        </span>
-                                    {% endwith %}
-                                </div>
-                            </div>
-                        </td>
-
-                        <td class="motivos text-left">
-                            <ul class="alert-list-clean">
-                                {% for m in camion.salud_calculada.motivos %}
-                                    <li>{{ m }}</li>
-                                {% empty %}
-                                    <li style="color:#059669;">✅ Al día</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                    </tr>
-
-                    {% if camion.remolque_vinculado %}
-                        {% with remolque=camion.remolque_vinculado %}
-                        <tr class="trailer-row {{ remolque.salud_calculada.css }}" data-remolque-id="{{ remolque.id_remolque }}">
-                            <td class="connector-parent text-left">
-                                <div class="connector-line"></div>
-                                <a href="{% url 'core:remolque_detail' remolque.id_remolque %}" class="patente-pill" style="background: #475569;">{{ remolque.patente }}</a>
-                            </td>
-                            <td class="text-left">
-                                <div class="unit-specs">
-                                    <span class="spec-type" style="display:block; font-weight:700;">{{ remolque.tipo_remolque|default:"Remolque" }}</span>
-                                    <span class="spec-rol" style="font-size:0.75rem; color:var(--text-muted);">{{ remolque.modelo|default:"Unidad Estándar" }}</span>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <span class="badge-op-status">{{ remolque.estado_actual.get_estado_operativo_display|default:"OPERATIVO" }}</span>
-                            </td>
-                            <td class="col-health flex-center">
-                                <div class="health-info-bundle">
-                                    <strong class="health-status-text">{{ remolque.salud_calculada.label }}</strong>
-                                    <div class="last-maint-row">
-                                        <span class="fecha-um">📅 {{ remolque.ultima_m.fecha_mantencion|date:"d/m/y"|default:"S/D" }}</span>
-                                        {% if remolque.docs_drive %}
-                                            {% for dr in remolque.docs_drive %}
-                                                <a href="{{ dr.ruta_archivo }}" target="_blank" class="btn-drive-inline">📄</a>
-                                            {% endfor %}
-                                        {% endif %}
-                                    </div>
-                                    <div class="next-maint-row">
-                                        <span class="km-label">Estado:</span> 
-                                        <span style="font-weight:800;">{{ remolque.salud_calculada.label }}</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="motivos text-left">
-                                <ul class="alert-list-clean">
-                                    {% for m in remolque.salud_calculada.motivos %}
-                                        <li>{{ m }}</li>
-                                    {% empty %}
-                                        <li style="color:#059669;">✅ Al día</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                        </tr>
-                        {% endwith %}
+        {% for camion in grupo.camiones %}
+        <div class="truck-card {{ camion.salud_calculada.css }}" data-camion-id="{{ camion.id_camion }}">
+            
+            <div class="truck-card-left">
+                <a href="{% url 'core:camion_detail' camion.id_camion %}" class="truck-patente">{{ camion.patente }}</a>
+                <div class="truck-meta">
+                    <span class="truck-type">{{ camion.tipo_camion }}</span>
+                    <span class="truck-model">{{ camion.marca }} {{ camion.modelo }}</span>
+                </div>
+                <div class="truck-tags">
+                    <span class="tag tag-rol">{{ camion.rol_operativo }}</span>
+                    {% if camion.contrato %}
+                        <span class="tag tag-contrato">{{ camion.contrato.nombre }}</span>
                     {% endif %}
+                    <span class="tag tag-op {{ camion.estado_actual.estado_operativo|lower }}">
+                        {{ camion.estado_actual.get_estado_operativo_display|default:"Sin datos" }}
+                    </span>
+                </div>
+            </div>
 
-                {% endfor %}
-            {% endfor %}
-        </tbody>
-    </table>
+            <div class="truck-card-center">
+                <div class="maint-status {{ camion.salud_calculada.css }}">{{ camion.salud_calculada.label }}</div>
+                <div class="maint-detail">
+                    <span class="maint-date">{{ camion.ultima_m.fecha_mantencion|date:"d/m/Y"|default:"Sin registro" }}</span>
+                    {% if camion.docs_drive %}
+                        {% for doc in camion.docs_drive %}
+                            <a href="{{ doc.ruta_archivo }}" target="_blank" class="maint-doc-link" title="Ver PDF">PDF</a>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="maint-km">
+                    {% with resto=camion.salud_calculada.km_restantes %}
+                        {% if resto is not None %}
+                            <span class="km-num {% if resto <= 0 %}km-neg{% elif resto <= 1000 %}km-crit{% elif resto <= 3000 %}km-warn{% else %}km-ok{% endif %}">
+                                {{ resto|intcomma }} km
+                            </span>
+                            <span class="km-label">restantes</span>
+                        {% else %}
+                            <span class="km-num km-na">—</span>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+
+            <div class="truck-card-right">
+                {% if camion.salud_calculada.motivos %}
+                    {% for m in camion.salud_calculada.motivos %}
+                        <div class="alert-line alert-line-warn">{{ m }}</div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert-line alert-line-ok">Sin alertas activas</div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if camion.remolque_vinculado %}
+            {% with remolque=camion.remolque_vinculado %}
+            <div class="truck-card trailer-card {{ remolque.salud_calculada.css }}" data-remolque-id="{{ remolque.id_remolque }}">
+                <div class="trailer-connector"></div>
+
+                <div class="truck-card-left">
+                    <a href="{% url 'core:remolque_detail' remolque.id_remolque %}" class="truck-patente truck-patente-trailer">{{ remolque.patente }}</a>
+                    <div class="truck-meta">
+                        <span class="truck-type">{{ remolque.tipo_remolque|default:"Remolque" }}</span>
+                        <span class="truck-model">{{ remolque.marca|default:"" }} {{ remolque.modelo|default:"Estándar" }}</span>
+                    </div>
+                    <div class="truck-tags">
+                        <span class="tag tag-op {{ remolque.estado_actual.estado_operativo|default:'operativo'|lower }}">
+                            {{ remolque.estado_actual.get_estado_operativo_display|default:"Operativo" }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="truck-card-center">
+                    <div class="maint-status {{ remolque.salud_calculada.css }}">{{ remolque.salud_calculada.label }}</div>
+                    <div class="maint-detail">
+                        <span class="maint-date">{{ remolque.ultima_m.fecha_mantencion|date:"d/m/Y"|default:"Sin registro" }}</span>
+                        {% if remolque.docs_drive %}
+                            {% for dr in remolque.docs_drive %}
+                                <a href="{{ dr.ruta_archivo }}" target="_blank" class="maint-doc-link" title="Ver PDF">PDF</a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="truck-card-right">
+                    {% if remolque.salud_calculada.motivos %}
+                        {% for m in remolque.salud_calculada.motivos %}
+                            <div class="alert-line alert-line-warn">{{ m }}</div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert-line alert-line-ok">Sin alertas activas</div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endwith %}
+        {% endif %}
+
+        {% endfor %}
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}

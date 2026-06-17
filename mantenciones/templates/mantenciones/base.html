@@ -1,55 +1,15 @@
+{% extends "core/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}FleetManager Pro{% endblock %}</title>
-    
-    <link rel="icon" href="https://fav.farm/🚛">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
+{% block title %}{% block mantenciones_title %}ZMC Mantenciones{% endblock %}{% endblock %}
+
+{% block extra_css %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-
-    <link rel="stylesheet" href="{% static 'core/css/camiones.css' %}?v=1.1">
-
-    {% block extra_css %}{% endblock %}
-
-</head>
-<body class="app-layout">
-
-<header class="navbar-pro">
-    <div class="navbar-container">
-        <div class="brand">
-            <span class="brand-name">ZMC <strong>Logística</strong></span>
-        </div>
-
-        <nav class="main-nav">
-            <a href="/camiones/" class="nav-link active">
-                <span class="nav-icon">🚚</span> <span class="nav-text">Panel</span>
-            </a>
-            <a href="#" class="nav-link">
-                <span class="nav-icon">📅</span> <span class="nav-text">Historial</span>
-            </a>
-            <a href="#" class="nav-link">
-                <span class="nav-icon">📊</span> <span class="nav-text">Reportes</span>
-            </a>
-        </nav>
-    </div>
-</header>
-
-<main class="content-wrapper">
-    {% block content %}
-    {% endblock %}
-</main>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-{% block extra_js %}
+    {% block mantenciones_css %}{% endblock %}
 {% endblock %}
 
-</body>
-</html>
+{% block extra_js %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block mantenciones_js %}{% endblock %}
+{% endblock %}
